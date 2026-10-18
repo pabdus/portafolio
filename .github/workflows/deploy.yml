@@ -26,16 +26,24 @@ jobs:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: us-east-1
 
-      - name: Subir HTML (sin caché larga)
+      # content.js y app.js se cachean una semana en el navegador. Sin versión en la URL, quien ya
+      # visitó el sitio mezcla el HTML nuevo con el JS viejo. El hash del commit cambia la URL en cada despliegue.
+      - name: Versionar los scripts
+        run: |
+          v="${GITHUB_SHA::8}"
+          sed -i -E "s#<script src=\"(content|app)\.js\"#<script src=\"\1.js?v=$v\"#g" site/index.html
+          test "$(grep -c "\.js?v=$v\"" site/index.html)" -eq 2
+
+      - name: Subir HTML y CV (sin caché larga)
         run: |
           aws s3 sync site/ "s3://${{ secrets.SITE_BUCKET }}" --delete \
-            --exclude "*" --include "*.html" \
+            --exclude "*" --include "*.html" --include "*.pdf" \
             --cache-control "public, max-age=0, must-revalidate"
 
       - name: Subir el resto (caché de una semana)
         run: |
           aws s3 sync site/ "s3://${{ secrets.SITE_BUCKET }}" --delete \
-            --exclude "*.html" \
+            --exclude "*.html" --exclude "*.pdf" \
             --cache-control "public, max-age=604800"
 
       - name: Invalidar CloudFront
