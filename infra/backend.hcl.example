@@ -1,0 +1,4 @@
+# Copia este archivo como backend.hcl (no se versiona) con el bucket que crea infra/bootstrap.
+bucket  = "portafolio-tfstate-XXXXXX"
+region  = "us-east-1"
+profile = "default"

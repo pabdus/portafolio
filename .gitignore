@@ -1,0 +1,15 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfplan
+infra/backend.hcl
+
+# Local
+.claude/
+dist/
+__pycache__/
+
+# Versiones anteriores: solo locales (contienen cifras ya corregidas)
+archivo/
