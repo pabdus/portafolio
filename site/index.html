@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pablo Duque Marín · Ingeniero de IA en AWS</title>
-<meta name="description" content="Ingeniero de IA en AWS: IA generativa en producción con Amazon Bedrock, Terraform y pruebas automatizadas, y estadística para demostrar que funciona. Caldas, Colombia · remoto.">
+<title>Pablo Duque Marín · Ingeniero de IA · AWS, Bedrock y estadística</title>
+<meta name="description" content="Ingeniero de IA: IA generativa en producción con Amazon Bedrock, Terraform y pruebas automatizadas, y estadística para demostrar que funciona. Caldas, Colombia · remoto.">
 <link rel="canonical" href="https://pabloduque.dev/">
 <meta name="theme-color" content="#0b0d11">
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pabloduque.dev/">
-<meta property="og:title" content="Pablo Duque Marín · Ingeniero de IA en AWS">
-<meta property="og:description" content="IA generativa en producción, con estadística para demostrar que funciona: 53 s del documento al dictamen, 131 recursos migrados sin diferencias.">
+<meta property="og:title" content="Pablo Duque Marín · Ingeniero de IA · AWS, Bedrock y estadística">
+<meta property="og:description" content="Llevo IA generativa a producción sobre AWS y demuestro con estadística que funciona: 100 % de campos exactos (67 % con reglas) y 0 falsos rechazos en 500 sentencias reales.">
 <meta property="og:image" content="https://pabloduque.dev/og.png">
 <meta property="og:locale" content="es_CO">
 <meta property="og:locale:alternate" content="en_US">
@@ -87,7 +87,9 @@ img,svg,canvas{max-width:100%}
 .hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px 56px;margin-top:40px;align-items:start}
 .lead p{margin:0 0 12px;font-size:19px;line-height:1.6;color:var(--ink2);max-width:600px;text-wrap:pretty}
 .hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
-.hstat{padding:18px 14px 18px 0}
+.hstat{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:18px 14px 18px 0;border:0;background:none}
+.hstat-go{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink3);transition:color .2s}
+.hstat:hover .hstat-go,.hstat:focus-visible .hstat-go{color:var(--lime)}
 .hstat+.hstat{padding-left:16px;border-left:1px solid var(--line)}
 .hstat-v{font-size:clamp(30px,3.2vw,46px);font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 .hstat-l{margin-top:8px;font-size:13px;line-height:1.4;color:#a9b1ba}
@@ -388,16 +390,16 @@ noscript p{padding:16px var(--pad);color:var(--ink2)}
 
 <main>
   <header id="top" class="hero">
-    <div class="pill"><i></i><span data-k="pill">Disponible para roles y proyectos de ingeniería de IA · remoto</span></div>
-    <h1 class="title" data-k="h1">Ingeniero de IA en AWS.</h1>
-    <p class="title-b" data-k="h1b">Llevo IA generativa a producción y demuestro con estadística que funciona.</p>
+    <div class="pill"><i></i><span data-k="pill">Disponible: freelance ahora · tiempo completo desde ene. 2027 · remoto</span></div>
+    <h1 class="title" data-k="h1">Ingeniero de IA.</h1>
+    <p class="title-b" data-k="h1b">Llevo IA generativa a producción sobre AWS y demuestro con estadística que funciona.</p>
 
     <div class="hero-grid">
       <div>
         <div class="lead" id="lead"><p>Diseño pipelines de documentos, RAG y agentes sobre Amazon Bedrock, con infraestructura en Terraform y pruebas automatizadas.</p><p>Mido si funcionan con protocolos fijados antes de ver los datos, y publico también los resultados negativos.</p></div>
         <div class="ctas">
-          <a class="btn-lime" href="Pablo_Duque_CV.pdf" download data-k="cvLong">Descargar CV (PDF)</a>
-          <a class="btn-line" href="#trabajo"><span data-k="ctaWork">Ver casos</span>&nbsp;→</a>
+          <a class="btn-lime" href="#trabajo"><span data-k="ctaWork">Ver casos</span>&nbsp;→</a>
+          <a class="btn-line" href="Pablo_Duque_CV.pdf" download data-k="cvLong">Descargar CV (PDF)</a>
         </div>
       </div>
       <div>
@@ -409,7 +411,7 @@ noscript p{padding:16px var(--pad);color:var(--ink2)}
             <button data-copy data-k-aria="copyAria" aria-label="Copiar correo">pabdus3000@gmail.com</button>
           </div>
         </div>
-        <div class="hire"><b data-k="hire">Caldas, Colombia · remoto (UTC−5) · español nativo, inglés B1–B2</b><br><span data-k="edu">Máster en IA, UNIR (finaliza feb. 2027) · Maestría en Estadística Aplicada, U. Cuauhtémoc (en curso) · Prácticas en Softart hasta dic. 2026</span></div>
+        <div class="hire"><b data-k="hire">Caldas, Colombia · remoto (UTC−5)</b><br><span data-k="edu">Máster en IA, UNIR (finaliza feb. 2027) · Maestría en Estadística Aplicada, U. Cuauhtémoc (en curso) · Prácticas en Softart hasta dic. 2026</span></div>
       </div>
     </div>
 
@@ -473,7 +475,7 @@ noscript p{padding:16px var(--pad);color:var(--ink2)}
     <div class="cbox" data-reveal>
       <div class="kicker" data-k="contactKicker">05 — Contacto</div>
       <h2 id="ct-title"><span data-k="ctA">¿Tu modelo funciona?</span> <em data-k="ctB">Averigüémoslo.</em></h2>
-      <p data-k="ctSub">Roles de ingeniería de IA, proyectos de documentos con IA, RAG o evaluación de modelos.</p>
+      <p data-k="ctSub">Roles de ingeniería de IA y de evaluación y validación de modelos, o proyectos de documentos con IA y RAG. Respondo en español o en inglés; leo y escribo documentación técnica en inglés.</p>
       <div class="cbtns">
         <div class="mail"><a href="mailto:pabdus3000@gmail.com">pabdus3000@gmail.com</a><button data-copy data-k="copy">Copiar</button></div>
         <a class="cdark" href="Pablo_Duque_CV.pdf" download data-k="cvLong">Descargar CV (PDF)</a>

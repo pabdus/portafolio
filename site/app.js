@@ -44,13 +44,13 @@
     $('#lead').innerHTML = t.lead.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('');
     $$('[data-lang-opt]').forEach(function (el) { el.classList.toggle('on', el.getAttribute('data-lang-opt') === S.lang); });
     $('#updated').textContent = t.updated + ' ' + L(D.updated);
-    document.title = S.lang === 'es' ? 'Pablo Duque Marín · Ingeniero de IA en AWS' : 'Pablo Duque Marín · AI engineer on AWS';
+    document.title = S.lang === 'es' ? 'Pablo Duque Marín · Ingeniero de IA · AWS, Bedrock y estadística' : 'Pablo Duque Marín · AI engineer · AWS, Bedrock and statistics';
   }
 
   /* ---------- secciones ---------- */
   function renderHeroStats() {
     $('#hero-stats').innerHTML = D.heroStats.map(function (s) {
-      return '<div class="hstat"><div class="hstat-v">' + esc(L(s.v)) + '</div><div class="hstat-l">' + esc(L(s.l)) + '</div></div>';
+      return '<button class="hstat" data-open="' + s.c + '"><span class="hstat-v">' + esc(L(s.v)) + '</span><span class="hstat-l">' + esc(L(s.l)) + '</span><span class="hstat-go">' + esc(T().evOpen) + ' →</span></button>';
     }).join('');
   }
   function renderEvidence() {
@@ -409,7 +409,7 @@
     $('#summary-body').innerHTML =
       '<div class="rc-top"><div><h2>Pablo Alberto Duque Marín</h2><p class="rc-role">' + esc(t.rcHead) + '</p><p class="rc-meta">Caldas, Colombia · ' + esc(t.remote) + ' (UTC−5) · ' + D.email + ' · github.com/pabdus · linkedin.com/in/pablo-alberto-duque-marin</p></div>' +
       '<div class="rc-actions"><a class="btn-dark" href="' + D.links.cv + '" download>' + esc(t.cvLong) + '</a><button class="btn-line" data-copy>' + esc(t.aCopy) + '</button><button class="btn-line" data-close-summary>' + esc(t.close) + '</button></div></div>' +
-      '<div class="rc-stats">' + D.heroStats.concat([{ v: '17 / 18', l: { es: 'fallas idénticas en la verificación ciega del TFM', en: 'faults identical in the thesis blind check' } }]).map(function (s) { return '<div><b>' + esc(L(s.v)) + '</b><span>' + esc(L(s.l)) + '</span></div>'; }).join('') + '</div>' +
+      '<div class="rc-stats">' + D.heroStats.map(function (s) { return '<div><b>' + esc(L(s.v)) + '</b><span>' + esc(L(s.l)) + '</span></div>'; }).join('') + '</div>' +
       '<div class="rc-cols"><div><h4>' + t.rcExp + '</h4>' + tl.filter(function (e) { return e.k === 'w'; }).map(item).join('') + '<h4>' + t.rcEdu + '</h4>' + tl.filter(function (e) { return e.k === 'e'; }).map(item).join('') + '</div>' +
       '<div><h4>' + t.rcCases + '</h4>' + D.cases.map(function (c) { return '<div class="rc-c"><span>' + esc(L(c.title)) + '</span><b>' + esc(L(c.mv)) + '</b></div>'; }).join('') +
       '<h4>' + t.rcStack + '</h4><div class="rc-stack">' + D.summaryStack.map(function (k) { return '<span>' + esc(k) + '</span>'; }).join('') + '</div><h4>' + t.rcLang + '</h4><p>' + esc(t.rcLangs) + '</p></div></div>';

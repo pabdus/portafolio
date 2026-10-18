@@ -9,11 +9,11 @@ window.PD = {
     es: {
       navWork: 'Trabajo', navSkills: 'Competencias', navMethod: 'Método', navPath: 'Trayectoria', navContact: 'Contacto',
       summary: 'Resumen 1 pág.', summaryShort: 'Resumen', cv: 'CV', cvLong: 'Descargar CV (PDF)', langAria: 'Cambiar idioma', paletteAria: 'Paleta de comandos',
-      pill: 'Disponible para roles y proyectos de ingeniería de IA · remoto',
-      h1: 'Ingeniero de IA en AWS.',
-      h1b: 'Llevo IA generativa a producción y demuestro con estadística que funciona.',
+      pill: 'Disponible: freelance ahora · tiempo completo desde ene. 2027 · remoto',
+      h1: 'Ingeniero de IA.',
+      h1b: 'Llevo IA generativa a producción sobre AWS y demuestro con estadística que funciona.',
       lead: ['Diseño pipelines de documentos, RAG y agentes sobre Amazon Bedrock, con infraestructura en Terraform y pruebas automatizadas.', 'Mido si funcionan con protocolos fijados antes de ver los datos, y publico también los resultados negativos.'],
-      ctaWork: 'Ver casos', hire: 'Caldas, Colombia · remoto (UTC−5) · español nativo, inglés B1–B2',
+      ctaWork: 'Ver casos', hire: 'Caldas, Colombia · remoto (UTC−5)',
       edu: 'Máster en IA, UNIR (finaliza feb. 2027) · Maestría en Estadística Aplicada, U. Cuauhtémoc (en curso) · Prácticas en Softart hasta dic. 2026',
       copy: 'Copiar', copied: 'Copiado', copyAria: 'Copiar correo', toastCopied: 'Correo copiado',
       monKicker: 'Lo que hago, en una carta de control',
@@ -30,22 +30,22 @@ window.PD = {
       stackTitle: 'Stack por función', stackSub: 'Nivel de uso real: producción, proyectos propios o formación.', lvPro: 'PRODUCCIÓN', lvInv: 'PROYECTOS', lvPos: 'FORMACIÓN',
       methodKicker: '03 — Método', methodTitle: 'Cuatro reglas de trabajo',
       pathKicker: '04 — Trayectoria', pathTitle: 'Trayectoria', kWork: 'TRABAJO', kEdu: 'FORMACIÓN',
-      contactKicker: '05 — Contacto', ctA: '¿Tu modelo funciona?', ctB: 'Averigüémoslo.', ctSub: 'Roles de ingeniería de IA, proyectos de documentos con IA, RAG o evaluación de modelos. Respondo en español o inglés.',
+      contactKicker: '05 — Contacto', ctA: '¿Tu modelo funciona?', ctB: 'Averigüémoslo.', ctSub: 'Roles de ingeniería de IA y de evaluación y validación de modelos, o proyectos de documentos con IA y RAG. Respondo en español o en inglés; leo y escribo documentación técnica en inglés.',
       close: 'Cerrar', problem: 'Problema', did: 'Qué hice', decisions: 'Decisiones', result: 'Resultado', repo: 'Ver repositorio', demo: 'Probar la demo', private: 'Código privado del cliente', local: 'Repositorio privado',
       prev: 'Caso anterior', next: 'Caso siguiente', replay: 'Repetir', schematic: 'Esquema ilustrativo', ongoing: 'En curso', building: 'En construcción',
       palPh: 'Ir a una sección, un caso o una acción…', palEmpty: 'Sin resultados', palNav: 'navegar', palGo: 'abrir', gSec: 'sección', gCase: 'caso', gAct: 'acción',
       aLang: 'Switch to English', aCopy: 'Copiar correo', aCv: 'Descargar CV', aSummary: 'Abrir resumen de una página',
-      rcHead: 'Ingeniero de IA en AWS · IA generativa en producción · estadística aplicada', remote: 'remoto', rcExp: 'EXPERIENCIA', rcEdu: 'FORMACIÓN', rcCases: 'RESULTADOS', rcStack: 'STACK', rcLang: 'IDIOMAS', rcLangs: 'Español nativo · inglés B1–B2',
+      rcHead: 'Ingeniero de IA · IA generativa en producción sobre AWS · estadística aplicada', remote: 'remoto', rcExp: 'EXPERIENCIA', rcEdu: 'FORMACIÓN', rcCases: 'RESULTADOS', rcStack: 'STACK', rcLang: 'IDIOMAS', rcLangs: 'Español nativo · inglés técnico (B1–B2): leo y escribo documentación',
       footBuilt: 'Desplegado con Terraform en AWS: S3, CloudFront y GitHub Actions con OIDC', footKeys: 'Atajo: Ctrl + K', updated: 'Actualizado'
     },
     en: {
       navWork: 'Work', navSkills: 'Skills', navMethod: 'Method', navPath: 'Path', navContact: 'Contact',
       summary: '1-page summary', summaryShort: 'Summary', cv: 'CV', cvLong: 'Download CV (PDF)', langAria: 'Change language', paletteAria: 'Command palette',
-      pill: 'Available for AI engineering roles and projects · remote',
-      h1: 'AI engineer on AWS.',
-      h1b: 'I take generative AI to production and prove with statistics that it works.',
+      pill: 'Available: freelance now · full-time from Jan 2027 · remote',
+      h1: 'AI engineer.',
+      h1b: 'I take generative AI to production on AWS and prove with statistics that it works.',
       lead: ['I design document, RAG and agent pipelines on Amazon Bedrock, with Terraform infrastructure and automated tests.', 'I measure whether they work with protocols fixed before looking at the data, and I publish negative results too.'],
-      ctaWork: 'See case studies', hire: 'Caldas, Colombia · remote (UTC−5) · native Spanish, English B1–B2',
+      ctaWork: 'See case studies', hire: 'Caldas, Colombia · remote (UTC−5)',
       edu: 'MSc in AI, UNIR (ends Feb 2027) · MSc in Applied Statistics, U. Cuauhtémoc (in progress) · Internship at Softart until Dec 2026',
       copy: 'Copy', copied: 'Copied', copyAria: 'Copy email', toastCopied: 'Email copied',
       monKicker: 'What I do, as a control chart',
@@ -62,21 +62,21 @@ window.PD = {
       stackTitle: 'Stack by function', stackSub: 'Real level of use: production, own projects or coursework.', lvPro: 'PRODUCTION', lvInv: 'PROJECTS', lvPos: 'COURSEWORK',
       methodKicker: '03 — Method', methodTitle: 'Four working rules',
       pathKicker: '04 — Path', pathTitle: 'Path', kWork: 'WORK', kEdu: 'EDUCATION',
-      contactKicker: '05 — Contact', ctA: 'Does your model work?', ctB: 'Let’s find out.', ctSub: 'AI engineering roles, AI document projects, RAG or model evaluation. I reply in Spanish or English.',
+      contactKicker: '05 — Contact', ctA: 'Does your model work?', ctB: 'Let’s find out.', ctSub: 'AI engineering and model evaluation and validation roles, or AI document and RAG projects. I reply in Spanish or English, and I read and write technical documentation in English.',
       close: 'Close', problem: 'Problem', did: 'What I did', decisions: 'Decisions', result: 'Outcome', repo: 'View repository', demo: 'Try the demo', private: 'Private client code', local: 'Private repository',
       prev: 'Previous case', next: 'Next case', replay: 'Replay', schematic: 'Illustrative schematic', ongoing: 'Ongoing', building: 'Under construction',
       palPh: 'Jump to a section, case or action…', palEmpty: 'No results', palNav: 'navigate', palGo: 'open', gSec: 'section', gCase: 'case', gAct: 'action',
       aLang: 'Cambiar a español', aCopy: 'Copy email', aCv: 'Download CV', aSummary: 'Open one-page summary',
-      rcHead: 'AI engineer on AWS · generative AI in production · applied statistics', remote: 'remote', rcExp: 'EXPERIENCE', rcEdu: 'EDUCATION', rcCases: 'RESULTS', rcStack: 'STACK', rcLang: 'LANGUAGES', rcLangs: 'Native Spanish · English B1–B2',
+      rcHead: 'AI engineer · generative AI in production on AWS · applied statistics', remote: 'remote', rcExp: 'EXPERIENCE', rcEdu: 'EDUCATION', rcCases: 'RESULTS', rcStack: 'STACK', rcLang: 'LANGUAGES', rcLangs: 'Native Spanish · technical English (B1–B2): I read and write documentation',
       footBuilt: 'Deployed with Terraform on AWS: S3, CloudFront and GitHub Actions with OIDC', footKeys: 'Shortcut: Ctrl + K', updated: 'Updated'
     }
   },
 
-  /* Tres métricas en la portada */
+  /* Tres métricas en la portada: resultado + comparación + caso con la evidencia (c) */
   heroStats: [
-    { v: '53 s', l: { es: 'del documento al dictamen, en producción', en: 'from document to ruling, in production' } },
-    { v: '131', l: { es: 'recursos AWS migrados a Frankfurt, plan sin diferencias', en: 'AWS resources moved to Frankfurt, zero-diff plan' } },
-    { v: '0 / 500', l: { es: 'sentencias reales marcadas por error como inexistentes', en: 'real rulings wrongly flagged as non-existent' } }
+    { v: '100 %|100%', c: 'facturas', l: { es: 'campos exactos con Claude en Bedrock; con reglas, 67 % · demo pública', en: 'exact fields with Claude on Bedrock; with rules, 67% · public demo' } },
+    { v: '0 / 500', c: 'cotejo', l: { es: 'falsos rechazos en sentencias reales; 499 de 499 inventadas detectadas', en: 'false rejections on real rulings; 499 of 499 invented ones caught' } },
+    { v: '17 / 18', c: 'tfm', l: { es: 'fallas iguales a la literatura, y aun así «no verificado»', en: 'faults matching the literature, and still “not verified”' } }
   ],
 
   /* Resultado → decisión (respaldo estadístico) */
@@ -107,7 +107,7 @@ window.PD = {
     { id: 'cotejo', kicker: { es: 'Proyecto propio · legal-tech · Colombia · 2026', en: 'Own project · legal tech · Colombia · 2026' },
       title: { es: 'Cotejo: verificar la jurisprudencia citada antes de radicar', en: 'Cotejo: checking cited case law before filing' },
       sum: { es: 'Revisa cada sentencia citada en un escrito contra fuentes oficiales: que exista, que no esté anulada y que la cita sea literal.', en: 'Checks every ruling cited in a brief against official sources: that it exists, was not annulled and is quoted verbatim.' },
-      mv: '0 / 500', ml: { es: 'sentencias reales marcadas por error como inexistentes', en: 'real rulings wrongly flagged as non-existent' },
+      mv: '0 / 500', ml: { es: 'falsos rechazos en 500 sentencias reales', en: 'false rejections across 500 real rulings' },
       metrics: [['0 / 500', { es: 'falsos «no existe» en sentencias reales', en: 'false “does not exist” on real rulings' }], ['499 / 499', { es: 'sentencias inventadas detectadas', en: 'invented rulings caught' }], ['0', { es: 'pasajes alterados aceptados como correctos', en: 'altered passages accepted as correct' }], ['85 %', { es: 'citas inexistentes en escritos de un LLM local', en: 'non-existent citations in briefs written by a local LLM' }]],
       problem: { es: 'Tras la sanción AC739-2026 de la Corte Suprema por citas inexistentes, un abogado necesita saber antes de radicar si cada sentencia que cita existe y dice lo que el escrito afirma.', en: 'After a Supreme Court sanction (AC739-2026) over non-existent citations, a lawyer needs to know before filing whether each cited ruling exists and says what the brief claims.' },
       did: { es: 'Construí una herramienta local (web y línea de comandos) que extrae las citas de un escrito y las contrasta con el índice de 29.474 sentencias de datos.gov.co y la relatoría: existencia, anulación, magistrado ponente y pasajes entre comillas, comparados palabra por palabra.', en: 'I built a local tool (web and command line) that extracts the citations from a brief and checks them against the 29,474-ruling index on datos.gov.co and the court reporter: existence, annulment, reporting judge, and quoted passages compared word by word.' },
@@ -132,7 +132,7 @@ window.PD = {
       mv: '17 / 18', ml: { es: 'fallas idénticas a Yin (2012) · veredicto: no verificado', en: 'faults identical to Yin (2012) · verdict: not verified' },
       metrics: [['17 / 18', { es: 'fallas idénticas en la verificación ciega', en: 'faults identical in the blind check' }], ['1,46 %|1.46%', { es: 'falsas alarmas del baseline PCA-T²', en: 'PCA-T² baseline false alarms' }], ['643', { es: 'pruebas del paquete común tfmfdd', en: 'tests in the shared tfmfdd package' }], ['3', { es: 'integrantes; soy el vocero', en: 'team members; I am the spokesperson' }]],
       problem: { es: 'Detectar fallos en una planta química a partir de sus sensores (Tennessee Eastman: 52 variables, 20 tipos de falla) con un protocolo que haga comparables los tres bloques del equipo.', en: 'Detect faults in a chemical plant from its sensors (Tennessee Eastman: 52 variables, 20 fault types) with a protocol that makes the team’s three blocks comparable.' },
-      did: { es: 'Respondo por el bloque de detección: PCA con T² y SPE, DPCA, y KPCA planificado para nov.–dic. Diseñé y dirigí tfmfdd v0.3, el paquete común (643 pruebas), construido con agentes de Claude Code y dos revisiones independientes. Primera entrega de la memoria: 5 de octubre.', en: 'I own the detection block: PCA with T² and SPE, DPCA, and KPCA planned for Nov–Dec. I designed and led tfmfdd v0.3, the shared package (643 tests), built with Claude Code agents and two independent reviews. First thesis submission: 5 October.' },
+      did: { es: 'Respondo por el bloque de detección: PCA con T² y SPE, DPCA, y KPCA planificado para nov.–dic. Diseñé y dirigí tfmfdd v0.3, el paquete común (643 pruebas), construido con agentes de Claude Code y dos revisiones independientes.', en: 'I own the detection block: PCA with T² and SPE, DPCA, and KPCA planned for Nov–Dec. I designed and led tfmfdd v0.3, the shared package (643 tests), built with Claude Code agents and two independent reviews.' },
       decisions: { es: ['Verificación ciega contra Yin (2012) con tolerancia fijada antes de correr: |ΔFDR| ≤ 0,5 pp en las 18 fallas.', 'Comparaciones prerregistradas: equivalencia con dos pruebas unilaterales de Wilcoxon e intervalo de Hodges-Lehmann, corrección de Holm y regla de tamaño muestral.', 'Retiré una comparación propia al ver que estaba confundida. El experimento limpio: 27,4 % frente a 3,6 % de falsas alarmas SPE al calibrar con datos reservados.'], en: ['Blind check against Yin (2012) with a tolerance fixed before running: |ΔFDR| ≤ 0.5 pp across all 18 faults.', 'Preregistered comparisons: equivalence via two one-sided Wilcoxon tests and a Hodges–Lehmann interval, Holm correction and a sample-size rule.', 'I withdrew one of my own comparisons once I saw it was confounded. The clean experiment: 27.4% versus 3.6% SPE false alarms when calibrating on held-out data.'] },
       results: { es: ['17 de 18 fallas con diferencia de 0 muestras; IDV 19 quedó a +1,00 pp, el doble de la tolerancia: «no verificado».', 'Baseline PCA: falsas alarmas 1,46 % (T²) y 2,81 % (SPE); detección media 60,1 % y 66,6 %.', 'Las fallas 3, 9 y 15 se reportan aparte: casi indetectables (≈ 5 %).'], en: ['17 of 18 faults with 0 samples of difference; IDV 19 landed at +1.00 pp, twice the tolerance: “not verified”.', 'PCA baseline: false alarms 1.46% (T²) and 2.81% (SPE); mean detection 60.1% and 66.6%.', 'Faults 3, 9 and 15 are reported separately: nearly undetectable (≈ 5%).'] },
       tags: ['PCA', 'T² · SPE', 'DPCA', 'Wilcoxon', 'Hodges-Lehmann', 'Holm', 'tfmfdd'], repo: 'https://github.com/pabdus/tfm-fdd-core' },
@@ -270,7 +270,7 @@ window.PD = {
     ['2022 – 2023', 'e', 'Bootcamp de Data Science (800+ h)|Data Science bootcamp (800+ h)', 'Henry'],
     ['2022 – 2026', 'w', 'Analista de datos|Data analyst', 'Tubos y Perfiles de Occidente S.A.S. · ETL en Python y SQL para decisiones|Tubos y Perfiles de Occidente S.A.S. · Python ETL and SQL for decision-making'],
     ['2019 – 2022', 'w', 'Fundador y gerente general|Founder and general manager', 'Narnia Producciones (Chile)'],
-    ['2011 – 2018', 'w', 'Teniente, comandante de unidad|Lieutenant, unit commander', 'Policía Nacional de Colombia|Colombian National Police'],
+    ['2011 – 2018', 'w', 'Subteniente, comandante de unidad|Second lieutenant, unit commander', 'Policía Nacional de Colombia|Colombian National Police'],
     ['2007 – 2011', 'e', 'Administración Policial y técnico en sistemas|Police Administration and systems technician', 'Policía Nacional · IES-CINOC|National Police · IES-CINOC']
   ],
 
