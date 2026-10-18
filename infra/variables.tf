@@ -15,10 +15,10 @@ variable "domain_name" {
   default     = "pabloduque.dev"
 }
 
-variable "github_repo" {
-  description = "Repositorio autorizado a desplegar por OIDC (owner/nombre)."
+variable "github_oidc_subject_prefix" {
+  description = "Prefijo del claim sub (sujeto inmutable). Se consulta con: gh api repos/OWNER/REPO/actions/oidc/customization/sub"
   type        = string
-  default     = "pabdus/portafolio"
+  default     = "repo:pabdus@112780608/portafolio@1423935587"
 }
 
 variable "github_environment" {

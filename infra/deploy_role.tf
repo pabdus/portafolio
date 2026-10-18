@@ -1,6 +1,7 @@
 # GitHub Actions despliega con OIDC: sin claves de AWS guardadas en ningún lado.
 # El rol solo puede escribir en el bucket del sitio e invalidar esta distribución,
-# y solo lo puede asumir el entorno var.github_environment de var.github_repo
+# y solo lo puede asumir el entorno var.github_environment del repositorio identificado por
+# var.github_oidc_subject_prefix
 # (el entorno, a su vez, solo admite despliegues desde main).
 
 resource "aws_iam_openid_connect_provider" "github" {
@@ -24,7 +25,8 @@ data "aws_iam_policy_document" "deploy_trust" {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
       # Con `environment:` en el job, GitHub firma el token con el entorno y no con la rama.
-      values = ["repo:${var.github_repo}:environment:${var.github_environment}"]
+      # El repo usa sujetos inmutables (owner@id/repo@id): un repo recreado con el mismo nombre no pasa.
+      values = ["${var.github_oidc_subject_prefix}:environment:${var.github_environment}"]
     }
   }
 }
