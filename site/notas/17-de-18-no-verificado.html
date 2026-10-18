@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es" data-lang="es" data-title-es="Por qué 17 de 18 fue «no verificado» · Notas · Pablo Duque Marín" data-title-en="Why 17 out of 18 was “not verified” · Notes · Pablo Duque Marín">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Por qué 17 de 18 fue «no verificado» · Notas · Pablo Duque Marín</title>
+<meta name="description" content="Verificación de mi TFM contra Yin (2012) con la tolerancia fijada antes de ejecutar: 17 de 18 fallas con 0 muestras de diferencia, la IDV 19 a +1,00&nbsp;pp y veredicto «no verificado».">
+<meta name="author" content="Pablo Alberto Duque Marín">
+<link rel="canonical" href="https://pabloduque.dev/notas/17-de-18-no-verificado.html">
+<meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pabloduque.dev/notas/17-de-18-no-verificado.html">
+<meta property="og:title" content="Por qué 17 de 18 fue «no verificado»">
+<meta property="og:description" content="Fijé la tolerancia antes de comparar mi código con la literatura. Diecisiete fallas cuadraron a la muestra; una no. El veredicto no se redondea.">
+<meta property="og:image" content="https://pabloduque.dev/og.png">
+<meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/bricolage-grotesque-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/notas/notas.css">
+<script src="/notas/notas.js"></script>
+</head>
+<body>
+<a class="skip" href="#main"><span data-l="es">Saltar al contenido</span><span data-l="en">Skip to content</span></a>
+<nav class="nav" data-aria-es="Principal" data-aria-en="Main" aria-label="Principal">
+  <div class="nav-in">
+    <a href="/" class="brand"><i>PD</i><span>Pablo Duque</span></a>
+    <div class="nav-act">
+      <a href="./" class="hide-s"><span data-l="es">Notas</span><span data-l="en">Notes</span></a>
+      <button id="lang-btn" class="lang" type="button" lang="en" aria-label="Switch to English"><span data-lang-opt="es" class="on">ES</span><span data-lang-opt="en">EN</span></button>
+      <button id="theme-btn" class="theme" type="button" aria-label="Tema claro"><span class="to-light" aria-hidden="true">☀&#xFE0E;</span><span class="to-dark" aria-hidden="true">☾</span></button>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="wrap">
+<article class="note">
+  <a class="back" href="/">← pabloduque.dev</a>
+
+  <div class="meta">
+    <span class="k"><span data-l="es">Nota 01 · TFM</span><span data-l="en">Note 01 · Thesis</span></span>
+    <time datetime="2026-10"><span data-l="es">octubre de 2026</span><span data-l="en">October 2026</span></time>
+    <span><span data-l="es">5 min de lectura</span><span data-l="en">5 min read</span></span>
+  </div>
+
+  <h1><span data-l="es">Por qué 17 de 18 fue «no verificado»</span><span data-l="en">Why 17 out of 18 was “not verified”</span></h1>
+  <p class="dek"><span data-l="es">Fijé la tolerancia antes de comparar mi código con la literatura. Diecisiete fallas cuadraron a la muestra; una no. El veredicto no se redondea.</span><span data-l="en">I fixed the tolerance before comparing my code with the literature. Seventeen faults matched to the sample; one didn’t. The verdict doesn’t get rounded up.</span></p>
+
+  <div class="stats">
+    <div class="stat"><b class="good">17 / 18</b><span data-l="es">fallas con 0 muestras de diferencia frente a Yin (2012)</span><span data-l="en">faults with 0 samples of difference from Yin (2012)</span></div>
+    <div class="stat"><b class="bad"><span data-l="es">+1,00&nbsp;pp</span><span data-l="en">+1.00&nbsp;pp</span></b><span data-l="es">IDV 19: 8 muestras de 800, el doble de la tolerancia</span><span data-l="en">IDV 19: 8 samples out of 800, twice the tolerance</span></div>
+    <div class="stat"><b class="bad"><span data-l="es">no verificado</span><span data-l="en">not verified</span></b><span data-l="es">veredicto de PCA en la configuración principal</span><span data-l="en">verdict for PCA in the main configuration</span></div>
+  </div>
+
+  <!-- ===================== ES ===================== -->
+  <div class="body" data-l="es">
+    <p>En mi TFM comparo métodos de detección de fallas sobre el proceso Tennessee Eastman, una planta química simulada que es el banco de pruebas habitual del área. Antes de comparar nada había que demostrar algo más básico: que el código calcula lo que dice calcular. Para eso lo ejecuté con la configuración de Yin et al. (2012), un artículo que publica la tasa de detección (FDR) por falla y la tasa de falsas alarmas (FAR) de PCA, y comparé.</p>
+    <p>El resultado fue 17 de 18 fallas idénticas a la muestra y una fuera de tolerancia. El veredicto oficial es «no verificado». Esta nota explica por qué no lo redondeo a «verificado», aunque después encontré, en una figura del propio artículo, un conteo compatible con mi resultado.</p>
+
+    <h2>Lo que fijé antes de ejecutar</h2>
+    <p>La regla quedó escrita el 14 de octubre de 2026, antes de la primera ejecución de la verificación:</p>
+    <ul>
+      <li><span class="nw">|ΔFDR|</span> ≤ 0,5 puntos porcentuales en <strong>cada una</strong> de las 18 fallas que cuentan, y <span class="nw">|ΔFAR|</span> ≤ 0,5 puntos. Las fallas 3, 9 y 15 se calculan y se reportan, pero no deciden: su huella apenas se separa del ruido.</li>
+      <li>Comparación por conteo, no por porcentaje impreso. Cada tasa se mide sobre 800 muestras, así que cada porcentaje que publica el artículo equivale a un número entero de alarmas. 0,5 puntos son 4 muestras.</li>
+      <li>Si la configuración principal no cuadra, el resultado es «no verificado». Las variantes declaradas de antemano se reportan como información y no rescatan el veredicto. Vale la primera ejecución.</li>
+    </ul>
+    <p>El artículo no dice todo lo necesario para reproducirlo (cuántas filas de ajuste, qué estimador de la desviación, qué nivel de confianza). Documenté doce supuestos, cada uno con su evidencia, y, donde se podía, los contrasté con los umbrales dibujados en las figuras del artículo, usando solo el fichero de entrenamiento.</p>
+    <p>Para que la regla no se pudiera mover después, el script de verificación se niega a abrir un fichero de prueba si la tolerancia, la configuración y el propio código no están confirmados en git y registrados en una fila fechada del registro de decisiones, con una huella de la configuración y de la transcripción de las tablas. Cambiar algo después de ver el resultado deja rastro.</p>
+
+    <h2>El resultado</h2>
+    <p>La primera ejecución fue el 14 de octubre a las 20:53.</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col"></th><th scope="col">Mi código</th><th scope="col">Yin (2012)</th><th scope="col">Diferencia</th></tr></thead>
+      <tbody>
+        <tr><td>17 de las 18 fallas</td><td class="n">—</td><td class="n">—</td><td class="n good">0 muestras</td></tr>
+        <tr><td>FAR (operación normal)</td><td class="n">49 de 800</td><td class="n">6,13&nbsp;% → 49</td><td class="n good">0</td></tr>
+        <tr><td>IDV 19</td><td class="n">337 de 800 (42,125&nbsp;%)</td><td class="n">41,13&nbsp;% → 329</td><td class="n bad">+8 muestras (+1,00&nbsp;pp)</td></tr>
+      </tbody>
+      <caption>Configuración principal de PCA, fallas de los bloques 1 y 2. Las fallas 3, 9 y 15 también dieron 0 muestras, pero no cuentan.</caption>
+    </table></div>
+    <p>Diecisiete fallas y la tasa de falsas alarmas coinciden alarma por alarma. La falla 19 se pasa por 8 muestras: el doble de lo permitido. Según la regla, <strong>no verificado</strong>.</p>
+
+    <h2>Lo que encontré después</h2>
+    <p>Una diferencia aislada de 8 muestras, con todo lo demás exacto, pedía un diagnóstico. Lo hice aparte, con el veredicto ya escrito.</p>
+    <p>La Figura 5 del artículo dibuja, para la falla 19, las series de T² y SPE de PCA junto con su umbral. Conté en los gráficos vectoriales del PDF, sin abrir ningún fichero de datos del proceso, cuántas de las muestras 161 a 960 superan el umbral en alguno de los dos estadísticos. Sale un intervalo, porque algunos puntos caen justo sobre la línea: <strong>entre 334 y 340</strong>. Incluye las 337 de mi implementación y excluye las 329 que implica la tabla.</p>
+    <p>Como el primer conteo se hizo conociendo el resultado, lo repitió un agente de IA con instrucciones que no incluían ninguna cifra, y dio los mismos intervalos. En los otros tres paneles contados (la falla 16 en la Figura 2 y el DPCA de la falla 19), que sirven de control, la figura y la tabla coinciden.</p>
+    <p>Lo que puedo afirmar es acotado: la cifra de la Tabla 4 para PCA en la falla 19 no es compatible con la Figura 5 del mismo artículo. Que sea una errata de un dígito (42,13 en lugar de 41,13) es una inferencia, no un hecho: solo una fe de erratas o los autores podrían confirmarla. Lo dejo como observación, documentada para quien use esa tabla.</p>
+
+    <h2>Por qué el veredicto no cambia</h2>
+    <p>Porque la regla se escribió antes. Si la cambio después de ver dónde falla, deja de ser una tolerancia «fijada antes de ejecutar» y pasa a ser justo lo que mi propio TFM critica de la literatura: elegir el criterio cuando ya se conocen los resultados.</p>
+    <p>Las variantes no lo rescatan. La configuración secundaria de Yin (Tablas 7 y 8) da 18 de 18 con 0 muestras de diferencia, falla 19 incluida, y la tasa de falsas alarmas exacta. Ajustar con 480 filas en lugar de 500 da 11 de 18. Ninguna de las dos tiene veredicto: estaban declaradas como información y como información se reportan.</p>
+    <p>Lo que sí cambia es lo que puedo escribir. No puedo decir «implementación verificada». Puedo decir algo más útil: 17 de 18 fallas exactas a la muestra, la tasa de falsas alarmas exacta y una discrepancia documentada en la falla 19, en la que la Figura 5 del artículo es compatible con mi resultado y la Tabla 4 no. Un «verificado» redondeado dice menos que eso.</p>
+
+    <h2>Lo que me llevo</h2>
+    <ul>
+      <li>Fijar la tolerancia <strong>y</strong> qué pasa si no se cumple, antes de ejecutar. La segunda parte es la que se olvida.</li>
+      <li>Comparar conteos, no porcentajes redondeados: con 800 muestras, una diferencia se expresa exacta.</li>
+      <li>Separar el veredicto del diagnóstico. El diagnóstico explica; no reescribe.</li>
+    </ul>
+  </div>
+
+  <!-- ===================== EN ===================== -->
+  <div class="body" data-l="en">
+    <p>My master’s thesis compares fault detection methods on the Tennessee Eastman process, a simulated chemical plant that is the standard benchmark in the field. Before comparing anything, I had to show something more basic: that my code computes what it claims to compute. So I ran it with the configuration of Yin et al. (2012), a paper that publishes per-fault detection rates (FDR) and the false alarm rate (FAR) for PCA, and compared.</p>
+    <p>The result was 17 of 18 faults identical to the sample and one outside the tolerance. The official verdict is “not verified”. This note explains why I don’t round it up to “verified”, even though I later found, in one of the paper’s own figures, a count consistent with my result.</p>
+
+    <h2>What I fixed before running</h2>
+    <p>The rule was written down on 14 October 2026, before the first run of the verification:</p>
+    <ul>
+      <li><span class="nw">|ΔFDR|</span> ≤ 0.5 percentage points on <strong>each</strong> of the 18 faults that count, and <span class="nw">|ΔFAR|</span> ≤ 0.5 points. Faults 3, 9 and 15 are computed and reported but decide nothing: their signature barely rises above the noise.</li>
+      <li>Compare counts, not printed percentages. Each rate is measured over 800 samples, so every percentage the paper publishes corresponds to a whole number of alarms. 0.5 points is 4 samples.</li>
+      <li>If the main configuration doesn’t match, the result is “not verified”. Variants declared in advance are reported as information and cannot rescue the verdict. Only the first run counts.</li>
+    </ul>
+    <p>The paper doesn’t state everything needed to reproduce it: how many rows it fits on, which standard-deviation estimator, which confidence level. I documented twelve assumptions, each with its evidence, and, where possible, checked them against the thresholds drawn in the paper’s figures, using only the training file.</p>
+    <p>So that the rule couldn’t move afterwards, the verification script refuses to open a test file unless the tolerance, the configuration and the code itself are committed to git and logged in a dated row of the decision log, with a fingerprint of the configuration and of the transcribed tables. Changing anything after seeing the result leaves a trace.</p>
+
+    <h2>The result</h2>
+    <p>The first run was on 14 October at 20:53.</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col"></th><th scope="col">My code</th><th scope="col">Yin (2012)</th><th scope="col">Difference</th></tr></thead>
+      <tbody>
+        <tr><td>17 of the 18 faults</td><td class="n">—</td><td class="n">—</td><td class="n good">0 samples</td></tr>
+        <tr><td>FAR (normal operation)</td><td class="n">49 of 800</td><td class="n">6.13% → 49</td><td class="n good">0</td></tr>
+        <tr><td>IDV 19</td><td class="n">337 of 800 (42.125%)</td><td class="n">41.13% → 329</td><td class="n bad">+8 samples (+1.00&nbsp;pp)</td></tr>
+      </tbody>
+      <caption>Main PCA configuration, faults in blocks 1 and 2. Faults 3, 9 and 15 also came out at 0 samples, but don’t count.</caption>
+    </table></div>
+    <p>Seventeen faults and the false alarm rate match alarm for alarm. Fault 19 is over by 8 samples: twice what is allowed. By the rule, <strong>not verified</strong>.</p>
+
+    <h2>What I found afterwards</h2>
+    <p>An isolated 8-sample difference, with everything else exact, called for a diagnosis. I ran it separately, with the verdict already written.</p>
+    <p>The paper’s Figure 5 plots the PCA T² and SPE series for fault 19, along with their threshold. On the PDF’s vector graphics, without opening any process data file, I counted how many of samples 161 to 960 exceed the threshold on either statistic. The answer is an interval, because some points sit exactly on the line: <strong>between 334 and 340</strong>. It includes the 337 from my implementation and excludes the 329 implied by the table.</p>
+    <p>Since the first count was done knowing the result, an AI agent repeated it with instructions that contained no figures at all, and got the same intervals. On the other three panels counted (fault 16 in Figure 2 and the DPCA panel for fault 19), which serve as controls, the figure and the table agree.</p>
+    <p>What I can claim is narrow: the Table 4 value for PCA on fault 19 is not compatible with Figure 5 of the same paper. That it is a one-digit typo (42.13 instead of 41.13) is an inference, not a fact: only an erratum or the authors could confirm it. I leave it as an observation, documented for anyone who uses that table.</p>
+
+    <h2>Why the verdict doesn’t change</h2>
+    <p>Because the rule was written first. If I change it after seeing where it fails, it stops being a tolerance “fixed before running” and becomes exactly what my own thesis criticises in the literature: choosing the criterion once the results are known.</p>
+    <p>The variants don’t rescue it. Yin’s secondary configuration (Tables 7 and 8) gives 18 of 18 with 0 samples of difference, fault 19 included, and an exact false alarm rate. Fitting on 480 rows instead of 500 gives 11 of 18. Neither has a verdict: they were declared as information, and they are reported as information.</p>
+    <p>What does change is what I can write. I can’t say “implementation verified”. I can say something more useful: 17 of 18 faults exact to the sample, the false alarm rate exact, and a documented discrepancy on fault 19, where the paper’s Figure 5 is consistent with my result and Table 4 is not. A rounded-up “verified” says less than that.</p>
+
+    <h2>What I take away</h2>
+    <ul>
+      <li>Fix the tolerance <strong>and</strong> what happens if it isn’t met, before running. The second part is the one that gets forgotten.</li>
+      <li>Compare counts, not rounded percentages: with 800 samples, a difference can be stated exactly.</li>
+      <li>Keep the verdict separate from the diagnosis. The diagnosis explains; it doesn’t rewrite.</li>
+    </ul>
+  </div>
+
+  <section class="ev" aria-labelledby="ev-title">
+    <h2 id="ev-title"><span data-l="es">EVIDENCIA</span><span data-l="en">EVIDENCE</span></h2>
+    <ul>
+      <li><a href="https://github.com/pabdus/tfm-fdd-core">github.com/pabdus/tfm-fdd-core</a> · <span data-l="es">repositorio público del TFM: código, pruebas y resultados</span><span data-l="en">public thesis repository: code, tests and results</span></li>
+      <li><a href="/#caso-tfm"><span data-l="es">Caso «Detección de fallos en procesos industriales»</span><span data-l="en">Case study “Fault detection in industrial processes”</span></a> · <span data-l="es">en la portada</span><span data-l="en">on the home page</span></li>
+      <li><a href="/lab/tep.html"><span data-l="es">Explora las 21 fallas con datos reales</span><span data-l="en">Explore the 21 faults on real data</span></a> · <span data-l="es">laboratorio: el monitor PCA del TFM sobre el Tennessee Eastman clásico, en el navegador</span><span data-l="en">lab: my thesis PCA monitor on the classic Tennessee Eastman dataset, in the browser</span></li>
+      <li><a href="https://github.com/pabdus/tfm-fdd-core/blob/main/docs/verificacion_yin.md">docs/verificacion_yin.md</a> · <span data-l="es">especificación: supuestos S1 a S12, opciones de tolerancia y la elegida</span><span data-l="en">specification: assumptions S1 to S12, tolerance options and the one chosen (in Spanish)</span></li>
+      <li><a href="https://github.com/pabdus/tfm-fdd-core/blob/main/docs/decisiones.md">docs/decisiones.md</a> · <span data-l="es">fila del 2026-10-14 con la huella 509751e8faac</span><span data-l="en">row dated 2026-10-14 with fingerprint 509751e8faac</span></li>
+      <li><a href="https://github.com/pabdus/tfm-fdd-core/blob/main/results/summary/V1_verificacion_yin.csv">V1_verificacion_yin.csv</a> · <a href="https://github.com/pabdus/tfm-fdd-core/blob/main/results/summary/V1_verificacion_yin_resumen.csv">V1_verificacion_yin_resumen.csv</a> · <span data-l="es">resultado por falla y veredicto</span><span data-l="en">per-fault result and verdict</span></li>
+      <li><a href="https://github.com/pabdus/tfm-fdd-core/tree/verificacion-yin-2026-10-14">verificacion-yin-2026-10-14</a> · <span data-l="es">etiqueta de git con el código que se ejecutó</span><span data-l="en">git tag with the code that was run</span></li>
+      <li><a href="https://doi.org/10.1016/j.jprocont.2012.06.009">Yin, Ding, Haghani, Hao <span data-l="es">y</span><span data-l="en">and</span> Zhang (2012)</a> · Journal of Process Control 22, 1567–1581</li>
+      <li><span data-l="es">El diagnóstico de la Figura 5 se hizo después de la ejecución y está en las notas del TFM, fuera del repositorio público.</span><span data-l="en">The Figure 5 diagnosis was done after the run and lives in my thesis notes, outside the public repository.</span></li>
+    </ul>
+  </section>
+</article>
+
+<footer class="foot">
+  <span>© 2026 Pablo Alberto Duque Marín</span>
+  <span><a href="./"><span data-l="es">Todas las notas</span><span data-l="en">All notes</span></a> · <a href="/">pabloduque.dev</a></span>
+</footer>
+</main>
+</body>
+</html>

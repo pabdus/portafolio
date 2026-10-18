@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="es" data-lang="es" data-title-es="La confianza que reporta un LLM no es una probabilidad · Notas · Pablo Duque Marín" data-title-en="An LLM’s reported confidence is not a probability · Notes · Pablo Duque Marín">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La confianza que reporta un LLM no es una probabilidad · Notas · Pablo Duque Marín</title>
+<meta name="description" content="En 55 resultados de un análisis médico con Claude en Bedrock, la «confianza» que declara el modelo se agrupa en 95, 85 y 0, sin escala definida. Por qué no se muestra y por qué el paso a revisión humana lo decide una regla determinista con cita.">
+<meta name="author" content="Pablo Alberto Duque Marín">
+<link rel="canonical" href="https://pabloduque.dev/notas/confianza-llm-no-es-probabilidad.html">
+<meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pabloduque.dev/notas/confianza-llm-no-es-probabilidad.html">
+<meta property="og:title" content="La confianza que reporta un LLM no es una probabilidad">
+<meta property="og:description" content="Antes de mostrar la «confianza» que devolvía el modelo, medí de dónde salía. No era una probabilidad: no se muestra, y el paso a revisión humana lo decide una regla con cita.">
+<meta property="og:image" content="https://pabloduque.dev/og.png">
+<meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/bricolage-grotesque-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/notas/notas.css">
+<script src="/notas/notas.js"></script>
+</head>
+<body>
+<a class="skip" href="#main"><span data-l="es">Saltar al contenido</span><span data-l="en">Skip to content</span></a>
+<nav class="nav" data-aria-es="Principal" data-aria-en="Main" aria-label="Principal">
+  <div class="nav-in">
+    <a href="/" class="brand"><i>PD</i><span>Pablo Duque</span></a>
+    <div class="nav-act">
+      <a href="./" class="hide-s"><span data-l="es">Notas</span><span data-l="en">Notes</span></a>
+      <button id="lang-btn" class="lang" type="button" lang="en" aria-label="Switch to English"><span data-lang-opt="es" class="on">ES</span><span data-lang-opt="en">EN</span></button>
+      <button id="theme-btn" class="theme" type="button" aria-label="Tema claro"><span class="to-light" aria-hidden="true">☀&#xFE0E;</span><span class="to-dark" aria-hidden="true">☾</span></button>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="wrap">
+<article class="note">
+  <a class="back" href="/">← pabloduque.dev</a>
+
+  <div class="meta">
+    <span class="k"><span data-l="es">Nota 02 · IA en producción</span><span data-l="en">Note 02 · AI in production</span></span>
+    <time datetime="2026-10"><span data-l="es">octubre de 2026</span><span data-l="en">October 2026</span></time>
+    <span><span data-l="es">5 min de lectura</span><span data-l="en">5 min read</span></span>
+  </div>
+
+  <h1><span data-l="es">La confianza que reporta un LLM no es una probabilidad</span><span data-l="en">An LLM’s reported confidence is not a probability</span></h1>
+  <p class="dek"><span data-l="es">Antes de mostrar la «confianza» que devolvía el modelo, medí de dónde salía. No era una probabilidad: no se muestra, y el paso a revisión humana lo decide una regla con cita.</span><span data-l="en">Before showing the “confidence” the model returned, I measured where it came from. It wasn’t a probability: it isn’t shown, and a rule backed by a quote decides when a case goes to human review.</span></p>
+
+  <div class="stats">
+    <div class="stat"><b>55</b><span data-l="es">resultados del análisis médico medidos</span><span data-l="en">medical analysis results measured</span></div>
+    <div class="stat"><b>95 · 85 · 0</b><span data-l="es">la «confianza» de 49 de los 55 resultados</span><span data-l="en">the “confidence” of 49 of the 55 results</span></div>
+    <div class="stat"><b class="bad">0</b><span data-l="es">menciones de la confianza en el criterio que sigue el modelo</span><span data-l="en">mentions of confidence in the criteria the model follows</span></div>
+  </div>
+
+  <!-- ===================== ES ===================== -->
+  <div class="body" data-l="es">
+    <p>Para un cliente del sector legal en Colombia construyo un pipeline que convierte los documentos de una reclamación de seguro de tránsito en un dictamen. Una de sus ramas es médica: Claude, en Amazon Bedrock, lee la historia clínica y la clasifica, según el criterio jurídico de la firma, como compensable, no compensable o pendiente de revisión humana. La respuesta es un JSON, y en él venía un campo <code>confidence</code>.</p>
+    <p>La idea era mostrar ese número como un porcentaje junto al resultado. Antes de hacerlo, medí de dónde salía.</p>
+
+    <h2>De dónde salía el número</h2>
+    <ul>
+      <li><strong>Lo pedía el código, y solo como hueco.</strong> La plantilla de salida que recibía el modelo traía un campo de confianza vacío, sin escala ni definición. Ninguna instrucción decía qué significaba.</li>
+      <li><strong>El criterio no la mencionaba.</strong> Busqué «confianza», «confidence», «certeza», «seguridad» y «probab» en el criterio jurídico desplegado: cero apariciones.</li>
+      <li><strong>Nadie la calculaba ni la validaba.</strong> El código guardaba tal cual el número que escribía el modelo. El único valor que ponía el propio código era un 0 de respaldo cuando la salida no se podía leer.</li>
+      <li><strong>Con temperatura 0, el mismo documento daba siempre el mismo número.</strong> Mirando un solo documento, al principio creí que era fijo; con 55 resultados se vio que no.</li>
+    </ul>
+
+    <h2>Lo que medí</h2>
+    <p>Leí, sin escribir nada, los 55 resultados del análisis médico guardados en el entorno de pruebas:</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Clasificación</th><th scope="col">Resultados</th><th scope="col">Valores de confidence (valor × veces)</th></tr></thead>
+      <tbody>
+        <tr><td>compensable</td><td class="n">25</td><td>95 × 25</td></tr>
+        <tr><td>no compensable</td><td class="n">15</td><td>100 × 1 · 95 × 8 · 85 × 6</td></tr>
+        <tr><td>pendiente de revisión</td><td class="n">15</td><td>0 × 7 · 3 × 1 · 75 × 4 · 85 × 3</td></tr>
+      </tbody>
+      <caption>Medición de solo lectura en el entorno de pruebas, 26 de septiembre de 2026.</caption>
+    </table></div>
+    <p>El 95 aparece 33 veces, el 85 nueve y el 0 siete: 49 de los 55 resultados caen en esos tres valores. Eso no es una distribución de probabilidades: son tres etiquetas con forma de número. Ninguna versión del criterio definía una escala, y hay un 3 en lo que parece una escala de 0 a 100, lo que sugiere, como inferencia, que el modelo mezclaba escalas.</p>
+    <p>El 0 tenía dos orígenes posibles: lo escribía el modelo, o lo escribía el código cuando no podía leer la respuesta. De los siete ceros de la tabla, seis los escribió el modelo con seguridad: llevan anotada la versión del criterio con la que se analizaron, y el camino de respaldo no la anotaba. El séptimo no lleva esa anotación, y la medición no basta para atribuirlo. En el propio campo de confianza, el mismo número podía significar «el modelo lo marcó así» o «no hubo respuesta utilizable».</p>
+
+    <h2>Un 95 equivocado</h2>
+    <p>Después, en una prueba de regresión con historias clínicas sintéticas, una de ellas era adversa a propósito: una fractura de tibia en un accidente de trabajo, sin vehículo, con la frase «No hubo accidente de tránsito ni vehículo involucrado». El criterio de la firma es explícito: si el nexo con un accidente de tránsito falta, es dudoso o está contradicho, el caso va a revisión, <strong>nunca</strong> a no compensable.</p>
+    <p>El modelo respondió no compensable con confianza 95, en las 3 corridas y con las dos versiones del prompt que estaba comparando.</p>
+    <p>Un 95 en pantalla junto a una respuesta que contradice el criterio de quien la va a usar no informa: da una seguridad que no existe.</p>
+
+    <h2>Qué cambió</h2>
+    <p><strong>La confianza no se muestra.</strong> Propuse no mostrarla o, como mucho, dejarla en segundo plano con el rótulo «autoevaluación del modelo, no es una probabilidad», porque un «95&nbsp;%» grande sugiere una probabilidad calibrada que no lo es. Se decidió guardarla y no mostrarla, por ahora. Para mostrarla habría que calibrarla antes contra casos con resultado conocido.</p>
+    <p><strong>El paso a revisión humana lo decide una regla.</strong> Para esa decisión, en vez de apoyarse en la seguridad que declara el modelo, se le pide un hecho concreto y comprobable: el nexo de la lesión con un accidente de tránsito, con uno de tres valores (presente, ausente o contradicho) y una cita del documento de 15 palabras o menos. Si el valor no es «presente», o falta, el código manda el resultado a revisión humana, conserva lo que había clasificado el modelo y pone primero una observación con el motivo y la cita.</p>
+    <p>La regresión de la regla (12 llamadas a temperatura 0: cuatro historias sintéticas, tres corridas cada una) dio el resultado final predicho en todos los casos; la historia de la tibia termina en revisión. La regla tiene sus propias pruebas, validadas con mutaciones.</p>
+
+    <h2>La confianza que sí significa algo</h2>
+    <p>En la rama de la póliza, Amazon Textract devuelve una confianza por cada bloque que lee, y esa sí tiene un significado definido: qué tan seguro está de haber leído bien un campo. Es confianza de lectura, no del veredicto; en esa rama, el veredicto lo dan reglas deterministas. Si alguna confianza merece estar en pantalla, es esa: por campo y con su nombre.</p>
+    <p>La regla general que saco: un número en pantalla necesita una definición, una escala y alguien que lo haya comprobado. La «confianza» autodeclarada de un LLM no tenía ninguna de las tres.</p>
+  </div>
+
+  <!-- ===================== EN ===================== -->
+  <div class="body" data-l="en">
+    <p>For a client in the legal sector in Colombia, I build a pipeline that turns the documents of a traffic-insurance claim into a legal opinion. One of its branches is medical: Claude, on Amazon Bedrock, reads the medical record and classifies it, under the firm’s legal criteria, as compensable, not compensable or pending human review. The answer is JSON, and it came with a <code>confidence</code> field.</p>
+    <p>The plan was to show that number as a percentage next to the result. Before doing so, I measured where it came from.</p>
+
+    <h2>Where the number came from</h2>
+    <ul>
+      <li><strong>The code asked for it, and only as a blank.</strong> The output template the model received carried an empty confidence field, with no scale or definition. No instruction said what it meant.</li>
+      <li><strong>The criteria never mentioned it.</strong> I searched the deployed legal criteria for “<span lang="es">confianza</span>”, “confidence”, “<span lang="es">certeza</span>”, “<span lang="es">seguridad</span>” and “<span lang="es">probab</span>”: zero hits.</li>
+      <li><strong>Nobody computed or validated it.</strong> The code stored whatever number the model wrote. The only value the code set itself was a fallback 0 when the output couldn’t be parsed.</li>
+      <li><strong>At temperature 0, the same document always got the same number.</strong> Looking at a single document, I first thought it was fixed; with 55 results, it clearly wasn’t.</li>
+    </ul>
+
+    <h2>What I measured</h2>
+    <p>I read, without writing anything, the 55 medical analysis results stored in the test environment:</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Classification</th><th scope="col">Results</th><th scope="col">confidence values (value × count)</th></tr></thead>
+      <tbody>
+        <tr><td>compensable</td><td class="n">25</td><td>95 × 25</td></tr>
+        <tr><td>not compensable</td><td class="n">15</td><td>100 × 1 · 95 × 8 · 85 × 6</td></tr>
+        <tr><td>pending review</td><td class="n">15</td><td>0 × 7 · 3 × 1 · 75 × 4 · 85 × 3</td></tr>
+      </tbody>
+      <caption>Read-only measurement in the test environment, 26 September 2026.</caption>
+    </table></div>
+    <p>95 appears 33 times, 85 nine times and 0 seven times: 49 of the 55 results fall on those three values. That isn’t a probability distribution: it is three labels shaped like numbers. No version of the criteria defined a scale, and there is a 3 on what looks like a 0–100 scale, which suggests, as an inference, that the model mixed scales.</p>
+    <p>The 0 had two possible origins: the model wrote it, or the code did when it couldn’t read the answer. Of the seven zeros in the table, six were certainly written by the model: they carry the version of the criteria they were analysed with, which the fallback path didn’t record. The seventh carries no such record, and the measurement isn’t enough to attribute it. In the confidence field itself, the same number could mean “the model marked it this way” or “there was no usable answer”.</p>
+
+    <h2>A wrong 95</h2>
+    <p>Later, in a regression test with synthetic medical records, one record was adversarial on purpose: a tibia fracture in a workplace accident, no vehicle involved, with the sentence “<span lang="es">No hubo accidente de tránsito ni vehículo involucrado</span>” (there was no traffic accident and no vehicle involved). The firm’s criteria are explicit: if the link to a traffic accident is missing, doubtful or contradicted, the case goes to review, <strong>never</strong> to not compensable.</p>
+    <p>The model answered not compensable with confidence 95, in all 3 runs and with both versions of the prompt I was comparing.</p>
+    <p>A 95 on screen next to an answer that contradicts the criteria of the people who will use it doesn’t inform: it conveys a certainty that isn’t there.</p>
+
+    <h2>What changed</h2>
+    <p><strong>The confidence isn’t shown.</strong> I proposed not showing it or, at most, keeping it in the background labelled “the model’s self-assessment, not a probability”, because a large “95%” suggests a calibrated probability that it isn’t. The decision was to store it and not show it, for now. Showing it would first require calibrating it against cases with a known outcome.</p>
+    <p><strong>A rule decides when a case goes to human review.</strong> For that decision, instead of relying on the certainty the model reports, the model is asked for a specific, checkable fact: the link between the injury and a traffic accident, with one of three values (present, absent or contradicted) and a quote from the document of 15 words or fewer. If the value isn’t “present”, or is missing, the code sends the result to human review, keeps what the model had classified and puts first an observation with the reason and the quote.</p>
+    <p>The regression for the rule (12 calls at temperature 0: four synthetic records, three runs each) produced the predicted final result in every case; the tibia record ends up in review. The rule has its own tests, validated with mutations.</p>
+
+    <h2>The confidence that does mean something</h2>
+    <p>In the policy branch, Amazon Textract returns a confidence for every block it reads, and that one does have a defined meaning: how sure it is that it read a field correctly. It is reading confidence, not verdict confidence; in that branch, the verdict comes from deterministic rules. If any confidence deserves a place on screen, it is that one: per field and under its real name.</p>
+    <p>The general rule I take from this: a number on screen needs a definition, a scale and someone who has checked it. An LLM’s self-reported “confidence” had none of the three.</p>
+  </div>
+
+  <section class="ev" aria-labelledby="ev-title">
+    <h2 id="ev-title"><span data-l="es">EVIDENCIA</span><span data-l="en">EVIDENCE</span></h2>
+    <ul>
+      <li><a href="/#caso-soat"><span data-l="es">Caso «Del documento al dictamen»</span><span data-l="en">Case study “From document to ruling”</span></a> · <span data-l="es">el pipeline completo, en la portada</span><span data-l="en">the full pipeline, on the home page</span></li>
+      <li><span data-l="es">El código y los datos son del cliente y no son públicos. Las cifras salen de una medición de solo lectura en el entorno de pruebas y de regresiones con historias clínicas sintéticas.</span><span data-l="en">The code and data belong to the client and are not public. The figures come from a read-only measurement in the test environment and from regressions on synthetic medical records.</span></li>
+    </ul>
+  </section>
+</article>
+
+<footer class="foot">
+  <span>© 2026 Pablo Alberto Duque Marín</span>
+  <span><a href="./"><span data-l="es">Todas las notas</span><span data-l="en">All notes</span></a> · <a href="/">pabloduque.dev</a></span>
+</footer>
+</main>
+</body>
+</html>

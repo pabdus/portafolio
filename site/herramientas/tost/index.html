@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es" data-lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculadora de equivalencia TOST · Pablo Duque Marín</title>
+<meta name="description" content="Prueba de equivalencia TOST con Wilcoxon de rangos con signo, estimador de Hodges-Lehmann y corrección de Holm. Se calcula en tu navegador: los datos no salen de él.">
+<link rel="canonical" href="https://pabloduque.dev/herramientas/tost/">
+<meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pabloduque.dev/herramientas/tost/">
+<meta property="og:title" content="Calculadora de equivalencia TOST · Pablo Duque Marín">
+<meta property="og:description" content="Wilcoxon, Hodges-Lehmann y Holm en el navegador, con p exacto también con empates y ceros.">
+<meta property="og:image" content="https://pabloduque.dev/og.png">
+<meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script src="/theme.js"></script>
+<link rel="preload" href="../../fonts/bricolage-grotesque-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<style>
+:root{
+  --bg:#0b0d11;--s1:#10141a;--s2:#0e1116;--s3:#13181f;--ink:#eceef1;--ink2:#cbd1d7;--ink3:#8f99a3;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.15);--field-edge:#6b7480;
+  --lime:#c3e65f;--lime-a:rgba(195,230,95,.12);--lime-b:rgba(195,230,95,.55);--blue:#86b8e8;--red:#ef7a62;--red-a:rgba(239,122,98,.14);
+  --sans:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--serif:'Newsreader',Georgia,'Times New Roman',serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --pad:clamp(16px,5vw,72px);color-scheme:dark
+}
+@supports (color:oklch(0.5 0.1 100)){:root{--lime:oklch(0.86 0.16 128);--blue:oklch(0.78 0.11 230);--red:oklch(0.72 0.19 28)}}
+html:not([data-lang="en"]) [data-l="en"]{display:none!important}
+html[data-lang="en"] [data-l="es"]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+/* la cabecera fija mide ~57 px: el elemento enfocado (y su anillo) queda debajo al ir hacia atrás con Mayús+Tab */
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:6px}
+::selection{background:var(--lime);color:var(--bg)}
+.mono{font-family:var(--mono)}
+.skip{position:absolute;left:-999px;top:8px;z-index:99;background:var(--lime);color:var(--bg);padding:8px 12px;border-radius:6px;text-decoration:none}
+.skip:focus{left:8px}
+
+/* navegación */
+.nav{position:sticky;top:0;z-index:20;background:rgba(11,13,17,.84);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.nav-in{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:11px var(--pad)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;letter-spacing:-.01em;white-space:nowrap;text-decoration:none}
+.brand i{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--lime);color:var(--bg);font-style:normal;font-size:12px;font-weight:800}
+.nav-act{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12px}
+.lang{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden;background:none;padding:0}
+.lang span{padding:7px 9px;color:#a9b1ba}
+.lang span.on{background:var(--ink);color:var(--bg)}
+.btn-ghost{display:inline-flex;align-items:center;padding:7px 11px;border:1px solid var(--line2);border-radius:6px;background:none;color:var(--ink2);white-space:nowrap;text-decoration:none;font-family:var(--mono);font-size:12px}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35);color:var(--ink)}
+.theme-btn{min-width:34px;justify-content:center;padding:7px 9px;font-size:15px;line-height:18px;color:var(--ink)}
+@media (max-width:520px){.brand span{display:none}}
+
+/* portada */
+.hero{padding:clamp(36px,6vw,80px) var(--pad) clamp(28px,4vw,48px)}
+.kicker{font-family:var(--mono);font-size:12px;color:var(--lime);margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em}
+.title{margin:0;font-weight:700;font-size:clamp(38px,6vw,84px);line-height:.98;letter-spacing:-.045em;text-wrap:balance}
+.title-b{margin:14px 0 0;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(22px,2.8vw,38px);line-height:1.15;letter-spacing:-.015em;color:var(--lime);max-width:980px;text-wrap:balance}
+.lead{max-width:720px;margin-top:24px}
+.lead p{margin:0 0 12px;font-size:18px;line-height:1.6;color:var(--ink2);text-wrap:pretty}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
+.facts li{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 10px;border:1px solid var(--line2);border-radius:999px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.facts li i{width:7px;height:7px;border-radius:50%;background:var(--lime)}
+
+/* calculadora */
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding:0 var(--pad)}
+@media (min-width:1100px){.grid{grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start}}
+.panel{min-width:0;border:1px solid var(--line2);border-radius:18px;background:linear-gradient(180deg,#10141a,#0c0f14);padding:20px clamp(16px,2vw,26px) 24px}
+.p-h{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.p-h h2{margin:0;font-size:21px;font-weight:600;letter-spacing:-.02em}
+.p-h h2 b{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--lime);margin-right:8px;vertical-align:2px}
+.seg{display:flex;gap:4px;padding:3px;border:1px solid rgba(255,255,255,.12);border-radius:8px}
+.seg button{padding:7px 12px;border:0;border-radius:6px;background:transparent;color:#a9b1ba;font-family:var(--mono);font-size:12px}
+.seg button.on{background:var(--ink);color:var(--bg)}
+.ex-flag{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin:0 0 12px;padding:10px 12px;border:1px dashed var(--lime-b);border-radius:10px;background:var(--lime-a);font-size:13.5px;line-height:1.45;color:var(--ink2)}
+.ex-flag b{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--lime);color:var(--bg)}
+.link{padding:0;border:0;background:none;color:var(--lime);text-decoration:underline;text-underline-offset:3px;font-size:13.5px}
+.lbl{display:block;font-family:var(--mono);font-size:12px;color:var(--ink3);margin-bottom:6px}
+textarea{display:block;width:100%;min-height:280px;resize:vertical;background:var(--s2);color:var(--ink);border:1px solid var(--field-edge);border-radius:10px;padding:12px 14px;font-family:var(--mono);font-size:13px;line-height:1.55;tab-size:10;white-space:pre;overflow:auto}
+textarea::placeholder,input::placeholder{color:#7d8792}
+.hint{margin:10px 0 0;font-size:13px;line-height:1.55;color:var(--ink3)}
+.hint code{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.params{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:14px;margin-top:18px}
+.params label{display:flex;flex-direction:column}
+.params input,.params select{width:100%;padding:10px 12px;background:var(--s2);border:1px solid var(--field-edge);border-radius:8px;font-family:var(--mono);font-size:14px}
+.params select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink3) 50%),linear-gradient(135deg,var(--ink3) 50%,transparent 50%);background-position:calc(100% - 16px) 55%,calc(100% - 11px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
+.params small{margin-top:6px;font-size:12px;line-height:1.4;color:var(--ink3)}
+/* foco de los campos: borde lima y el anillo de 2 px de :focus-visible, como en el resto del sitio
+   (después de .params para que el borde también cambie en δ, α y el método) */
+textarea:focus,.params input:focus,.params select:focus{border-color:var(--lime)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.btn-lime{display:inline-flex;align-items:center;padding:12px 18px;background:var(--lime);color:var(--bg);border-radius:8px;font-weight:600;font-size:15px;border:0}
+.btn-line{display:inline-flex;align-items:center;padding:12px 18px;border:1px solid rgba(255,255,255,.25);border-radius:8px;font-weight:500;font-size:15px;background:none}
+.btn-line:hover{border-color:rgba(255,255,255,.45)}
+.errors{margin-top:16px;padding:12px 14px;border:1px solid var(--red);border-radius:10px;background:var(--red-a);font-size:14px;color:var(--ink)}
+.errors ul{margin:6px 0 0;padding-left:18px}
+.copy-msg{margin:-6px 0 12px;font-family:var(--mono);font-size:12px;color:var(--lime)}
+
+/* veredicto */
+.verdict{padding-bottom:18px;border-bottom:1px solid var(--line)}
+.v-tag{font-size:clamp(28px,3.2vw,42px);font-weight:700;letter-spacing:-.035em;line-height:1.05}
+.v-tag.equivalent{color:var(--lime)}
+.v-tag.relevant{color:var(--red)}
+.v-tag.inconclusive,.v-tag.untestable{color:var(--ink)}
+.v-tag.partial{color:var(--blue)}
+.v-txt{margin:10px 0 0;font-size:16px;line-height:1.55;color:var(--ink2);max-width:640px}
+.v-kv{margin:12px 0 0;font-size:13px;line-height:1.6;color:var(--ink)}
+.v-sub{margin:8px 0 0;font-size:13.5px;color:var(--ink3)}
+.v-warn{margin:12px 0 0;padding:9px 12px;border-left:2px solid var(--red);background:var(--red-a);font-size:13.5px;color:var(--ink2)}
+
+/* gráfico de intervalos */
+.forest{margin:18px 0 0;padding:0}
+.fb-row{display:grid;grid-template-columns:minmax(64px,28%) minmax(0,1fr);gap:12px;align-items:center}
+.fb-name{font-family:var(--mono);font-size:12px;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fb-track{position:relative;height:34px}
+.fb-band{position:absolute;top:0;bottom:0;background:var(--lime-a);border-left:1px dashed var(--lime-b);border-right:1px dashed var(--lime-b)}
+.fb-zero{position:absolute;top:0;bottom:0;width:1px;background:var(--line2)}
+.fb-ci{position:absolute;top:50%;height:3px;margin-top:-1.5px;border-radius:2px;background:currentColor}
+.fb-ci.open-l::before,.fb-ci.open-r::after{content:'';position:absolute;top:-4px;border:5.5px solid transparent}
+.fb-ci.open-l::before{left:-6px;border-right-color:currentColor;border-left-width:0}
+.fb-ci.open-r::after{right:-6px;border-left-color:currentColor;border-right-width:0}
+.fb-pt{position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px #0e1116}
+.fb-ci.equivalent,.fb-pt.equivalent{color:var(--lime)}
+.fb-ci.relevant,.fb-pt.relevant{color:var(--red)}
+.fb-ci.inconclusive,.fb-pt.inconclusive{color:var(--ink3)}
+.fb-axis .fb-track{height:24px}
+.fb-tick{position:absolute;top:4px;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--ink3);white-space:nowrap}
+.forest figcaption{margin-top:6px;font-size:12.5px;color:var(--ink3)}
+@media (max-width:560px){
+  .fb-row{grid-template-columns:minmax(0,1fr);gap:0}
+  .fb-name{padding-top:6px}
+  .fb-track{height:26px}
+  .fb-axis .fb-name{display:none}
+}
+
+/* tabla */
+.tbl-wrap{margin-top:20px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--s2)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;vertical-align:middle}
+thead th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.03em;color:var(--ink3);background:var(--s3)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+tbody th{font-weight:500;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.num{text-align:right}
+td.num{font-family:var(--mono);font-size:12.5px;color:var(--ink2)}
+td.ok{color:var(--lime)}
+td.strong{font-weight:500;color:var(--ink)}
+td.strong.ok{color:var(--lime)}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;border:1px solid var(--line2);font-family:var(--mono);font-size:11.5px;color:var(--ink2)}
+.tag.equivalent{color:var(--lime);border-color:var(--lime-b);background:var(--lime-a)}
+.tag.relevant{color:var(--red);border-color:var(--red);background:var(--red-a)}
+
+/* detalle */
+.det{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--s2)}
+.det summary{cursor:pointer;padding:10px 14px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.det dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1px;margin:0;background:var(--line);border-top:1px solid var(--line)}
+.det dl div{padding:10px 14px;background:var(--s2)}
+.det dt{font-size:12px;color:var(--ink3)}
+.det dd{margin:2px 0 0;font-size:13px;color:var(--ink)}
+
+/* secciones */
+.sec{padding:clamp(56px,8vw,96px) var(--pad) 0}
+.h2{margin:0 0 10px;font-size:clamp(28px,3.6vw,46px);font-weight:700;letter-spacing:-.04em;line-height:1.05;text-wrap:balance}
+.sub{margin:0 0 28px;font-size:17px;color:var(--ink2);max-width:680px}
+.glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:1px;margin:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--line)}
+.glossary div{padding:18px 20px;background:var(--s1)}
+.glossary dt{font-family:var(--mono);font-size:13px;color:var(--lime);margin-bottom:6px}
+.glossary dd{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink2)}
+.note{max-width:860px}
+.note h3{margin:30px 0 8px;font-size:19px;font-weight:600;letter-spacing:-.02em}
+.note p,.note li{font-size:15.5px;line-height:1.65;color:var(--ink2)}
+.note p{margin:0 0 12px}
+.note ul{margin:0 0 12px;padding-left:20px}
+.note code{font-family:var(--mono);font-size:13px;color:var(--ink);background:var(--s3);padding:1px 5px;border-radius:4px}
+.note a{color:var(--lime);text-underline-offset:3px}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;margin-top:clamp(56px,8vw,96px);padding:22px var(--pad) calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--ink3)}
+.foot a{color:var(--ink2);text-decoration:none}
+.foot a:hover{color:var(--lime)}
+
+/* tema claro («papel + resaltador lima + tinta»): mismos tokens que /lab/lab.css. El lima deja de ser
+   color de texto: es relleno (con contorno) y resaltador; el acento de texto es --lime-ink (AA).
+   Todo va bajo html[data-theme="light"]: el oscuro no cambia.
+   Grises de texto con el matiz oliva del papel (oklch C ~0,010, H ~125), no azul-gris; tintas semánticas a L 0,45-0,49.
+   Contraste WCAG / APCA: --ink2 sobre bg 10.53 / Lc 91.1; --ink3 sobre s1 7.23 / Lc 85.1 y sobre s0 (th) 6.54 / Lc 78.2;
+   --lime-ink sobre bg 6.64 / Lc 79.5; --red sobre s1 7.16 / Lc 83.3; --blue sobre s1 7.17 / Lc 84.5; --field-edge 3.12-3.36. */
+html[data-theme="light"]{
+  --bg:#f6f7f3;--s0:#f3f4ef;--s1:#ffffff;--s2:#eef0ea;--s3:#e7eae2;--ink:#14171c;--ink2:#393b36;--ink3:#555852;--mut:#4a4d47;
+  --line:rgba(12,16,22,.10);--line2:rgba(12,16,22,.20);--edge:rgba(12,16,22,.09);
+  --lime:#c3e65f;--lime-hover:#b9df4b;--lime-ink:#3c6200;--on-lime:#0b0d11;--lime-edge:rgba(60,98,0,.42);--marker:rgba(195,230,95,.7);
+  --lime-a:rgba(195,230,95,.24);--lime-b:rgba(12,16,22,.55);--field-edge:#8b8d87;--placeholder:#6a6d67;
+  --blue:#1b5a93;--red:#a9221d;--red-a:rgba(180,35,24,.07);
+  --nav:rgba(246,247,243,.86);
+  /* sombra con el matiz del papel (rgb 43 48 37), en capas y con la luz desde arriba */
+  --shadow-rgb:43 48 37;
+  --card-shadow:0 1px 1px rgb(var(--shadow-rgb)/.05),0 2px 4px -2px rgb(var(--shadow-rgb)/.06),0 10px 24px -16px rgb(var(--shadow-rgb)/.20);
+  color-scheme:light
+}
+/* antialiased adelgaza la tinta oscura sobre papel en macOS; el oscuro lo conserva (no cambia nada en Windows) */
+html[data-theme="light"] body{-webkit-font-smoothing:auto;-moz-osx-font-smoothing:auto}
+/* etiquetas mono de color y estados: 500 en claro (Plex Mono 500 ya la pide esta página para th y los números de sección;
+   es de ancho fijo, así que no reacomoda nada). La mono neutra (.lbl, nav, ejes, pie) sigue en 400, y los p de la
+   tabla (td.ok) también: el 500 queda para la columna que decide, p TOST. */
+html[data-theme="light"] .kicker,
+html[data-theme="light"] .copy-msg,
+html[data-theme="light"] .glossary dt,
+html[data-theme="light"] .tag{font-weight:500}
+html[data-theme="light"] :focus-visible{outline-color:var(--lime-ink)}
+html[data-theme="light"] ::selection{background:var(--marker);color:var(--ink)}
+html[data-theme="light"] .nav{background:var(--nav)}
+/* rellenos lima: texto oscuro y contorno para que no parezcan un resaltador suelto */
+html[data-theme="light"] .skip,
+html[data-theme="light"] .brand i,
+html[data-theme="light"] .ex-flag b,
+html[data-theme="light"] .btn-lime{background:var(--lime);color:var(--on-lime);box-shadow:inset 0 0 0 1px var(--lime-edge)}
+html[data-theme="light"] .btn-lime:hover{background:var(--lime-hover)}
+html[data-theme="light"] .lang span,
+html[data-theme="light"] .seg button{color:var(--mut)}
+html[data-theme="light"] .lang span.on,
+html[data-theme="light"] .seg button.on{color:var(--bg)}
+html[data-theme="light"] .seg{border-color:rgba(12,16,22,.16)}
+html[data-theme="light"] .btn-ghost:hover{border-color:rgba(12,16,22,.4)}
+html[data-theme="light"] .btn-line{border-color:rgba(12,16,22,.28);background:var(--s1)}
+html[data-theme="light"] .btn-line:hover{border-color:rgba(12,16,22,.5)}
+/* acento de texto */
+html[data-theme="light"] .kicker,
+html[data-theme="light"] .p-h h2 b,
+html[data-theme="light"] .link,
+html[data-theme="light"] .copy-msg,
+html[data-theme="light"] td.ok,
+html[data-theme="light"] td.strong.ok,
+html[data-theme="light"] .glossary dt,
+html[data-theme="light"] .note a,
+html[data-theme="light"] .foot a:hover{color:var(--lime-ink)}
+html[data-theme="light"] .title-b{color:var(--ink2)}
+html[data-theme="light"] .facts li{background:var(--s1);border-color:rgba(12,16,22,.12)}
+/* punto de las etiquetas: tinta lima maciza, como el punto de «Disponible» de la portada y la leyenda del stack */
+html[data-theme="light"] .facts li i{background:var(--lime-ink);box-shadow:none}
+/* superficies: papel, tarjetas blancas con borde fino y sombra suave */
+html[data-theme="light"] .panel{background:var(--s1);border-color:var(--edge);box-shadow:var(--card-shadow)}
+html[data-theme="light"] textarea,
+html[data-theme="light"] .params input,
+html[data-theme="light"] .params select{background-color:var(--bg)}
+html[data-theme="light"] textarea::placeholder,
+html[data-theme="light"] input::placeholder{color:var(--placeholder)}
+html[data-theme="light"] textarea:focus,
+html[data-theme="light"] input:focus,
+html[data-theme="light"] select:focus{outline:none;border-color:var(--lime-ink);box-shadow:0 0 0 3px rgba(195,230,95,.55)}
+html[data-theme="light"] .ex-flag{background:rgba(195,230,95,.16);border-color:var(--lime-edge)}
+html[data-theme="light"] .tbl-wrap,
+html[data-theme="light"] .det{background:var(--s1);border-color:var(--edge)}
+html[data-theme="light"] thead th{background:var(--s0)}
+/* rejilla del detalle con bordes y no con huecos de 1 px: la celda vacía de la última fila queda en blanco */
+html[data-theme="light"] .det dl{gap:0;background:none;border-top:0;margin-left:-1px;clip-path:inset(0 0 0 1px round 0 0 9px 9px)}
+html[data-theme="light"] .det dl div{background:none;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+html[data-theme="light"] .glossary{border-color:var(--edge);background:var(--edge);box-shadow:var(--card-shadow)}
+/* veredicto: «equivalente» en tinta con resaltador; diferencia relevante en rojo, sin resaltador */
+html[data-theme="light"] .v-tag.equivalent{display:inline;color:var(--ink);padding:0 .06em;background-image:linear-gradient(transparent 62%,var(--marker) 62%,var(--marker) 90%,transparent 90%);background-repeat:no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+/* gráfico de intervalos: banda ±δ como resaltador con sus límites en tinta discontinua; intervalos en verde, rojo o gris */
+html[data-theme="light"] .fb-band{background:var(--lime-a);border-color:var(--lime-b)}
+html[data-theme="light"] .fb-zero{background:rgba(12,16,22,.22)}
+html[data-theme="light"] .fb-ci.equivalent,
+html[data-theme="light"] .fb-pt.equivalent{color:var(--lime-ink)}
+html[data-theme="light"] .fb-pt{box-shadow:0 0 0 3px var(--s1)}
+html[data-theme="light"] .tag.equivalent{background:var(--lime);border-color:var(--lime-edge);color:var(--on-lime)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#calc"><span data-l="es">Saltar a la calculadora</span><span data-l="en">Skip to the calculator</span></a>
+
+<nav class="nav" data-aria-es="Navegación" data-aria-en="Navigation" aria-label="Navegación">
+  <div class="nav-in">
+    <a href="/" class="brand"><i>PD</i><span>Pablo Duque</span></a>
+    <div class="nav-act">
+      <a class="btn-ghost" href="/"><span data-l="es">← Portafolio</span><span data-l="en">← Portfolio</span></a>
+      <button id="lang-btn" class="lang" type="button" data-aria-es="Cambiar idioma a inglés" data-aria-en="Switch language to Spanish" aria-label="Cambiar idioma a inglés"><span data-lang-opt="es" class="on">ES</span><span data-lang-opt="en">EN</span></button>
+      <button id="theme-btn" class="btn-ghost theme-btn" type="button" aria-label="Tema claro" title="Tema claro"><span class="ti" aria-hidden="true">☀</span></button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="kicker"><span data-l="es">Herramienta · estadística</span><span data-l="en">Tool · statistics</span></div>
+  <h1 class="title"><span data-l="es">Calculadora de equivalencia (TOST)</span><span data-l="en">TOST equivalence calculator</span></h1>
+  <p class="title-b"><span data-l="es">Wilcoxon, Hodges-Lehmann y Holm: el mismo procedimiento que fijé en el registro de decisiones de mi TFM.</span><span data-l="en">Wilcoxon, Hodges–Lehmann and Holm: the same procedure I fixed in my thesis’s decision log.</span></p>
+  <div class="lead">
+    <p data-l="es">Un p mayor que 0,05 no demuestra que dos métodos rindan igual: solo dice que no se vio la diferencia. Para afirmar «son equivalentes» hay que declarar antes un margen δ (la diferencia que no te importa) y rechazar que la diferencia real esté fuera de ±δ. Eso hace el TOST: dos contrastes unilaterales, uno contra cada borde.</p>
+    <p data-l="en">A p-value above 0.05 does not show that two methods perform the same; it only says the difference was not detected. To claim “they are equivalent” you must first declare a margin δ (the difference you do not care about) and reject that the true difference lies outside ±δ. That is what TOST does: two one-sided tests, one against each edge.</p>
+  </div>
+  <ul class="facts">
+    <li><i></i><span data-l="es">Se calcula en tu navegador; los datos no se envían</span><span data-l="en">Runs in your browser; no data is sent</span></li>
+    <li><i></i><span data-l="es">p exacto también con empates y ceros</span><span data-l="en">Exact p-value even with ties and zeros</span></li>
+    <li><i></i><span data-l="es">Contrastada con scipy.stats.wilcoxon</span><span data-l="en">Checked against scipy.stats.wilcoxon</span></li>
+  </ul>
+</header>
+
+<main id="tost-app">
+  <div class="grid" id="calc">
+    <section class="panel" aria-labelledby="in-title">
+      <div class="p-h">
+        <h2 id="in-title"><b>01</b><span data-l="es">Datos</span><span data-l="en">Data</span></h2>
+        <div class="seg" role="radiogroup" data-aria-es="Formato de los datos" data-aria-en="Data format" aria-label="Formato de los datos">
+          <button type="button" role="radio" aria-checked="true" tabindex="0" data-mode="ab" class="on"><span data-l="es">A y B</span><span data-l="en">A and B</span></button>
+          <button type="button" role="radio" aria-checked="false" tabindex="-1" data-mode="d"><span data-l="es">Diferencias</span><span data-l="en">Differences</span></button>
+        </div>
+      </div>
+
+      <p class="ex-flag" id="ex-flag">
+        <b><span data-l="es">Ejemplo</span><span data-l="en">Example</span></b>
+        <span data-l="es">Datos sintéticos, inventados para mostrar los tres desenlaces y lo que cambia Holm. No son resultados de ningún proyecto.</span>
+        <span data-l="en">Synthetic data, made up to show the three outcomes and what Holm changes. They are not results from any project.</span>
+        <button type="button" id="clear" class="link"><span data-l="es">Borrar y pegar los míos</span><span data-l="en">Clear and paste my own</span></button>
+      </p>
+
+      <label class="lbl" for="data"><span data-l="es">Pega desde una hoja de cálculo o un CSV</span><span data-l="en">Paste from a spreadsheet or a CSV</span></label>
+      <textarea id="data" rows="14" spellcheck="false" autocomplete="off" autocapitalize="off" wrap="off"></textarea>
+
+      <div class="hint" data-hint="ab">
+        <span data-l="es">Una fila por par: A y B separados por tabulador, <code>;</code>, espacio, o coma si el decimal es punto. Decimal con coma o con punto, sin separador de miles. Se contrasta <code>d = A − B</code>. Una línea <code># nombre</code> o una línea en blanco empieza otra comparación; con una primera columna de texto (separada por tabulador o <code>;</code>) las filas se agrupan por ese nombre. Las filas con un valor vacío o <code>NA</code> se descartan.</span>
+        <span data-l="en">One row per pair: A and B separated by a tab, <code>;</code>, a space, or a comma if the decimal mark is a dot. Decimal comma or dot, no thousands separator. The test is on <code>d = A − B</code>. A <code># name</code> line or a blank line starts another comparison; with a first text column (separated by a tab or <code>;</code>) rows are grouped by that name. Rows with an empty or <code>NA</code> value are dropped.</span>
+      </div>
+      <div class="hint" data-hint="d" hidden>
+        <span data-l="es">Una diferencia por línea, o una comparación entera por fila (valores separados por tabulador, <code>;</code> o espacios; un nombre opcional en la primera columna si separas con tabulador o <code>;</code>). Una línea <code># nombre</code> o una línea en blanco empieza otra comparación.</span>
+        <span data-l="en">One difference per line, or a whole comparison per row (values separated by tabs, <code>;</code> or spaces; an optional name in the first column if you separate with tabs or <code>;</code>). A <code># name</code> line or a blank line starts another comparison.</span>
+      </div>
+
+      <div class="params">
+        <label for="delta">
+          <span class="lbl"><span data-l="es">Margen δ</span><span data-l="en">Margin δ</span></span>
+          <input id="delta" inputmode="decimal" autocomplete="off" spellcheck="false">
+          <small><span data-l="es">La diferencia que consideras irrelevante, en las unidades de A − B. Fíjala antes de mirar los datos.</span><span data-l="en">The difference you consider irrelevant, in the units of A − B. Fix it before looking at the data.</span></small>
+        </label>
+        <label for="alpha">
+          <span class="lbl">α</span>
+          <input id="alpha" inputmode="decimal" autocomplete="off" spellcheck="false">
+          <small><span data-l="es">Nivel de cada unilateral. El intervalo sale al 1 − 2α.</span><span data-l="en">Level of each one-sided test. The interval is at 1 − 2α.</span></small>
+        </label>
+        <label for="method">
+          <span class="lbl"><span data-l="es">Cálculo del p</span><span data-l="en">p-value method</span></span>
+          <select id="method"><option value="auto">exacto</option><option value="normal">normal</option></select>
+          <small><span data-l="es">Exacto hasta 500 diferencias no nulas; por encima, normal.</span><span data-l="en">Exact up to 500 non-zero differences; normal above that.</span></small>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="run" class="btn-lime"><span data-l="es">Calcular</span><span data-l="en">Compute</span></button>
+        <button type="button" id="load-ex" class="btn-line"><span data-l="es">Cargar el ejemplo</span><span data-l="en">Load the example</span></button>
+      </div>
+      <div id="errors" class="errors" role="alert" hidden></div>
+    </section>
+
+    <section class="panel" aria-labelledby="out-title">
+      <div class="p-h">
+        <h2 id="out-title"><b>02</b><span data-l="es">Resultado</span><span data-l="en">Result</span></h2>
+        <button type="button" id="copy" class="btn-ghost"><span data-l="es">Copiar tabla</span><span data-l="en">Copy table</span></button>
+      </div>
+      <p id="copy-msg" class="copy-msg" role="status" hidden></p>
+      <div id="out" aria-live="polite">
+        <div id="verdict" class="verdict"></div>
+        <figure class="forest"><div id="plot"></div><figcaption id="plot-cap"></figcaption></figure>
+        <div class="tbl-wrap" tabindex="0" role="region" data-aria-es="Tabla de resultados" data-aria-en="Results table" aria-label="Tabla de resultados"><table id="tbl"></table></div>
+        <div id="details"></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="sec" aria-labelledby="read-title">
+    <h2 class="h2" id="read-title"><span data-l="es">Cómo leer cada número</span><span data-l="en">How to read each number</span></h2>
+    <p class="sub"><span data-l="es">θ es la pseudomediana de d = A − B: la mediana de los promedios de cada par de diferencias. Es el parámetro que contrasta Wilcoxon.</span><span data-l="en">θ is the pseudomedian of d = A − B: the median of the averages of every pair of differences. It is the parameter the Wilcoxon test is about.</span></p>
+    <dl class="glossary">
+      <div><dt>n</dt><dd><span data-l="es">Pares usados, sin las filas con valores vacíos. Con menos de 5 no se contrasta: ningún resultado podría salir significativo al 5 %.</span><span data-l="en">Pairs used, excluding rows with empty values. With fewer than 5 there is no test: no outcome could be significant at 5%.</span></dd></div>
+      <div><dt>HL</dt><dd><span data-l="es">Estimador de Hodges-Lehmann de θ: la mediana de los n(n+1)/2 promedios de Walsh (dᵢ + dⱼ)/2. A diferencia de la mediana de d, no se queda en 0 cuando hay muchos ceros.</span><span data-l="en">Hodges–Lehmann estimator of θ: the median of the n(n+1)/2 Walsh averages (dᵢ + dⱼ)/2. Unlike the median of d, it does not stick at 0 when there are many zeros.</span></dd></div>
+      <div><dt><span data-l="es">IC al 1 − 2α</span><span data-l="en">1 − 2α CI</span></dt><dd><span data-l="es">Los valores de θ que ninguno de los dos unilaterales rechaza (90 % con α = 0,05). Sin empates, «equivalente» es lo mismo que el intervalo dentro de (−δ, +δ). Con empates es aproximado y decide el p.</span><span data-l="en">The values of θ that neither one-sided test rejects (90% with α = 0.05). Without ties, “equivalent” is the same as the interval lying inside (−δ, +δ). With ties it is approximate and the p-value decides.</span></dd></div>
+      <div><dt>p (θ > −δ)</dt><dd><span data-l="es">Wilcoxon unilateral sobre d + δ. Pequeño: hay evidencia de que la diferencia no está por debajo de −δ.</span><span data-l="en">One-sided Wilcoxon test on d + δ. Small: evidence that the difference is not below −δ.</span></dd></div>
+      <div><dt>p (θ < +δ)</dt><dd><span data-l="es">Wilcoxon unilateral sobre d − δ. Pequeño: hay evidencia de que la diferencia no está por encima de +δ.</span><span data-l="en">One-sided Wilcoxon test on d − δ. Small: evidence that the difference is not above +δ.</span></dd></div>
+      <div><dt><span data-l="es">p TOST</span><span data-l="en">TOST p</span></dt><dd><span data-l="es">El mayor de los dos. Hay equivalencia si p TOST ≤ α. No se reparte α: tienen que rechazar los dos, y por eso basta el α de cada uno (intersección-unión).</span><span data-l="en">The larger of the two. Equivalence holds if TOST p ≤ α. α is not split: both must reject, which is why each one’s α is enough (intersection–union).</span></dd></div>
+      <div><dt><span data-l="es">p TOST · Holm</span><span data-l="en">TOST p · Holm</span></dt><dd><span data-l="es">Con varias comparaciones, el p ajustado por Holm. Sirve para decir cuáles son equivalentes con una probabilidad de error de familia ≤ α.</span><span data-l="en">With several comparisons, the Holm-adjusted p-value. Use it to say which ones are equivalent with a family-wise error probability ≤ α.</span></dd></div>
+      <div><dt><span data-l="es">Desenlace</span><span data-l="en">Outcome</span></dt><dd><span data-l="es"><b>Equivalente</b>; <b>diferencia relevante</b> (θ fuera de ±δ, con el bilateral al α); <b>inconcluso</b> (ni una cosa ni otra: faltan datos, no es «casi equivalente»); <b>no contrastable</b> (menos de 5 pares).</span><span data-l="en"><b>Equivalent</b>; <b>relevant difference</b> (θ outside ±δ, two-sided at α); <b>inconclusive</b> (neither: data are missing, it is not “almost equivalent”); <b>not testable</b> (fewer than 5 pairs).</span></dd></div>
+      <div><dt><span data-l="es">Detalle</span><span data-l="en">Details</span></dt><dd><span data-l="es">W+ es la suma de los rangos de las diferencias positivas, más la mitad del rango de cada cero. Incluye el p de θ = 0: una diferencia puede ser real y a la vez irrelevante.</span><span data-l="en">W+ is the sum of the ranks of the positive differences, plus half the rank of each zero. It includes the p-value for θ = 0: a difference can be real and still irrelevant.</span></dd></div>
+    </dl>
+  </section>
+
+  <section class="sec note" id="nota" aria-labelledby="note-title">
+    <h2 class="h2" id="note-title"><span data-l="es">Nota técnica</span><span data-l="en">Technical note</span></h2>
+
+    <div data-l="es">
+      <h3>Hipótesis</h3>
+      <p>Con d = A − B y θ su pseudomediana: H₀: θ ≤ −δ o θ ≥ +δ, frente a H₁: −δ &lt; θ &lt; +δ. Se hacen dos Wilcoxon de rangos con signo unilaterales, cada uno al α: sobre d + δ (H₁: θ &gt; −δ) y sobre d − δ (H₁: θ &lt; +δ). Se declara equivalencia si los dos p son ≤ α; el p TOST es el mayor. Es el criterio de <code>effect_test</code> en el paquete del TFM, que además separa «diferencia relevante» de «inconcluso».</p>
+      <h3>Ceros y empates</h3>
+      <p>Rangos medios para los empates. Los ceros se reparten (<code>zero_method="zsplit"</code>): la mitad de su rango va a W+ y la otra mitad a W−. El p es exacto y condicional: se recorren todos los signos posibles de las diferencias no nulas por programación dinámica sobre 2 × rango, lo que sigue siendo exacto con empates y ceros. Se usa hasta 500 diferencias no nulas; por encima, aproximación normal con la varianza condicional (suma de los rangos al cuadrado de las no nulas, entre 4) y corrección de continuidad de 0,5.</p>
+      <p>Antes de asignar rangos, las diferencias se redondean a 10 cifras significativas relativas a la mayor magnitud. Sin eso, en coma flotante (0,03 − 0,01) − 0,02 da −3,5 × 10⁻¹⁸ en vez de 0, y una diferencia igual a δ contaría como negativa.</p>
+      <h3>Intervalo de Hodges-Lehmann</h3>
+      <p>Los extremos son dos promedios de Walsh ordenados, W₍c₎ y W₍M+1−c₎ con M = n(n+1)/2, y c sale de la distribución exacta de W+ sin empates (normal si n &gt; 500). Sin empates su cobertura es exacta; con empates es aproximada y algo conservadora, y por eso decide el p.</p>
+      <h3>Varias comparaciones</h3>
+      <p>Cada comparación ya es una intersección-unión: hace falta que rechacen sus dos unilaterales. Entre comparaciones, Holm sobre los p TOST dice cuáles se declaran equivalentes con error de familia ≤ α (y, por separado, Holm sobre los p de diferencia relevante). Para afirmar que todas son equivalentes a la vez no hace falta corrección: basta que cada una lo sea al α. Una comparación no contrastable cuenta en Holm con p = 1, porque la familia es la que declaraste, no la que salió.</p>
+      <h3>Supuesto y límites</h3>
+      <p>El nivel exacto de Wilcoxon supone que d es simétrica alrededor de su pseudomediana. Con asimetría fuerte (casi todas las diferencias en 0 y una cola larga) los niveles son aproximados. Esta calculadora admite hasta 2000 pares por comparación y 50 comparaciones.</p>
+      <h3>Diferencias con scipy</h3>
+      <p>Sin empates ni ceros, los p coinciden con <code>scipy.stats.wilcoxon(..., zero_method="zsplit", method="exact")</code>. Con empates o ceros, <code>method="exact"</code> de scipy usa la nula sin empates y su p es aproximado, y <code>method="asymptotic"</code> cuenta los ceros en la varianza; los dos pueden diferir de esta calculadora. La permutación exhaustiva de scipy (<code>PermutationMethod</code>) sí coincide.</p>
+      <h3>Validación</h3>
+      <p><code>tools/tost/test_tost.mjs</code>, en el repositorio del sitio, compara 15 casos (n de 6 a 60, más uno de 600 para la rama normal; continuos, con empates y con ceros) con scipy: método exacto (sin empates ni ceros), asintótico con corrección de continuidad (sin ceros), permutación exhaustiva (n ≤ 18) y Monte Carlo, más el estimador y el intervalo de Hodges-Lehmann. La tolerancia es 10⁻¹² en las comparaciones deterministas y 5 errores estándar en Monte Carlo; donde scipy difiere a propósito (el apartado anterior), la diferencia se informa sin exigir tolerancia. También compara con <code>tfmfdd/stats.py</code> del <a href="https://github.com/pabdus/tfm-fdd-core">repositorio del TFM</a>.</p>
+      <h3>En el TFM</h3>
+      <p>Esta regla es la de <code>effect_test</code> y <code>compare_arms</code>, con las que el TFM decide las ablaciones. La hipótesis principal usa la misma maquinaria en su versión de no superioridad: δ = 0,02 (2 puntos porcentuales) sobre la pseudomediana de Hodges-Lehmann de la ventaja por simulación, fijado antes del piloto de varianza y sin revisarlo con su resultado; cada unilateral al 5 %, intervalo al 90 %, Holm sobre los seis p de «ventaja relevante» y, para afirmar el apoyo, intersección-unión: las seis comparaciones al 5 % sin corrección. Fijar δ después de ver los datos sería elegir el resultado.</p>
+    </div>
+
+    <div data-l="en">
+      <h3>Hypotheses</h3>
+      <p>With d = A − B and θ its pseudomedian: H₀: θ ≤ −δ or θ ≥ +δ, against H₁: −δ &lt; θ &lt; +δ. Two one-sided Wilcoxon signed-rank tests are run, each at α: on d + δ (H₁: θ &gt; −δ) and on d − δ (H₁: θ &lt; +δ). Equivalence is declared if both p-values are ≤ α; the TOST p is the larger one. This is the criterion of <code>effect_test</code> in the thesis package, which also separates “relevant difference” from “inconclusive”.</p>
+      <h3>Zeros and ties</h3>
+      <p>Average ranks for ties. Zeros are split (<code>zero_method="zsplit"</code>): half of their rank goes to W+ and half to W−. The p-value is exact and conditional: every possible sign pattern of the non-zero differences is enumerated by dynamic programming over 2 × rank, which stays exact with ties and zeros. It is used up to 500 non-zero differences; above that, a normal approximation with the conditional variance (sum of the squared ranks of the non-zero differences, divided by 4) and a 0.5 continuity correction.</p>
+      <p>Before ranking, differences are rounded to 10 significant digits relative to the largest magnitude. Without that, in floating point (0.03 − 0.01) − 0.02 gives −3.5 × 10⁻¹⁸ instead of 0, and a difference equal to δ would count as negative.</p>
+      <h3>Hodges–Lehmann interval</h3>
+      <p>The endpoints are two ordered Walsh averages, W₍c₎ and W₍M+1−c₎ with M = n(n+1)/2, and c comes from the exact no-ties distribution of W+ (normal if n &gt; 500). Without ties its coverage is exact; with ties it is approximate and slightly conservative, which is why the p-value decides.</p>
+      <h3>Several comparisons</h3>
+      <p>Each comparison is already an intersection–union test: both of its one-sided tests must reject. Across comparisons, Holm on the TOST p-values says which ones can be declared equivalent with family-wise error ≤ α (and, separately, Holm on the relevant-difference p-values). Claiming that all of them are equivalent at once needs no correction: each one being equivalent at α is enough. A non-testable comparison enters Holm with p = 1, because the family is the one you declared, not the one that came out.</p>
+      <h3>Assumption and limits</h3>
+      <p>The exact level of the Wilcoxon test assumes d is symmetric around its pseudomedian. With strong asymmetry (almost all differences at 0 and a long tail) the levels are approximate. This calculator accepts up to 2000 pairs per comparison and 50 comparisons.</p>
+      <h3>Differences from scipy</h3>
+      <p>Without ties or zeros, the p-values match <code>scipy.stats.wilcoxon(..., zero_method="zsplit", method="exact")</code>. With ties or zeros, scipy’s <code>method="exact"</code> uses the no-ties null and its p-value is approximate, and <code>method="asymptotic"</code> counts the zeros in the variance; both can differ from this calculator. scipy’s exhaustive permutation (<code>PermutationMethod</code>) does match.</p>
+      <h3>Validation</h3>
+      <p><code>tools/tost/test_tost.mjs</code>, in the site’s repository, compares 15 cases (n from 6 to 60, plus one of 600 for the normal branch; continuous, with ties and with zeros) against scipy: exact (no ties or zeros), asymptotic with continuity correction (no zeros), exhaustive permutation (n ≤ 18) and Monte Carlo permutation, plus the Hodges–Lehmann estimate and interval. The tolerance is 10⁻¹² for the deterministic comparisons and 5 standard errors for Monte Carlo; where scipy differs on purpose (previous section), the difference is reported without a tolerance. It also compares against <code>tfmfdd/stats.py</code> from the <a href="https://github.com/pabdus/tfm-fdd-core">thesis repository</a>.</p>
+      <h3>In the thesis</h3>
+      <p>This rule is the one in <code>effect_test</code> and <code>compare_arms</code>, which the thesis uses to decide its ablations. The main hypothesis uses the same machinery in its non-superiority form: δ = 0.02 (2 percentage points) on the Hodges–Lehmann pseudomedian of the per-simulation advantage, fixed before the variance pilot and not revised with its result; each one-sided test at 5%, a 90% interval, Holm over the six “relevant advantage” p-values and, to claim support, intersection–union: all six comparisons at 5% with no correction. Fixing δ after seeing the data would be choosing the result.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>© 2026 Pablo Alberto Duque Marín · <a href="/">pabloduque.dev</a></span>
+  <span><span data-l="es">Sin dependencias ni servidor: todo el cálculo está en</span><span data-l="en">No dependencies or server: all the computation is in</span> <a href="tost.js">tost.js</a></span>
+</footer>
+
+<script src="tost.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es" data-lang="es" data-title-es="«No encontrada» no es «no existe» · Notas · Pablo Duque Marín" data-title-en="“Not found” is not “does not exist” · Notes · Pablo Duque Marín">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>«No encontrada» no es «no existe» · Notas · Pablo Duque Marín</title>
+<meta name="description" content="Cotejo verifica la jurisprudencia citada en un escrito. En la Corte Constitucional, con dos fuentes: 0 de 500 sentencias reales dadas por inexistentes y 499 de 499 inventadas detectadas. En la Corte Suprema, cuyo buscador no encontró 6 providencias reales entre 135 códigos que cita la propia Corte, una ausencia se reporta como «no encontrada».">
+<meta name="author" content="Pablo Alberto Duque Marín">
+<link rel="canonical" href="https://pabloduque.dev/notas/no-encontrada-no-es-no-existe.html">
+<meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pabloduque.dev/notas/no-encontrada-no-es-no-existe.html">
+<meta property="og:title" content="«No encontrada» no es «no existe»">
+<meta property="og:description" content="En Cotejo, el peor error posible es dar por inexistente una sentencia real. Por eso medí cuánto le falta al buscador oficial antes de dejar que su silencio signifique algo.">
+<meta property="og:image" content="https://pabloduque.dev/og.png">
+<meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/bricolage-grotesque-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/notas/notas.css">
+<script src="/notas/notas.js"></script>
+</head>
+<body>
+<a class="skip" href="#main"><span data-l="es">Saltar al contenido</span><span data-l="en">Skip to content</span></a>
+<nav class="nav" data-aria-es="Principal" data-aria-en="Main" aria-label="Principal">
+  <div class="nav-in">
+    <a href="/" class="brand"><i>PD</i><span>Pablo Duque</span></a>
+    <div class="nav-act">
+      <a href="./" class="hide-s"><span data-l="es">Notas</span><span data-l="en">Notes</span></a>
+      <button id="lang-btn" class="lang" type="button" lang="en" aria-label="Switch to English"><span data-lang-opt="es" class="on">ES</span><span data-lang-opt="en">EN</span></button>
+      <button id="theme-btn" class="theme" type="button" aria-label="Tema claro"><span class="to-light" aria-hidden="true">☀&#xFE0E;</span><span class="to-dark" aria-hidden="true">☾</span></button>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="wrap">
+<article class="note">
+  <a class="back" href="/">← pabloduque.dev</a>
+
+  <div class="meta">
+    <span class="k"><span data-l="es">Nota 03 · Cotejo</span><span data-l="en">Note 03 · Cotejo</span></span>
+    <time datetime="2026-10"><span data-l="es">octubre de 2026</span><span data-l="en">October 2026</span></time>
+    <span><span data-l="es">5 min de lectura</span><span data-l="en">5 min read</span></span>
+  </div>
+
+  <h1><span data-l="es">«No encontrada» no es «no existe»</span><span data-l="en">“Not found” is not “does not exist”</span></h1>
+  <p class="dek"><span data-l="es">En Cotejo, el peor error posible es dar por inexistente una sentencia real. Por eso medí cuánto le falta al buscador oficial antes de dejar que su silencio signifique algo.</span><span data-l="en">In Cotejo, the worst possible error is to declare a real ruling non-existent. So I measured how much the official search engine misses before letting its silence mean anything.</span></p>
+
+  <div class="stats">
+    <div class="stat"><b class="bad">6 / 135</b><span data-l="es">códigos que cita la propia Corte Suprema y que su buscador no encuentra, aunque son reales</span><span data-l="en">codes the Supreme Court itself cites that its search engine can’t find, although they are real</span></div>
+    <div class="stat"><b class="good">0 / 500</b><span data-l="es">sentencias reales de la Corte Constitucional dadas por inexistentes</span><span data-l="en">real Constitutional Court rulings flagged as non-existent</span></div>
+    <div class="stat"><b>85&nbsp;%</b><span data-l="es">citas inexistentes en escritos de un LLM local</span><span data-l="en">non-existent citations in briefs written by a local LLM</span></div>
+  </div>
+
+  <!-- ===================== ES ===================== -->
+  <div class="body" data-l="es">
+    <p>Cotejo es un proyecto propio: lee un escrito jurídico (una tutela, una demanda, un recurso) y comprueba cada providencia de la Corte Constitucional y de la Corte Suprema que cita: que existe, que no fue anulada, que el ponente es el correcto y que los pasajes entre comillas dicen lo que se les atribuye, palabra por palabra. Nació después de que, en febrero de 2026, la Corte Suprema sancionara a un abogado por fundar un recurso en diez sentencias inexistentes generadas con IA (AC739-2026) y fijara un deber positivo de verificación.</p>
+    <p>Un verificador de citas puede equivocarse de dos maneras. Puede dejar pasar una sentencia inventada, o puede decir que no existe una que sí existe. La segunda es peor: ante un abogado, un falso «no existe» le hace dudar de un escrito correcto o, más grave aún, acusar en falso a la contraparte. Casi todo el diseño de Cotejo sale de tomarse en serio esa asimetría.</p>
+
+    <h2>Dos fuentes, o ninguna afirmación</h2>
+    <p>Para la Corte Constitucional hay dos fuentes independientes: el índice de datos abiertos (29.474 providencias, de 1992 a hoy) y la relatoría de la Corte. Una sentencia solo se declara inexistente si falta en las dos.</p>
+    <p>Las dos hacen falta. Durante la evaluación, la doble comprobación encontró una sentencia real, la T-281/26, que la relatoría ya tenía y el índice todavía no. Y hay más protecciones:</p>
+    <ul>
+      <li><strong>Un fallo de red nunca produce «no existe».</strong> Si la relatoría no responde, la cita queda «sin confirmar». Cuando la relatoría cortó la conexión en mitad de una evaluación, las 26 citas afectadas quedaron así; ninguna como inexistente.</li>
+      <li><strong>Un canario antes de creer una ausencia.</strong> La relatoría responde con éxito también a direcciones que no existen, con una página vacía. Si el sitio cambiara su esquema de direcciones, todo daría «no existe». Por eso, antes de aceptar una ausencia, Cotejo comprueba que una sentencia conocida (la T-406/92) se sigue pudiendo leer.</li>
+      <li><strong>La ausencia caduca.</strong> Una sentencia recién dictada puede tardar en subirse; su ausencia en la relatoría se recuerda un día, no para siempre.</li>
+    </ul>
+    <p>Con sentencias reales tomadas al azar del índice e inventadas plausibles, escritas en siete formas distintas y en dos muestras independientes: <strong>0 de 500 reales dadas por inexistentes y 499 de 499 inventadas detectadas.</strong></p>
+
+    <h2>La Corte Suprema no tiene segunda fuente</h2>
+    <p>Para la Corte Suprema solo existe su buscador de providencias; no hay un índice abierto con el que cruzar. Antes de dejar que una ausencia ahí significara algo, había que medir cuántas providencias reales no encuentra.</p>
+    <p>Lo difícil es conseguir citas que sean reales con certeza. Usé las que hace la propia Corte en sus providencias. En dos muestras independientes salieron 135 códigos:</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col"></th><th scope="col">Códigos</th></tr></thead>
+      <tbody>
+        <tr><td>Encontrados por el buscador</td><td class="n">128</td></tr>
+        <tr><td>Reales que el buscador no tiene</td><td class="n bad">6 (4,4&nbsp;%)</td></tr>
+        <tr><td>Errata de la propia Corte (un radicado escrito como código)</td><td class="n">1</td></tr>
+      </tbody>
+    </table></div>
+    <p>Las seis que faltan son autos o tutelas. Si Cotejo declarara inexistente lo que el buscador no encuentra, acusaría en falso a más de 4 de cada 100 citas reales. Por eso, en la Corte Suprema, una ausencia se marca <strong>no encontrada</strong>: cuenta como problema, pide comprobarla y enlaza la búsqueda ya hecha, pero no afirma nada que no se sepa.</p>
+    <p>La medición destapó además dos defectos del conector. El buscador busca en el texto, no en el título, y una providencia como la AP7408-2015 se encabeza «AP – 7408 - 2015», así que hay que probar varias formas del código. Y como la búsqueda es de texto completo, una providencia muy citada queda detrás de todas las que la citan: la AP2118-2020 salía en la posición 149 de 155. Ahora también se busca desde el final.</p>
+
+    <h2>Lo que encontró en escritos de un LLM</h2>
+    <p>Para ver la herramienta contra el problema real, le pedí a un LLM local (qwen3.5:9b) 15 fundamentos jurídicos de tutela con jurisprudencia, ponentes y citas textuales. Salieron 68 citas de la Corte Constitucional:</p>
+    <ul>
+      <li><strong>58 (85&nbsp;%) no existen.</strong> Las audité a mano: 35 tienen un número que la Corte no alcanzó ese año (una SU-1385/18, cuando ese año llegó a la 124), y las otras 23 las volví a consultar una por una en la relatoría, con controles positivos.</li>
+      <li>7 existen, con observaciones: un ponente equivocado y seis con un pasaje que la sentencia no contiene.</li>
+      <li>3 se verificaron sin observaciones.</li>
+      <li>De los 7 pasajes entre comillas, ninguno aparece en la sentencia citada.</li>
+    </ul>
+    <p>Es un modelo pequeño y dice poco de lo que inventa un modelo grande; hay que repetirlo con modelos de frontera.</p>
+
+    <h2>Estados, no un sí o un no</h2>
+    <p>Todo esto llega al informe como estados distintos, no como un booleano: verificada, existe con observaciones, no existe, no encontrada, sin confirmar y no verificable. Lo que Cotejo todavía no puede comprobar (Consejo de Estado, autos de la Constitucional, citas por fecha) se lista aparte, con el motivo. Un verificador que calla lo que no mira es peor que ninguno, porque el abogado cree que se revisó todo.</p>
+    <p>La lección es general: el silencio de una fuente es una propiedad de la fuente, no del mundo. Antes de interpretar una ausencia hay que medir cuánto le falta a quien la reporta y, si no se puede medir, decir «no encontrada».</p>
+  </div>
+
+  <!-- ===================== EN ===================== -->
+  <div class="body" data-l="en">
+    <p>Cotejo is a project of my own: it reads a legal brief (a <em lang="es">tutela</em>, a lawsuit, an appeal) and checks every ruling of Colombia’s Constitutional Court and Supreme Court that it cites: that it exists, that it hasn’t been annulled, that the reporting justice is right and that the passages in quotation marks say what is attributed to them, word for word. It started after the Supreme Court, in February 2026, sanctioned a lawyer for basing an appeal on ten non-existent rulings generated with AI (AC739-2026) and set a positive duty to verify.</p>
+    <p>A citation checker can be wrong in two ways. It can let an invented ruling through, or it can say a ruling doesn’t exist when it does. The second is worse: in front of a lawyer, a false “does not exist” makes them doubt a correct brief or, worse still, falsely accuse the other side. Most of Cotejo’s design comes from taking that asymmetry seriously.</p>
+
+    <h2>Two sources, or no claim</h2>
+    <p>For the Constitutional Court there are two independent sources: the open-data index (29,474 rulings, from 1992 to today) and the Court’s own case-law archive (the <em lang="es">relatoría</em>). A ruling is only declared non-existent if it is missing from both.</p>
+    <p>Both are needed. During evaluation, the double check found a real ruling, T-281/26, that the archive already had and the index didn’t yet. And there are further safeguards:</p>
+    <ul>
+      <li><strong>A network failure never produces “does not exist”.</strong> If the archive doesn’t answer, the citation stays “unconfirmed”. When the archive cut the connection in the middle of an evaluation, the 26 affected citations stayed that way; none was marked non-existent.</li>
+      <li><strong>A canary before believing an absence.</strong> The archive answers successfully even for addresses that don’t exist, with an empty page. If the site changed its URL scheme, everything would come back “does not exist”. So before accepting an absence, Cotejo checks that a known ruling (T-406/92) can still be read.</li>
+      <li><strong>Absence expires.</strong> A newly issued ruling can take time to be uploaded; its absence from the archive is remembered for one day, not forever.</li>
+    </ul>
+    <p>With real rulings drawn at random from the index and plausible invented ones, written in seven different forms and in two independent samples: <strong>0 of 500 real rulings flagged as non-existent, and 499 of 499 invented ones caught.</strong></p>
+
+    <h2>The Supreme Court has no second source</h2>
+    <p>For the Supreme Court there is only its search engine; there is no open index to cross-check against. Before letting an absence there mean anything, I had to measure how many real rulings it fails to find.</p>
+    <p>The hard part is getting citations that are certainly real. I used the ones the Court itself makes in its own rulings. Two independent samples yielded 135 codes:</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col"></th><th scope="col">Codes</th></tr></thead>
+      <tbody>
+        <tr><td>Found by the search engine</td><td class="n">128</td></tr>
+        <tr><td>Real, but missing from the search engine</td><td class="n bad">6 (4.4%)</td></tr>
+        <tr><td>A typo by the Court itself (a docket number written as a code)</td><td class="n">1</td></tr>
+      </tbody>
+    </table></div>
+    <p>All six missing ones are orders (<em lang="es">autos</em>) or <em lang="es">tutela</em> rulings. If Cotejo declared non-existent whatever the search engine doesn’t find, it would falsely flag more than 4 in every 100 real citations. So, for the Supreme Court, an absence is marked <strong>not found</strong>: it counts as a problem, asks the user to check and links to the search already run, but it claims nothing that isn’t known.</p>
+    <p>The measurement also exposed two connector bugs. The search engine searches the text, not the title, and a ruling such as AP7408-2015 is headed “AP – 7408 - 2015”, so several forms of the code have to be tried. And since the search is full-text, a heavily cited ruling sits behind everything that cites it: AP2118-2020 came up at position 149 of 155. It is now also searched from the end.</p>
+
+    <h2>What it found in briefs written by an LLM</h2>
+    <p>To test the tool against the real problem, I asked a local LLM (qwen3.5:9b) for 15 <em lang="es">tutela</em> legal arguments with case law, reporting justices and verbatim quotes. They contained 68 Constitutional Court citations:</p>
+    <ul>
+      <li><strong>58 (85%) don’t exist.</strong> I audited them by hand: 35 carry a number the Court never reached that year (an SU-1385/18, when that year it got to 124), and the other 23 I queried again one by one in the archive, with positive controls.</li>
+      <li>7 exist, with observations: one wrong reporting justice and six with a passage the ruling doesn’t contain.</li>
+      <li>3 were verified with no observations.</li>
+      <li>Of the 7 passages in quotation marks, none appears in the cited ruling.</li>
+    </ul>
+    <p>It is a small model and says little about what a large one invents; it has to be repeated with frontier models.</p>
+
+    <h2>States, not a yes or no</h2>
+    <p>All of this reaches the report as distinct states rather than a boolean: verified, exists with observations, does not exist, not found, unconfirmed and not verifiable. What Cotejo can’t check yet (the Council of State, Constitutional Court orders, citations by date) is listed separately, with the reason. A checker that stays silent about what it doesn’t look at is worse than none, because the lawyer believes everything was reviewed.</p>
+    <p>The lesson is general: a source’s silence is a property of the source, not of the world. Before interpreting an absence, measure how much the reporter misses and, if that can’t be measured, say “not found”.</p>
+  </div>
+
+  <section class="ev" aria-labelledby="ev-title">
+    <h2 id="ev-title"><span data-l="es">EVIDENCIA</span><span data-l="en">EVIDENCE</span></h2>
+    <ul>
+      <li><a href="/#caso-cotejo"><span data-l="es">Caso «Cotejo»</span><span data-l="en">Case study “Cotejo”</span></a> · <span data-l="es">en la portada</span><span data-l="en">on the home page</span></li>
+      <li><span data-l="es">El código de Cotejo todavía no es público. Las cifras salen de sus tres bancos de evaluación: dos con etiquetas conocidas de antemano (Corte Constitucional y Corte Suprema) y uno de escritos de un LLM local, auditado a mano.</span><span data-l="en">Cotejo’s code is not public yet. The figures come from its three evaluation benches: two with labels known in advance (Constitutional Court and Supreme Court) and one of briefs from a local LLM, audited by hand.</span></li>
+      <li><a href="https://www.infobae.com/colombia/2026/02/16/la-corte-suprema-sanciona-por-primera-vez-a-un-abogado-por-uso-indebido-de-inteligencia-artificial-en-proceso-judicial/"><span data-l="es">La sanción AC739-2026</span><span data-l="en">The AC739-2026 sanction</span></a> · <span data-l="es">Infobae, 16 de febrero de 2026</span><span data-l="en">Infobae, 16 February 2026 (in Spanish)</span></li>
+    </ul>
+  </section>
+</article>
+
+<footer class="foot">
+  <span>© 2026 Pablo Alberto Duque Marín</span>
+  <span><a href="./"><span data-l="es">Todas las notas</span><span data-l="en">All notes</span></a> · <a href="/">pabloduque.dev</a></span>
+</footer>
+</main>
+</body>
+</html>

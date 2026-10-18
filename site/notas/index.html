@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es" data-lang="es" data-title-es="Notas · Pablo Duque Marín" data-title-en="Notes · Pablo Duque Marín">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Notas · Pablo Duque Marín</title>
+<meta name="description" content="Notas técnicas cortas de Pablo Duque Marín sobre cómo mido si un sistema de IA o un análisis funciona: qué fijé antes, qué salió y qué cambió.">
+<meta name="author" content="Pablo Alberto Duque Marín">
+<link rel="canonical" href="https://pabloduque.dev/notas/">
+<meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pabloduque.dev/notas/">
+<meta property="og:title" content="Notas · Pablo Duque Marín">
+<meta property="og:description" content="Notas técnicas cortas sobre medición en proyectos reales: verificación con tolerancia fijada, confianza de un LLM y ausencias que no prueban nada.">
+<meta property="og:image" content="https://pabloduque.dev/og.png">
+<meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/bricolage-grotesque-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/notas/notas.css">
+<script src="/notas/notas.js"></script>
+</head>
+<body>
+<a class="skip" href="#main"><span data-l="es">Saltar al contenido</span><span data-l="en">Skip to content</span></a>
+<nav class="nav" data-aria-es="Principal" data-aria-en="Main" aria-label="Principal">
+  <div class="nav-in">
+    <a href="/" class="brand"><i>PD</i><span>Pablo Duque</span></a>
+    <div class="nav-act">
+      <button id="lang-btn" class="lang" type="button" lang="en" aria-label="Switch to English"><span data-lang-opt="es" class="on">ES</span><span data-lang-opt="en">EN</span></button>
+      <button id="theme-btn" class="theme" type="button" aria-label="Tema claro"><span class="to-light" aria-hidden="true">☀&#xFE0E;</span><span class="to-dark" aria-hidden="true">☾</span></button>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="wrap">
+<div class="note">
+  <a class="back" href="/">← pabloduque.dev</a>
+  <div class="meta"><span class="k"><span data-l="es">Notas</span><span data-l="en">Notes</span></span></div>
+  <h1><span data-l="es">Notas</span><span data-l="en">Notes</span></h1>
+  <p class="intro"><span data-l="es">Piezas cortas sobre cómo compruebo si algo funciona: qué fijé antes de mirar, qué salió y qué cambió por eso. Cada cifra sale de un repositorio, un informe o un banco de evaluación.</span><span data-l="en">Short pieces on how I check whether something works: what I fixed before looking, what came out and what changed because of it. Every figure comes from a repository, a report or an evaluation bench.</span></p>
+
+  <ol class="list">
+    <li>
+      <a href="17-de-18-no-verificado.html">
+        <div class="meta">
+          <span class="k"><span data-l="es">01 · TFM</span><span data-l="en">01 · Thesis</span></span>
+          <time datetime="2026-10"><span data-l="es">octubre de 2026</span><span data-l="en">October 2026</span></time>
+          <span><span data-l="es">5 min de lectura</span><span data-l="en">5 min read</span></span>
+        </div>
+        <h2><span data-l="es">Por qué 17 de 18 fue «no verificado»</span><span data-l="en">Why 17 out of 18 was “not verified”</span></h2>
+        <p><span data-l="es">Verificación de mi TFM contra Yin (2012) con la tolerancia fijada antes de ejecutar. 17 de 18 fallas con 0 muestras de diferencia y la IDV 19 a +1,00&nbsp;pp: «no verificado», y por qué no lo redondeo.</span><span data-l="en">Checking my thesis code against Yin (2012) with the tolerance fixed before running. 17 of 18 faults with 0 samples of difference and IDV 19 at +1.00&nbsp;pp: “not verified”, and why I don’t round it up.</span></p>
+        <span class="go"><span data-l="es">Leer la nota →</span><span data-l="en">Read the note →</span></span>
+      </a>
+    </li>
+    <li>
+      <a href="confianza-llm-no-es-probabilidad.html">
+        <div class="meta">
+          <span class="k"><span data-l="es">02 · IA en producción</span><span data-l="en">02 · AI in production</span></span>
+          <time datetime="2026-10"><span data-l="es">octubre de 2026</span><span data-l="en">October 2026</span></time>
+          <span><span data-l="es">5 min de lectura</span><span data-l="en">5 min read</span></span>
+        </div>
+        <h2><span data-l="es">La confianza que reporta un LLM no es una probabilidad</span><span data-l="en">An LLM’s reported confidence is not a probability</span></h2>
+        <p><span data-l="es">En 55 resultados de un análisis médico, la «confianza» que declara el modelo se agrupa en 95, 85 y 0, sin escala definida. Por qué no se muestra y por qué el paso a revisión humana lo decide una regla determinista con cita.</span><span data-l="en">Across 55 medical analysis results, the model’s self-reported “confidence” clusters at 95, 85 and 0, with no defined scale. Why it isn’t shown, and why a deterministic rule backed by a quote decides when a case goes to human review.</span></p>
+        <span class="go"><span data-l="es">Leer la nota →</span><span data-l="en">Read the note →</span></span>
+      </a>
+    </li>
+    <li>
+      <a href="no-encontrada-no-es-no-existe.html">
+        <div class="meta">
+          <span class="k"><span data-l="es">03 · Cotejo</span><span data-l="en">03 · Cotejo</span></span>
+          <time datetime="2026-10"><span data-l="es">octubre de 2026</span><span data-l="en">October 2026</span></time>
+          <span><span data-l="es">5 min de lectura</span><span data-l="en">5 min read</span></span>
+        </div>
+        <h2><span data-l="es">«No encontrada» no es «no existe»</span><span data-l="en">“Not found” is not “does not exist”</span></h2>
+        <p><span data-l="es">De 135 códigos que cita la propia Corte Suprema, su buscador no encontró 6 providencias reales; por eso ahí una ausencia se reporta como «no encontrada». En la Corte Constitucional, con dos fuentes: 0 de 500 sentencias reales dadas por inexistentes y 499 de 499 inventadas detectadas.</span><span data-l="en">Of 135 codes the Supreme Court itself cites, its search engine missed 6 real rulings, so an absence there is reported as “not found”. For the Constitutional Court, with two sources: 0 of 500 real rulings flagged as non-existent and 499 of 499 invented ones caught.</span></p>
+        <span class="go"><span data-l="es">Leer la nota →</span><span data-l="en">Read the note →</span></span>
+      </a>
+    </li>
+  </ol>
+</div>
+
+<footer class="foot">
+  <span>© 2026 Pablo Alberto Duque Marín</span>
+  <span><a href="/">pabloduque.dev</a> · <a href="https://github.com/pabdus">GitHub</a></span>
+</footer>
+</main>
+</body>
+</html>
