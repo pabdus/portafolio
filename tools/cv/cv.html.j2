@@ -1,0 +1,90 @@
+<!doctype html>
+{#- Plantilla del CV. La rellena build_cv.py con datos de site/content.js y cv_extra.json; no editar textos aquí. -#}
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ labels.doc_title }}</title>
+<meta name="author" content="{{ h.name }}">
+<meta name="description" content="{{ h.title }} · {{ labels.subject }}">
+<style>
+{{ css | safe }}
+body { font-size: {{ fs }}pt; }
+@page {
+  @bottom-left { content: "{{ footer | css_string }}"; font: 7.4pt "Segoe UI", Arial, sans-serif; color: #6b7076; }
+  @bottom-right { content: counter(page) " / " counter(pages); font: 7.4pt "Segoe UI", Arial, sans-serif; color: #6b7076; }
+}
+/* Sin pie en la primera página: así el texto extraído (ATS) empieza por el nombre. */
+@page :first { @bottom-left { content: none; } @bottom-right { content: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>{{ h.name }}</h1>
+  <p class="role">{{ h.title }}</p>
+  <p class="contact">{{ h.location }} · <a href="mailto:{{ h.email }}">{{ h.email }}</a> · <a href="{{ h.web }}">{{ h.web_label }}</a><br>
+    <a href="{{ h.github }}">{{ h.github_label }}</a> · <a href="{{ h.linkedin }}">{{ h.linkedin_label }}</a></p>
+  <p class="avail">{{ h.avail }}</p>
+</header>
+
+<section id="perfil">
+  <h2>{{ labels.profile }}</h2>
+  <p>{{ profile }}</p>
+</section>
+
+<section id="experiencia">
+  <h2>{{ labels.experience }}</h2>
+  {%- for e in experience %}
+  <div class="entry">
+    <div class="line"><span class="what">{{ e.role }}</span><span class="when">{{ e.years }}</span></div>
+    <div class="line sub"><span>{{ e.org }}</span><span>{{ e.location }}</span></div>
+    {%- if e.bullets %}
+    <ul>
+      {%- for b in e.bullets %}
+      <li>{{ b }}</li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+  </div>
+  {%- endfor %}
+</section>
+
+<section id="proyectos">
+  <h2>{{ labels.projects }}</h2>
+  <p class="intro">{{ projects_intro }}</p>
+  {%- for p in projects %}
+  <div class="entry proj">
+    <div class="line"><span class="what">{{ p.title }}{% if p.status %}<span class="status">{{ p.status }}</span>{% endif %}</span><span class="link">
+      {%- for l in p.links %}{% if not loop.first %} · {% endif %}{% if l.href %}<a href="{{ l.href }}">{{ l.text }}</a>{% else %}{{ l.text }}{% endif %}{% endfor -%}
+    </span></div>
+    <p class="body"><span class="kicker">{{ p.kicker }}.</span> <span class="mv">{{ p.mv }}</span> {{ p.ml }}. {{ p.sum }}</p>
+  </div>
+  {%- endfor %}
+</section>
+
+<section id="formacion">
+  <h2>{{ labels.education }}</h2>
+  {%- for e in education %}
+  <div class="entry">
+    <div class="line"><span class="what">{{ e.title }}</span><span class="when">{{ e.years }}</span></div>
+    <div class="line sub"><span>{{ e.detail }}</span><span>{{ e.status }}</span></div>
+  </div>
+  {%- endfor %}
+</section>
+
+<section id="competencias" class="skills">
+  <h2>{{ labels.skills }}</h2>
+  <p class="intro">{{ skills_intro }}</p>
+  {%- for g in skills %}
+  <p><b>{{ g.name }}:</b> {% for lv in g.levels %}{% if not loop.first %}; {% endif %}{{ lv.tools | join(', ') }} <span class="lv">({{ lv.label }})</span>{% endfor %}</p>
+  {%- endfor %}
+</section>
+
+<section id="idiomas">
+  <h2>{{ labels.languages }}</h2>
+  <p>{{ languages }}</p>
+</section>
+
+</body>
+</html>
