@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es" data-lang="es" data-title-es="Monitor de fallas TEP con datos reales · Pablo Duque Marín" data-title-en="TEP fault monitor on real data · Pablo Duque Marín">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monitor de fallas TEP con datos reales · Pablo Duque Marín</title>
+<meta name="description" content="Monitor PCA (T² y SPE) sobre las 22 corridas reales del Tennessee Eastman clásico: límites F/Box, KDE y empírico, con FAR, FDR y retardo de tfmfdd recalculados en el navegador.">
+<meta name="author" content="Pablo Alberto Duque Marín">
+<link rel="canonical" href="https://pabloduque.dev/lab/tep.html">
+<meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pabloduque.dev/lab/tep.html">
+<meta property="og:title" content="Monitor de fallas TEP con datos reales · Pablo Duque Marín">
+<meta property="og:description" content="T² y SPE de un monitor PCA sobre el Tennessee Eastman clásico: elige la falla y el límite, y mira la FAR, la FDR y el retardo reales.">
+<meta property="og:image" content="https://pabloduque.dev/og.png">
+<meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/bricolage-grotesque-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/lab/lab.css">
+<link rel="stylesheet" href="/lab/tep.css">
+<script src="/theme.js"></script>
+<script src="/lab/lab.js" defer></script>
+<script src="/lab/tep.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main"><span data-l="es">Saltar al contenido</span><span data-l="en">Skip to content</span></a>
+<header class="lab-nav">
+  <div class="lab-nav-in">
+    <a class="lab-back" href="/#metodo"><i aria-hidden="true">PD</i><span>← pabloduque.dev</span></a>
+    <div class="lab-act">
+      <a class="lab-btn tep-gh" href="https://github.com/pabdus/tfm-fdd-core" target="_blank" rel="noopener">tfm-fdd-core ↗</a>
+      <button id="lab-lang" class="lab-btn" type="button" lang="en" aria-label="Switch to English">EN</button>
+      <button id="lab-theme" class="lab-btn" type="button" aria-label="Tema claro">☀</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="lab">
+  <p class="kicker"><span data-l="es">Laboratorio · datos reales del TFM</span><span data-l="en">Lab · real data from my thesis</span></p>
+  <h1><span data-l="es">Monitor de fallas con datos reales del Tennessee Eastman</span><span data-l="en">Fault monitor on real Tennessee Eastman data</span></h1>
+  <p class="lede">
+    <span data-l="es">Las 22 corridas de prueba del conjunto clásico del Tennessee Eastman, puntuadas con el monitor PCA de mi TFM. Elige una corrida, el estadístico y el método del límite: las cifras salen de los resultados exportados con tfmfdd, y tu navegador las vuelve a calcular desde las 960 muestras de cada serie.</span>
+    <span data-l="en">The 22 test runs of the classic Tennessee Eastman dataset, scored with the PCA monitor from my master's thesis. Pick a run, the statistic and the limit method: the figures come from the results exported with tfmfdd, and your browser recomputes them from the 960 samples of each series.</span>
+  </p>
+
+  <section class="card tep-panel" id="panel" aria-labelledby="panel-h">
+    <h2 class="sr-only" id="panel-h"><span data-l="es">Monitor</span><span data-l="en">Monitor</span></h2>
+
+    <div class="ctl-runs">
+      <div class="lbl" id="runs-lbl"><span data-l="es">Corrida</span><span data-l="en">Run</span></div>
+      <div class="runs" id="runs" role="radiogroup" aria-labelledby="runs-lbl"></div>
+      <p class="note runs-key"><span data-l="es">Normal = d00, sin falla · 1–21 = perturbación IDV · <i class="k-hard" aria-hidden="true"></i>borde punteado: casi indetectable (3, 9 y 15)</span><span data-l="en">Normal = d00, no fault · 1–21 = IDV disturbance · <i class="k-hard" aria-hidden="true"></i>dashed border: nearly undetectable (3, 9 and 15)</span></p>
+    </div>
+
+    <div class="run-info" id="run-info" aria-live="polite">
+      <p class="note" id="status"><span data-l="es">Cargando datos…</span><span data-l="en">Loading data…</span></p>
+    </div>
+
+    <div class="opts">
+      <div class="opt">
+        <div class="lbl" id="stat-lbl"><span data-l="es">Estadístico</span><span data-l="en">Statistic</span></div>
+        <div class="seg" id="stat-seg" role="radiogroup" aria-labelledby="stat-lbl">
+          <button type="button" role="radio" data-v="t2" aria-checked="false">T²</button>
+          <button type="button" role="radio" data-v="spe" aria-checked="false">SPE</button>
+          <button type="button" role="radio" data-v="both" aria-checked="true"><span data-l="es">Ambos</span><span data-l="en">Both</span></button>
+        </div>
+      </div>
+      <div class="opt">
+        <div class="lbl" id="meth-lbl"><span data-l="es">Límite al 99 %</span><span data-l="en">99% limit</span></div>
+        <div class="seg" id="meth-seg" role="radiogroup" aria-labelledby="meth-lbl">
+          <button type="button" role="radio" data-v="f" aria-checked="true">F / Box</button>
+          <button type="button" role="radio" data-v="kde" aria-checked="false">KDE</button>
+          <button type="button" role="radio" data-v="empirico" aria-checked="false"><span data-l="es">Empírico</span><span data-l="en">Empirical</span></button>
+        </div>
+      </div>
+      <div class="opt">
+        <div class="lbl" id="scale-lbl"><span data-l="es">Escala</span><span data-l="en">Scale</span></div>
+        <div class="seg" id="scale-seg" role="radiogroup" aria-labelledby="scale-lbl">
+          <button type="button" role="radio" data-v="lin" aria-checked="true"><span data-l="es">Lineal</span><span data-l="en">Linear</span></button>
+          <button type="button" role="radio" data-v="log" aria-checked="false">Log</button>
+        </div>
+      </div>
+      <div class="play">
+        <button type="button" class="lab-btn primary" id="play-btn" aria-controls="sbs"><span id="play-ic" aria-hidden="true">▸</span> <span id="play-txt"><span data-l="es">Reproducir</span><span data-l="en">Play</span></span></button>
+        <button type="button" class="lab-btn" id="all-btn" aria-controls="sbs" hidden><span data-l="es">Ver todo</span><span data-l="en">Show all</span></button>
+        <span class="note" id="play-pos"></span>
+      </div>
+    </div>
+    <p class="note meth-note" id="meth-note"></p>
+
+    <div class="legend" aria-hidden="true">
+      <span><i class="k-line"></i><span data-l="es">estadístico</span><span data-l="en">statistic</span></span>
+      <span><i class="k-lim"></i><span data-l="es">límite</span><span data-l="en">limit</span></span>
+      <span><i class="k-out"></i><span data-l="es">fuera de límite</span><span data-l="en">over the limit</span></span>
+      <span><i class="k-fault"></i><span data-l="es">entra la falla (muestra 161)</span><span data-l="en">fault enters (sample 161)</span></span>
+      <span><i class="k-det"></i><span data-l="es">alarma confirmada (3 seguidas)</span><span data-l="en">confirmed alarm (3 in a row)</span></span>
+      <span class="legend-x"><span data-l="es">eje horizontal: muestra, cada 3 min (960 = 48 h)</span><span data-l="en">horizontal axis: sample, every 3 min (960 = 48 h)</span></span>
+    </div>
+
+    <div class="sbs" id="sbs">
+      <article class="sb" id="sb-t2" aria-labelledby="sb-t2-h">
+        <div class="sb-main">
+          <div class="sb-head">
+            <h3 id="sb-t2-h"><span data-l="es">T² de Hotelling</span><span data-l="en">Hotelling's T²</span></h3>
+            <span class="sb-lim" id="lim-t2"></span>
+          </div>
+          <div class="cv-wrap" id="wrap-t2">
+            <canvas id="cv-t2" tabindex="0" role="img" aria-label="T²" aria-describedby="hint"></canvas>
+            <div class="tip" id="tip-t2" hidden></div>
+          </div>
+          <p class="note sb-clip" id="clip-t2"></p>
+        </div>
+        <div class="mets" id="mets-t2"></div>
+      </article>
+      <article class="sb" id="sb-spe" aria-labelledby="sb-spe-h">
+        <div class="sb-main">
+          <div class="sb-head">
+            <h3 id="sb-spe-h"><span data-l="es">SPE (error de reconstrucción)</span><span data-l="en">SPE (reconstruction error)</span></h3>
+            <span class="sb-lim" id="lim-spe"></span>
+          </div>
+          <div class="cv-wrap" id="wrap-spe">
+            <canvas id="cv-spe" tabindex="0" role="img" aria-label="SPE" aria-describedby="hint"></canvas>
+            <div class="tip" id="tip-spe" hidden></div>
+          </div>
+          <p class="note sb-clip" id="clip-spe"></p>
+        </div>
+        <div class="mets" id="mets-spe"></div>
+      </article>
+    </div>
+    <p class="note" id="hint"><span data-l="es">Pasa el puntero sobre el gráfico, o enfócalo y usa ← → (Mayús: 10 muestras; Inicio y Fin), para leer cada muestra.</span><span data-l="en">Hover over the chart, or focus it and use ← → (Shift: 10 samples; Home and End), to read each sample.</span></p>
+    <p class="sr-only" id="cv-live" aria-live="polite"></p>
+    <p class="note verify" id="verify"></p>
+  </section>
+
+  <section aria-labelledby="sum-h">
+    <h2 id="sum-h"><span data-l="es">Las 21 fallas con este límite</span><span data-l="en">All 21 faults with this limit</span></h2>
+    <p id="sum-intro"></p>
+    <div class="tbl-wrap" tabindex="0" role="region" data-aria-es="Tabla de las 21 fallas" data-aria-en="Table of the 21 faults" aria-label="Tabla de las 21 fallas">
+      <table class="tbl tep-tbl" id="sum-tbl">
+        <caption class="sr-only" id="sum-cap"></caption>
+        <colgroup span="2"></colgroup>
+        <colgroup span="2"></colgroup>
+        <colgroup span="2"></colgroup>
+        <thead>
+          <tr>
+            <th scope="col" rowspan="2">IDV</th>
+            <th scope="col" rowspan="2" class="c-name"><span data-l="es">Perturbación y tipo</span><span data-l="en">Disturbance and type</span></th>
+            <th scope="colgroup" colspan="2" class="c-grp">T²</th>
+            <th scope="colgroup" colspan="2" class="c-grp">SPE</th>
+          </tr>
+          <tr>
+            <th scope="col">FDR</th>
+            <th scope="col"><span data-l="es">Retardo</span><span data-l="en">Delay</span></th>
+            <th scope="col">FDR</th>
+            <th scope="col"><span data-l="es">Retardo</span><span data-l="en">Delay</span></th>
+          </tr>
+        </thead>
+        <tbody id="sum-body"></tbody>
+        <tbody id="sum-hard"></tbody>
+        <tfoot id="sum-foot"></tfoot>
+      </table>
+    </div>
+    <p class="note" id="sum-far"></p>
+  </section>
+
+  <h2><span data-l="es">Qué estás viendo</span><span data-l="en">What you are looking at</span></h2>
+  <div class="txt-grid">
+    <section class="card" aria-labelledby="t-tep">
+      <h3 id="t-tep"><span data-l="es">El Tennessee Eastman</span><span data-l="en">The Tennessee Eastman process</span></h3>
+      <p data-l="es">Es una planta química simulada que Downs y Vogel propusieron en 1993 como problema de referencia para control de procesos: un reactor, un condensador, un separador, un compresor y un stripper que producen dos productos a partir de cuatro reactivos. Aquí se usan <span data-m="n_vars">52</span> variables (41 medidas y 11 manipuladas) tomadas cada <span data-m="sample_minutes">3</span> minutos.</p>
+      <p data-l="en">A simulated chemical plant that Downs and Vogel proposed in 1993 as a process-control benchmark: a reactor, condenser, separator, compressor and stripper that make two products from four reactants. This page uses <span data-m="n_vars">52</span> variables (41 measured and 11 manipulated) sampled every <span data-m="sample_minutes">3</span> minutes.</p>
+      <p data-l="es">El simulador trae 20 perturbaciones programadas (IDV 1–20) y el conjunto clásico añade una más, IDV 21. Cada corrida de prueba dura 48 horas (<span data-m="n_samples">960</span> muestras); la falla entra en la muestra <span data-m="fault_first_sample">161</span>, después de 8 horas de operación normal.</p>
+      <p data-l="en">The simulator ships 20 programmed disturbances (IDV 1–20) and the classic dataset adds one more, IDV 21. Each test run lasts 48 hours (<span data-m="n_samples">960</span> samples); the fault enters at sample <span data-m="fault_first_sample">161</span>, after 8 hours of normal operation.</p>
+    </section>
+
+    <section class="card" aria-labelledby="t-stats">
+      <h3 id="t-stats"><span data-l="es">T² y SPE, en una línea cada uno</span><span data-l="en">T² and SPE, one line each</span></h3>
+      <dl class="defs">
+        <dt><span data-l="es">T² de Hotelling</span><span data-l="en">Hotelling's T²</span></dt>
+        <dd data-l="es">qué tan lejos está la muestra del centro de la operación normal, medido dentro del plano de los <span data-m="n_components">27</span> componentes principales (<span data-m="variance_explained">85,5 %</span> de la varianza).</dd>
+        <dd data-l="en">how far the sample is from the centre of normal operation, measured inside the plane of the <span data-m="n_components">27</span> principal components (<span data-m="variance_explained">85.5%</span> of the variance).</dd>
+        <dt>SPE (Q)</dt>
+        <dd data-l="es">lo que queda fuera de ese plano: la parte de la muestra que el modelo no sabe reconstruir.</dd>
+        <dd data-l="en">what is left outside that plane: the part of the sample the model cannot reconstruct.</dd>
+      </dl>
+      <p data-l="es">Un movimiento que el proceso ya conoce, pero más grande, tiende a subir el T²; una relación entre variables que se rompe tiende a subir el SPE. Por eso conviene mirar los dos: compara IDV 4 con «Ambos».</p>
+      <p data-l="en">A familiar movement, only larger, tends to raise T²; a broken relation between variables tends to raise SPE. That is why both are worth watching: compare IDV 4 with “Both”.</p>
+    </section>
+
+    <section class="card" aria-labelledby="t-cal">
+      <h3 id="t-cal"><span data-l="es">Cómo se calibraron los límites</span><span data-l="en">How the limits were calibrated</span></h3>
+      <p data-l="es">El PCA se ajusta con las primeras <span data-m="n_fit">350</span> filas de d00.dat, la corrida de entrenamiento sin falla; con ellas también se escalan las variables (media y desviación). Las <span data-m="n_cal">150</span> filas restantes quedan reservadas: el modelo no las ve y solo sirven para fijar los límites al 99 %.</p>
+      <p data-l="en">The PCA is fitted on the first <span data-m="n_fit">350</span> rows of d00.dat, the fault-free training run; those rows also set the scaling (mean and standard deviation). The remaining <span data-m="n_cal">150</span> rows are held out: the model never sees them, and they only set the 99% limits.</p>
+      <ul class="plain">
+        <li data-l="es"><b>F / Box.</b> El T² usa la F de fase II, paramétrica, calculada con n = <span data-m="n_fit">350</span>: no usa las filas reservadas. El SPE usa la aproximación de Box (chi-cuadrado ponderada ajustada a la media y la varianza del SPE reservado), porque tfmfdd no tiene un límite F para el SPE. Es la configuración de la línea base A1.</li>
+        <li data-l="en"><b>F / Box.</b> T² uses the phase II F distribution, parametric, computed with n = <span data-m="n_fit">350</span>: it does not use the held-out rows. SPE uses Box's approximation (a weighted chi-square matched to the mean and variance of the held-out SPE), because tfmfdd has no F limit for SPE. This is the A1 baseline configuration.</li>
+        <li data-l="es"><b>KDE.</b> Densidad kernel gaussiana (ancho de Scott) del estadístico en las filas reservadas.</li>
+        <li data-l="en"><b>KDE.</b> Gaussian kernel density (Scott bandwidth) of the statistic on the held-out rows.</li>
+        <li data-l="es"><b>Empírico.</b> Percentil 99 del estadístico en las filas reservadas.</li>
+        <li data-l="en"><b>Empirical.</b> 99th percentile of the statistic on the held-out rows.</li>
+      </ul>
+      <div class="tbl-wrap lim-wrap" tabindex="0" role="region" data-aria-es="Tabla de límites al 99 %" data-aria-en="Table of 99% limits" aria-label="Tabla de límites al 99 %">
+        <table class="tbl" id="lim-tbl">
+          <caption class="sr-only"><span data-l="es">Límites de control al 99 % por método</span><span data-l="en">99% control limits by method</span></caption>
+          <thead><tr><th scope="col"><span data-l="es">Método</span><span data-l="en">Method</span></th><th scope="col">T²</th><th scope="col">SPE</th></tr></thead>
+          <tbody id="lim-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="t-met">
+      <h3 id="t-met"><span data-l="es">Cómo se cuentan FAR, FDR y retardo</span><span data-l="en">How FAR, FDR and delay are counted</span></h3>
+      <dl class="defs">
+        <dt><span data-l="es">Alarma</span><span data-l="en">Alarm</span></dt>
+        <dd data-l="es">una muestra cuyo estadístico supera el límite.</dd>
+        <dd data-l="en">a sample whose statistic is above the limit.</dd>
+        <dt><span data-l="es">FAR, falsas alarmas</span><span data-l="en">FAR, false alarms</span></dt>
+        <dd data-l="es">proporción de alarmas en muestras sanas: 1–160 en las corridas con falla y la serie entera (1–960) en la corrida normal d00. Con límites al 99 % se esperaría cerca de 1 %.</dd>
+        <dd data-l="en">share of alarms among healthy samples: 1–160 in the fault runs and the whole series (1–960) in the normal run d00. With 99% limits you would expect about 1%.</dd>
+        <dt><span data-l="es">FDR, detección</span><span data-l="en">FDR, detection</span></dt>
+        <dd data-l="es">proporción de alarmas en las muestras con falla, 161–960.</dd>
+        <dd data-l="en">share of alarms among the faulty samples, 161–960.</dd>
+        <dt><span data-l="es">Retardo</span><span data-l="en">Delay</span></dt>
+        <dd data-l="es">muestras desde la 161 hasta la primera alarma de la primera racha de <span data-m="k_alarms">3</span> alarmas seguidas (0 = la racha empieza en la 161). 1 muestra = 3 min.</dd>
+        <dd data-l="en">samples from 161 to the first alarm of the first run of <span data-m="k_alarms">3</span> consecutive alarms (0 = the run starts at 161). 1 sample = 3 min.</dd>
+        <dt><span data-l="es">Al nivel del azar</span><span data-l="en">At chance level</span></dt>
+        <dd data-l="es">en 800 muestras puede aparecer una racha de <span data-m="k_alarms">3</span> por azar. Si la FDR queda bajo <span data-m="min_fdr">10 %</span>, la falla se reporta como no detectada (alarmas al nivel del azar) y su retardo no se lee como detección.</dd>
+        <dd data-l="en">a run of <span data-m="k_alarms">3</span> can show up by chance in 800 samples. If the FDR stays below <span data-m="min_fdr">10%</span>, the fault is reported as not detected (alarms at chance level) and its delay is not read as a detection.</dd>
+      </dl>
+    </section>
+
+    <section class="card" aria-labelledby="t-data">
+      <h3 id="t-data"><span data-l="es">De dónde salen los datos</span><span data-l="en">Where the data comes from</span></h3>
+      <p data-l="es">Del conjunto clásico del TEP que distribuyen Chiang, Russell y Braatz: d00.dat para entrenar y d00_te.dat a d21_te.dat para probar. Las descripciones de IDV 1–20 son las de Downs y Vogel (1993); la de IDV 21, la de Russell, Chiang y Braatz (2000).</p>
+      <p data-l="en">From the classic TEP dataset distributed by Chiang, Russell and Braatz: d00.dat for training and d00_te.dat to d21_te.dat for testing. The descriptions of IDV 1–20 are Downs and Vogel's (1993); the one for IDV 21 is Russell, Chiang and Braatz's (2000).</p>
+      <p data-l="es">Las series se publican con 3 cifras significativas. Los <span data-m="more_digits">32</span> valores que al redondear cambiarían de alarma frente a algún límite llevan las cifras justas para conservarla: recalcular con ellas da exactamente las mismas métricas.</p>
+      <p data-l="en">The series are published with 3 significant digits. The <span data-m="more_digits">32</span> values whose alarm state would flip against some limit after rounding keep just enough digits to preserve it: recomputing with them gives exactly the same metrics.</p>
+      <ol class="refs" id="refs"></ol>
+      <p class="note" id="license"></p>
+    </section>
+
+    <section class="card" aria-labelledby="t-tfm">
+      <h3 id="t-tfm"><span data-l="es">Parte de mi TFM</span><span data-l="en">Part of my master's thesis</span></h3>
+      <p data-l="es">Esta página es parte de mi TFM sobre detección de fallas en procesos industriales. El monitor es el del paquete tfmfdd (<span data-m="tfmfdd_version">0.3.0</span>, repositorio tfm-fdd-core) con la configuración de la línea base A1.</p>
+      <p data-l="en">This page is part of my master's thesis (TFM) on fault detection in industrial processes. The monitor is the one in the tfmfdd package (<span data-m="tfmfdd_version">0.3.0</span>, tfm-fdd-core repository) with the A1 baseline configuration.</p>
+      <p id="a1-text"></p>
+      <p class="links">
+        <a class="lab-btn" href="https://github.com/pabdus/tfm-fdd-core" target="_blank" rel="noopener"><span data-l="es">Código del TFM: tfm-fdd-core ↗</span><span data-l="en">Thesis code: tfm-fdd-core ↗</span></a>
+        <a class="lab-btn" href="/data/tep/meta.json"><span data-l="es">Resultados: meta.json</span><span data-l="en">Results: meta.json</span></a>
+        <a class="lab-btn" href="/#metodo">← pabloduque.dev</a>
+      </p>
+    </section>
+  </div>
+
+  <noscript><p class="note">Esta demo necesita JavaScript para cargar las series y dibujar los gráficos. Los resultados están en /data/tep/meta.json. · This demo needs JavaScript to load the series and draw the charts.</p></noscript>
+
+  <footer class="foot">
+    <span>© 2026 Pablo Alberto Duque Marín</span>
+    <span id="foot-data"><span data-l="es">Datos: tfmfdd y conjunto clásico del TEP</span><span data-l="en">Data: tfmfdd and the classic TEP dataset</span></span>
+    <a href="/#metodo">← pabloduque.dev</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,2327 @@
+{
+  "schema": "pabloduque.dev/tep-monitor/1",
+  "generated_utc": "2026-10-18T13:09:33+00:00",
+  "generator": "tools/tep/export_tep.py",
+  "tfmfdd": {
+    "version": "0.3.0",
+    "repo": "tfm-fdd-core",
+    "commit": "35f79552d218b5fb662cdbedc12f2c73815eaad6",
+    "tfmfdd_y_yaml_sin_cambios": true,
+    "baseline_yaml_sha256": "c1b03ffdd3e52319360e69ea5a8302e0013408318a54728d2dd0de6197aab488",
+    "baseline_script": "experiments/A1_pca_baseline.py"
+  },
+  "dataset": {
+    "name": "Tennessee Eastman Process, conjunto clásico (Chiang, Russell y Braatz, 2001)",
+    "name_en": "Tennessee Eastman Process, classic dataset (Chiang, Russell and Braatz, 2001)",
+    "references": [
+      "Downs, J. J. y Vogel, E. F. (1993). A plant-wide industrial process control problem. Computers & Chemical Engineering, 17(3), 245-255.",
+      "Russell, E. L., Chiang, L. H. y Braatz, R. D. (2000). Fault detection in industrial processes using canonical variate analysis and dynamic principal component analysis. Chemometrics and Intelligent Laboratory Systems, 51, 81-93.",
+      "Chiang, L. H., Russell, E. L. y Braatz, R. D. (2001). Fault Detection and Diagnosis in Industrial Systems. Springer."
+    ],
+    "license": "Copyright (c) 1998-2002 The Board of Trustees of the University of Illinois (Large Scale Systems Research Laboratory); ver tfm-fdd-core/data/tep_classic/LICENSE",
+    "train_file": "d00.dat (viene transpuesto, 52 x 500; tfmfdd lo corrige)",
+    "test_files": "d00_te.dat, d01_te.dat ... d21_te.dat",
+    "inputs_sha256": {
+      "d00.dat": "4c3c0b11eefacf93e5d2529e2866d7a625e37aa9153d0f95fae17a6c9e560deb",
+      "d00_te.dat": "57d56da4199e3d73582855d810be1d13d931386fd728bf1694798c7b0a03678c",
+      "d01_te.dat": "e7e6992fb39664e739fccbc001a1c5d5f7cb21829544f734ca3f282c26f680e5",
+      "d02_te.dat": "a34bd9c3693fa96bd3ee533fb7fbe29a9d226a4e3250b585ef1308e1136dbfb0",
+      "d03_te.dat": "b7bf6f2ed7cff0a5577898b009edd252b9bdf6ee9ff7dbeacf9af9aa4c6abace",
+      "d04_te.dat": "1ccb488dd5feac11aad54623451168abef066229e685872597897800363916f9",
+      "d05_te.dat": "1def7258a2865aeead699d52c8cf926fbf34c1467aaf298121987ab858fd0888",
+      "d06_te.dat": "8a3adc7121eaa9b9300c27f9c57a8ab356315401cb964310a4a8244dd34bf79d",
+      "d07_te.dat": "e01b7c81daf9fccc4495cbde5658296918276b3c078044893f6e945dd91d3446",
+      "d08_te.dat": "c0637f02f23b79890b43cfee9604818ad6d7f81532223d76acf1da0d6e2a2cc1",
+      "d09_te.dat": "513df6c3a4fd48e0eaddb0002cd8cdab3a78a5c83c47883bb52d2dc6c2472428",
+      "d10_te.dat": "3a278be79d8d111fc60be3cfb4f961c28e2dc632f17eb519886aa0f95864ffc6",
+      "d11_te.dat": "6d60a4c932d918e1ab26ae5d16320936a665f3aad3f05482d23f5c4550b9f29a",
+      "d12_te.dat": "2180fcecb01d1b110b429ba2969d6b18dcc625599e3640e54f69afa32dccbe50",
+      "d13_te.dat": "2e34e0c427d6e41d77d6cae76550b7e95004f9f13bc093278ecf5c282a1c9f03",
+      "d14_te.dat": "e8976d056c0769cebbcec3bcba89d2468040ccae7acbea55ebc3b2e56b217396",
+      "d15_te.dat": "a7242b956837bec8ca7f224d01805247f2aea6ea868eaa064e068b5c0761b1e5",
+      "d16_te.dat": "8381d7371aac49b498e7bf93149b77a0a6bbeffe73520881dcbe8ae96277244d",
+      "d17_te.dat": "27d2d72052064e3cbb7a45df8073f15bb83b77403f532616e73c8869b043e7c9",
+      "d18_te.dat": "1db5b93a7daa58ed1b641845b58ad818546ced7f3de866c086da18a7ebef5041",
+      "d19_te.dat": "c24dd77f787f89347273addc8a453d79f0b99edd64d43be11a5e0907bd515c5f",
+      "d20_te.dat": "e54035eda95311f13dd095f87607d97a89b7541afa2a3f68af098f33a5e2e6e5",
+      "d21_te.dat": "b6823aa09638cd59cb168bc24f991b6d4d557d8aea62b0b2a87ee67c21ba5a83"
+    },
+    "fault_descriptions_source": "IDV 1-20: tfm-fdd-core/data/tep_classic/README.md, tabla Process Disturbances (Downs y Vogel, 1993); IDV 21: Russell et al. (2000), p. 87"
+  },
+  "config": {
+    "n_vars": 52,
+    "variables": "xmeas_1..xmeas_41 y xmv_1..xmv_11",
+    "n_components": 27,
+    "variance_target": 0.85,
+    "variance_explained": 0.8546975086997094,
+    "alpha": 0.99,
+    "lags": 0,
+    "scaling": "media y desviación (ddof = 1) de las filas del ajuste (tfmfdd.preprocessing.Scaler)",
+    "n_fit": 350,
+    "fit_rows": "d00.dat, filas 1 a 350",
+    "n_cal": 150,
+    "cal_rows": "d00.dat, filas 351 a 500 (reservadas, el modelo no las ve)",
+    "calibration": "holdout",
+    "quantile_method": "linear",
+    "k_alarms": 3,
+    "delay_convention": "appearance",
+    "delay_definition_es": "muestras desde la 161 hasta la primera alarma de la primera racha de 3 alarmas consecutivas (0 = la racha empieza en la muestra 161)",
+    "delay_definition_en": "samples from 161 to the first alarm of the first run of 3 consecutive alarms (0 = the run starts at sample 161)",
+    "min_fdr_at_chance": 0.1,
+    "sample_minutes": 3.0,
+    "n_samples": 960,
+    "fault_onset_index": 160,
+    "fault_first_sample": 161,
+    "far_window_faults": [
+      1,
+      160
+    ],
+    "far_window_d00": [
+      1,
+      960
+    ],
+    "fdr_window": [
+      161,
+      960
+    ],
+    "alarm_rule": "estadístico > límite (tfmfdd.metrics.alarms)"
+  },
+  "limits": {
+    "f": {
+      "label_es": "F (T²) y Box (SPE): paramétricos, configuración de la línea base A1",
+      "label_en": "F (T²) and Box (SPE): parametric, A1 baseline configuration",
+      "t2": {
+        "value": 52.62659389308314,
+        "method": "f",
+        "detail": "F de Fase II con n_fit filas del ajuste (tfmfdd.limits.t2_limit)",
+        "source": "parametric_fit"
+      },
+      "spe": {
+        "value": 23.456336085889447,
+        "method": "box",
+        "detail": "Box: chi-cuadrado ponderada ajustada a media y varianza del SPE reservado (tfmfdd.limits.spe_limit_box)",
+        "source": "holdout"
+      }
+    },
+    "kde": {
+      "label_es": "KDE: densidad kernel del estadístico en las 150 filas reservadas",
+      "label_en": "KDE: kernel density of the statistic on the 150 held-out rows",
+      "t2": {
+        "value": 50.98719615121659,
+        "method": "kde",
+        "detail": "KDE gaussiana, ancho de Scott (tfmfdd.limits.limit_kde)",
+        "source": "holdout"
+      },
+      "spe": {
+        "value": 22.969578149734886,
+        "method": "kde",
+        "detail": "KDE gaussiana, ancho de Scott (tfmfdd.limits.limit_kde)",
+        "source": "holdout"
+      }
+    },
+    "empirico": {
+      "label_es": "Empírico: percentil 99 del estadístico en las 150 filas reservadas",
+      "label_en": "Empirical: 99th percentile of the statistic on the 150 held-out rows",
+      "t2": {
+        "value": 50.04391160847725,
+        "method": "empirical",
+        "detail": "percentil empírico (tfmfdd.limits.limit_empirical)",
+        "source": "holdout"
+      },
+      "spe": {
+        "value": 21.69846570127762,
+        "method": "empirical",
+        "detail": "percentil empírico (tfmfdd.limits.limit_empirical)",
+        "source": "holdout"
+      }
+    }
+  },
+  "hard_faults": [
+    3,
+    9,
+    15
+  ],
+  "hard_faults_note_es": "IDV 3, 9 y 15: casi indetectables; tfmfdd los promedia aparte (tfmfdd.metrics.HARD_FAULTS)",
+  "hard_faults_note_en": "IDV 3, 9 and 15: nearly undetectable; tfmfdd averages them separately (tfmfdd.metrics.HARD_FAULTS)",
+  "series": {
+    "format": "{\"t2\":[960 valores],\"spe\":[960 valores]}, muestra 1 en el índice 0",
+    "significant_digits": 3,
+    "values_with_more_digits": 32,
+    "rounding_note_es": "Los valores que al redondear cambiarían de estado frente a algún límite de su estadístico llevan las cifras justas para conservarlo: recalcular FAR, FDR y retardo con las series da exactamente las métricas de este fichero.",
+    "files": {
+      "0": {
+        "file": "d00.json",
+        "bytes": 9258,
+        "values_with_more_digits": 1
+      },
+      "1": {
+        "file": "idv01.json",
+        "bytes": 8053,
+        "values_with_more_digits": 0
+      },
+      "2": {
+        "file": "idv02.json",
+        "bytes": 8729,
+        "values_with_more_digits": 0
+      },
+      "3": {
+        "file": "idv03.json",
+        "bytes": 9241,
+        "values_with_more_digits": 1
+      },
+      "4": {
+        "file": "idv04.json",
+        "bytes": 9285,
+        "values_with_more_digits": 1
+      },
+      "5": {
+        "file": "idv05.json",
+        "bytes": 9079,
+        "values_with_more_digits": 5
+      },
+      "6": {
+        "file": "idv06.json",
+        "bytes": 10824,
+        "values_with_more_digits": 0
+      },
+      "7": {
+        "file": "idv07.json",
+        "bytes": 8540,
+        "values_with_more_digits": 0
+      },
+      "8": {
+        "file": "idv08.json",
+        "bytes": 8193,
+        "values_with_more_digits": 0
+      },
+      "9": {
+        "file": "idv09.json",
+        "bytes": 9237,
+        "values_with_more_digits": 1
+      },
+      "10": {
+        "file": "idv10.json",
+        "bytes": 9221,
+        "values_with_more_digits": 3
+      },
+      "11": {
+        "file": "idv11.json",
+        "bytes": 9128,
+        "values_with_more_digits": 1
+      },
+      "12": {
+        "file": "idv12.json",
+        "bytes": 8406,
+        "values_with_more_digits": 0
+      },
+      "13": {
+        "file": "idv13.json",
+        "bytes": 8451,
+        "values_with_more_digits": 0
+      },
+      "14": {
+        "file": "idv14.json",
+        "bytes": 8136,
+        "values_with_more_digits": 0
+      },
+      "15": {
+        "file": "idv15.json",
+        "bytes": 9252,
+        "values_with_more_digits": 5
+      },
+      "16": {
+        "file": "idv16.json",
+        "bytes": 9193,
+        "values_with_more_digits": 6
+      },
+      "17": {
+        "file": "idv17.json",
+        "bytes": 8762,
+        "values_with_more_digits": 0
+      },
+      "18": {
+        "file": "idv18.json",
+        "bytes": 10418,
+        "values_with_more_digits": 0
+      },
+      "19": {
+        "file": "idv19.json",
+        "bytes": 9273,
+        "values_with_more_digits": 1
+      },
+      "20": {
+        "file": "idv20.json",
+        "bytes": 8992,
+        "values_with_more_digits": 4
+      },
+      "21": {
+        "file": "idv21.json",
+        "bytes": 8909,
+        "values_with_more_digits": 3
+      }
+    }
+  },
+  "faults": [
+    {
+      "id": 0,
+      "file": "d00.json",
+      "source_file": "d00_te.dat",
+      "name_es": "Operación normal",
+      "name_en": "Normal operation",
+      "desc_es": "Prueba sin fallo: 960 muestras (48 h); la FAR se mide en la serie entera",
+      "desc_en": "Fault-free test run: 960 samples (48 h); FAR is measured on the whole series",
+      "type": null,
+      "type_es": null,
+      "type_en": null,
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.014583333333333334,
+            "n_far": 960,
+            "fdr": null,
+            "n_fdr": 0,
+            "delay_samples": null,
+            "delay_minutes": null,
+            "first_alarm_sample": null,
+            "detected": false,
+            "detected_at_chance": false,
+            "far_1_160": 0.0,
+            "n_far_1_160": 160,
+            "far_161_960": 0.0175,
+            "n_far_161_960": 800
+          },
+          "spe": {
+            "far": 0.028125,
+            "n_far": 960,
+            "fdr": null,
+            "n_fdr": 0,
+            "delay_samples": null,
+            "delay_minutes": null,
+            "first_alarm_sample": null,
+            "detected": false,
+            "detected_at_chance": false,
+            "far_1_160": 0.0125,
+            "n_far_1_160": 160,
+            "far_161_960": 0.03125,
+            "n_far_161_960": 800
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.019791666666666666,
+            "n_far": 960,
+            "fdr": null,
+            "n_fdr": 0,
+            "delay_samples": null,
+            "delay_minutes": null,
+            "first_alarm_sample": null,
+            "detected": false,
+            "detected_at_chance": false,
+            "far_1_160": 0.0,
+            "n_far_1_160": 160,
+            "far_161_960": 0.02375,
+            "n_far_161_960": 800
+          },
+          "spe": {
+            "far": 0.034375,
+            "n_far": 960,
+            "fdr": null,
+            "n_fdr": 0,
+            "delay_samples": null,
+            "delay_minutes": null,
+            "first_alarm_sample": null,
+            "detected": false,
+            "detected_at_chance": false,
+            "far_1_160": 0.0125,
+            "n_far_1_160": 160,
+            "far_161_960": 0.03875,
+            "n_far_161_960": 800
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.020833333333333332,
+            "n_far": 960,
+            "fdr": null,
+            "n_fdr": 0,
+            "delay_samples": null,
+            "delay_minutes": null,
+            "first_alarm_sample": null,
+            "detected": false,
+            "detected_at_chance": false,
+            "far_1_160": 0.0,
+            "n_far_1_160": 160,
+            "far_161_960": 0.025,
+            "n_far_161_960": 800
+          },
+          "spe": {
+            "far": 0.04583333333333333,
+            "n_far": 960,
+            "fdr": null,
+            "n_fdr": 0,
+            "delay_samples": null,
+            "delay_minutes": null,
+            "first_alarm_sample": null,
+            "detected": false,
+            "detected_at_chance": false,
+            "far_1_160": 0.0375,
+            "n_far_1_160": 160,
+            "far_161_960": 0.0475,
+            "n_far_161_960": 800
+          }
+        }
+      }
+    },
+    {
+      "id": 1,
+      "file": "idv01.json",
+      "source_file": "d01_te.dat",
+      "name_es": "Razón de alimentación A/C",
+      "name_en": "A/C feed ratio",
+      "desc_es": "Cambio en escalón de la razón A/C, composición de B constante (corriente 4)",
+      "desc_en": "Step change in the A/C feed ratio, B composition constant (stream 4)",
+      "type": "step",
+      "type_es": "Escalón",
+      "type_en": "Step",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.99375,
+            "n_fdr": 800,
+            "delay_samples": 6,
+            "delay_minutes": 18.0,
+            "first_alarm_sample": 167,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.025,
+            "n_far": 160,
+            "fdr": 0.9975,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.995,
+            "n_fdr": 800,
+            "delay_samples": 4,
+            "delay_minutes": 12.0,
+            "first_alarm_sample": 165,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.025,
+            "n_far": 160,
+            "fdr": 0.9975,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.995,
+            "n_fdr": 800,
+            "delay_samples": 4,
+            "delay_minutes": 12.0,
+            "first_alarm_sample": 165,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.025,
+            "n_far": 160,
+            "fdr": 0.9975,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "file": "idv02.json",
+      "source_file": "d02_te.dat",
+      "name_es": "Composición de B",
+      "name_en": "B composition",
+      "desc_es": "Cambio en escalón de la composición de B, razón A/C constante (corriente 4)",
+      "desc_en": "Step change in B composition, A/C ratio constant (stream 4)",
+      "type": "step",
+      "type_es": "Escalón",
+      "type_en": "Step",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.9825,
+            "n_fdr": 800,
+            "delay_samples": 14,
+            "delay_minutes": 42.0,
+            "first_alarm_sample": 175,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.05,
+            "n_far": 160,
+            "fdr": 0.98875,
+            "n_fdr": 800,
+            "delay_samples": 10,
+            "delay_minutes": 30.0,
+            "first_alarm_sample": 171,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.9825,
+            "n_fdr": 800,
+            "delay_samples": 14,
+            "delay_minutes": 42.0,
+            "first_alarm_sample": 175,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.05,
+            "n_far": 160,
+            "fdr": 0.98875,
+            "n_fdr": 800,
+            "delay_samples": 10,
+            "delay_minutes": 30.0,
+            "first_alarm_sample": 171,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.9825,
+            "n_fdr": 800,
+            "delay_samples": 14,
+            "delay_minutes": 42.0,
+            "first_alarm_sample": 175,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.06875,
+            "n_far": 160,
+            "fdr": 0.98875,
+            "n_fdr": 800,
+            "delay_samples": 10,
+            "delay_minutes": 30.0,
+            "first_alarm_sample": 171,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "file": "idv03.json",
+      "source_file": "d03_te.dat",
+      "name_es": "Temperatura de alimentación de D",
+      "name_en": "D feed temperature",
+      "desc_es": "Cambio en escalón de la temperatura de la alimentación de D (corriente 2)",
+      "desc_en": "Step change in D feed temperature (stream 2)",
+      "type": "step",
+      "type_es": "Escalón",
+      "type_en": "Step",
+      "hard": true,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.045,
+            "n_fdr": 800,
+            "delay_samples": 42,
+            "delay_minutes": 126.0,
+            "first_alarm_sample": 203,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.125,
+            "n_far": 160,
+            "fdr": 0.0375,
+            "n_fdr": 800,
+            "delay_samples": 537,
+            "delay_minutes": 1611.0,
+            "first_alarm_sample": 698,
+            "detected": true,
+            "detected_at_chance": true
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.06625,
+            "n_fdr": 800,
+            "delay_samples": 42,
+            "delay_minutes": 126.0,
+            "first_alarm_sample": 203,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.13125,
+            "n_far": 160,
+            "fdr": 0.04,
+            "n_fdr": 800,
+            "delay_samples": 537,
+            "delay_minutes": 1611.0,
+            "first_alarm_sample": 698,
+            "detected": true,
+            "detected_at_chance": true
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.025,
+            "n_far": 160,
+            "fdr": 0.08375,
+            "n_fdr": 800,
+            "delay_samples": 42,
+            "delay_minutes": 126.0,
+            "first_alarm_sample": 203,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.1625,
+            "n_far": 160,
+            "fdr": 0.0625,
+            "n_fdr": 800,
+            "delay_samples": 51,
+            "delay_minutes": 153.0,
+            "first_alarm_sample": 212,
+            "detected": true,
+            "detected_at_chance": true
+          }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "file": "idv04.json",
+      "source_file": "d04_te.dat",
+      "name_es": "Agua de refrigeración del reactor",
+      "name_en": "Reactor cooling water",
+      "desc_es": "Cambio en escalón de la temperatura de entrada del agua de refrigeración del reactor",
+      "desc_en": "Step change in reactor cooling water inlet temperature",
+      "type": "step",
+      "type_es": "Escalón",
+      "type_en": "Step",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.42,
+            "n_fdr": 800,
+            "delay_samples": 63,
+            "delay_minutes": 189.0,
+            "first_alarm_sample": 224,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.98375,
+            "n_fdr": 800,
+            "delay_samples": 4,
+            "delay_minutes": 12.0,
+            "first_alarm_sample": 165,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.46875,
+            "n_fdr": 800,
+            "delay_samples": 55,
+            "delay_minutes": 165.0,
+            "first_alarm_sample": 216,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0375,
+            "n_far": 160,
+            "fdr": 0.98875,
+            "n_fdr": 800,
+            "delay_samples": 4,
+            "delay_minutes": 12.0,
+            "first_alarm_sample": 165,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.505,
+            "n_fdr": 800,
+            "delay_samples": 55,
+            "delay_minutes": 165.0,
+            "first_alarm_sample": 216,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0375,
+            "n_far": 160,
+            "fdr": 0.995,
+            "n_fdr": 800,
+            "delay_samples": 4,
+            "delay_minutes": 12.0,
+            "first_alarm_sample": 165,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "file": "idv05.json",
+      "source_file": "d05_te.dat",
+      "name_es": "Agua de refrigeración del condensador",
+      "name_en": "Condenser cooling water",
+      "desc_es": "Cambio en escalón de la temperatura de entrada del agua de refrigeración del condensador",
+      "desc_en": "Step change in condenser cooling water inlet temperature",
+      "type": "step",
+      "type_es": "Escalón",
+      "type_en": "Step",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.28375,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.29125,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.29375,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0375,
+            "n_far": 160,
+            "fdr": 0.295,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.29875,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0375,
+            "n_far": 160,
+            "fdr": 0.31625,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "file": "idv06.json",
+      "source_file": "d06_te.dat",
+      "name_es": "Pérdida de alimentación de A",
+      "name_en": "A feed loss",
+      "desc_es": "Pérdida en escalón de la alimentación de A (corriente 1)",
+      "desc_en": "Step loss of the A feed (stream 1)",
+      "type": "step",
+      "type_es": "Escalón",
+      "type_en": "Step",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.99375,
+            "n_fdr": 800,
+            "delay_samples": 5,
+            "delay_minutes": 15.0,
+            "first_alarm_sample": 166,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.99375,
+            "n_fdr": 800,
+            "delay_samples": 5,
+            "delay_minutes": 15.0,
+            "first_alarm_sample": 166,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.99375,
+            "n_fdr": 800,
+            "delay_samples": 5,
+            "delay_minutes": 15.0,
+            "first_alarm_sample": 166,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "file": "idv07.json",
+      "source_file": "d07_te.dat",
+      "name_es": "Presión del colector de C",
+      "name_en": "C header pressure loss",
+      "desc_es": "Pérdida en escalón de presión en el colector de C, disponibilidad reducida (corriente 4)",
+      "desc_en": "Step C header pressure loss, reduced availability (stream 4)",
+      "type": "step",
+      "type_es": "Escalón",
+      "type_en": "Step",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.025,
+            "n_far": 160,
+            "fdr": 1.0,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "file": "idv08.json",
+      "source_file": "d08_te.dat",
+      "name_es": "Composición de A, B y C",
+      "name_en": "A, B, C feed composition",
+      "desc_es": "Variación aleatoria de la composición de la alimentación A, B, C (corriente 4)",
+      "desc_en": "Random variation in A, B, C feed composition (stream 4)",
+      "type": "random",
+      "type_es": "Variación aleatoria",
+      "type_en": "Random variation",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.97375,
+            "n_fdr": 800,
+            "delay_samples": 22,
+            "delay_minutes": 66.0,
+            "first_alarm_sample": 183,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.97375,
+            "n_fdr": 800,
+            "delay_samples": 21,
+            "delay_minutes": 63.0,
+            "first_alarm_sample": 182,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.975,
+            "n_fdr": 800,
+            "delay_samples": 22,
+            "delay_minutes": 66.0,
+            "first_alarm_sample": 183,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.975,
+            "n_fdr": 800,
+            "delay_samples": 21,
+            "delay_minutes": 63.0,
+            "first_alarm_sample": 182,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.975,
+            "n_fdr": 800,
+            "delay_samples": 22,
+            "delay_minutes": 66.0,
+            "first_alarm_sample": 183,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 0.98125,
+            "n_fdr": 800,
+            "delay_samples": 14,
+            "delay_minutes": 42.0,
+            "first_alarm_sample": 175,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 9,
+      "file": "idv09.json",
+      "source_file": "d09_te.dat",
+      "name_es": "Temperatura de alimentación de D",
+      "name_en": "D feed temperature",
+      "desc_es": "Variación aleatoria de la temperatura de la alimentación de D (corriente 2)",
+      "desc_en": "Random variation in D feed temperature (stream 2)",
+      "type": "random",
+      "type_es": "Variación aleatoria",
+      "type_en": "Random variation",
+      "hard": true,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.05,
+            "n_far": 160,
+            "fdr": 0.03125,
+            "n_fdr": 800,
+            "delay_samples": 5,
+            "delay_minutes": 15.0,
+            "first_alarm_sample": 166,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.04375,
+            "n_far": 160,
+            "fdr": 0.0575,
+            "n_fdr": 800,
+            "delay_samples": 223,
+            "delay_minutes": 669.0,
+            "first_alarm_sample": 384,
+            "detected": true,
+            "detected_at_chance": true
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.075,
+            "n_far": 160,
+            "fdr": 0.045,
+            "n_fdr": 800,
+            "delay_samples": 4,
+            "delay_minutes": 12.0,
+            "first_alarm_sample": 165,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.04375,
+            "n_far": 160,
+            "fdr": 0.065,
+            "n_fdr": 800,
+            "delay_samples": 223,
+            "delay_minutes": 669.0,
+            "first_alarm_sample": 384,
+            "detected": true,
+            "detected_at_chance": true
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0875,
+            "n_far": 160,
+            "fdr": 0.05,
+            "n_fdr": 800,
+            "delay_samples": 4,
+            "delay_minutes": 12.0,
+            "first_alarm_sample": 165,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.06875,
+            "n_far": 160,
+            "fdr": 0.07625,
+            "n_fdr": 800,
+            "delay_samples": 216,
+            "delay_minutes": 648.0,
+            "first_alarm_sample": 377,
+            "detected": true,
+            "detected_at_chance": true
+          }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "file": "idv10.json",
+      "source_file": "d10_te.dat",
+      "name_es": "Temperatura de alimentación de C",
+      "name_en": "C feed temperature",
+      "desc_es": "Variación aleatoria de la temperatura de la alimentación de C (corriente 4)",
+      "desc_en": "Random variation in C feed temperature (stream 4)",
+      "type": "random",
+      "type_es": "Variación aleatoria",
+      "type_en": "Random variation",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.46375,
+            "n_fdr": 800,
+            "delay_samples": 22,
+            "delay_minutes": 66.0,
+            "first_alarm_sample": 183,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 0.47125,
+            "n_fdr": 800,
+            "delay_samples": 34,
+            "delay_minutes": 102.0,
+            "first_alarm_sample": 195,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.48,
+            "n_fdr": 800,
+            "delay_samples": 22,
+            "delay_minutes": 66.0,
+            "first_alarm_sample": 183,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 0.47875,
+            "n_fdr": 800,
+            "delay_samples": 34,
+            "delay_minutes": 102.0,
+            "first_alarm_sample": 195,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.49625,
+            "n_fdr": 800,
+            "delay_samples": 22,
+            "delay_minutes": 66.0,
+            "first_alarm_sample": 183,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.535,
+            "n_fdr": 800,
+            "delay_samples": 21,
+            "delay_minutes": 63.0,
+            "first_alarm_sample": 182,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 11,
+      "file": "idv11.json",
+      "source_file": "d11_te.dat",
+      "name_es": "Agua de refrigeración del reactor",
+      "name_en": "Reactor cooling water",
+      "desc_es": "Variación aleatoria de la temperatura de entrada del agua de refrigeración del reactor",
+      "desc_en": "Random variation in reactor cooling water inlet temperature",
+      "type": "random",
+      "type_es": "Variación aleatoria",
+      "type_en": "Random variation",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 0.52625,
+            "n_fdr": 800,
+            "delay_samples": 5,
+            "delay_minutes": 15.0,
+            "first_alarm_sample": 166,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.60875,
+            "n_fdr": 800,
+            "delay_samples": 8,
+            "delay_minutes": 24.0,
+            "first_alarm_sample": 169,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.54125,
+            "n_fdr": 800,
+            "delay_samples": 5,
+            "delay_minutes": 15.0,
+            "first_alarm_sample": 166,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.62,
+            "n_fdr": 800,
+            "delay_samples": 8,
+            "delay_minutes": 24.0,
+            "first_alarm_sample": 169,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.55375,
+            "n_fdr": 800,
+            "delay_samples": 5,
+            "delay_minutes": 15.0,
+            "first_alarm_sample": 166,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.04375,
+            "n_far": 160,
+            "fdr": 0.64625,
+            "n_fdr": 800,
+            "delay_samples": 8,
+            "delay_minutes": 24.0,
+            "first_alarm_sample": 169,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 12,
+      "file": "idv12.json",
+      "source_file": "d12_te.dat",
+      "name_es": "Agua de refrigeración del condensador",
+      "name_en": "Condenser cooling water",
+      "desc_es": "Variación aleatoria de la temperatura de entrada del agua de refrigeración del condensador",
+      "desc_en": "Random variation in condenser cooling water inlet temperature",
+      "type": "random",
+      "type_es": "Variación aleatoria",
+      "type_en": "Random variation",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.9875,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.08125,
+            "n_far": 160,
+            "fdr": 0.975,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.98875,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0875,
+            "n_far": 160,
+            "fdr": 0.975,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.98875,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.1,
+            "n_far": 160,
+            "fdr": 0.97875,
+            "n_fdr": 800,
+            "delay_samples": 2,
+            "delay_minutes": 6.0,
+            "first_alarm_sample": 163,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 13,
+      "file": "idv13.json",
+      "source_file": "d13_te.dat",
+      "name_es": "Cinética de reacción",
+      "name_en": "Reaction kinetics",
+      "desc_es": "Deriva lenta de la cinética de reacción",
+      "desc_en": "Slow drift in reaction kinetics",
+      "type": "drift",
+      "type_es": "Deriva lenta",
+      "type_en": "Slow drift",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.95,
+            "n_fdr": 800,
+            "delay_samples": 38,
+            "delay_minutes": 114.0,
+            "first_alarm_sample": 199,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.95375,
+            "n_fdr": 800,
+            "delay_samples": 36,
+            "delay_minutes": 108.0,
+            "first_alarm_sample": 197,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.95,
+            "n_fdr": 800,
+            "delay_samples": 38,
+            "delay_minutes": 114.0,
+            "first_alarm_sample": 199,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.95375,
+            "n_fdr": 800,
+            "delay_samples": 36,
+            "delay_minutes": 108.0,
+            "first_alarm_sample": 197,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.95,
+            "n_fdr": 800,
+            "delay_samples": 38,
+            "delay_minutes": 114.0,
+            "first_alarm_sample": 199,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.95375,
+            "n_fdr": 800,
+            "delay_samples": 36,
+            "delay_minutes": 108.0,
+            "first_alarm_sample": 197,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 14,
+      "file": "idv14.json",
+      "source_file": "d14_te.dat",
+      "name_es": "Válvula de refrigeración del reactor",
+      "name_en": "Reactor cooling water valve",
+      "desc_es": "La válvula del agua de refrigeración del reactor se pega",
+      "desc_en": "Sticking reactor cooling water valve",
+      "type": "sticking",
+      "type_es": "Válvula que se pega",
+      "type_en": "Sticking",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.99625,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.99875,
+            "n_fdr": 800,
+            "delay_samples": 1,
+            "delay_minutes": 3.0,
+            "first_alarm_sample": 162,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.9975,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.99875,
+            "n_fdr": 800,
+            "delay_samples": 1,
+            "delay_minutes": 3.0,
+            "first_alarm_sample": 162,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.9975,
+            "n_fdr": 800,
+            "delay_samples": 0,
+            "delay_minutes": 0.0,
+            "first_alarm_sample": 161,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.05625,
+            "n_far": 160,
+            "fdr": 0.99875,
+            "n_fdr": 800,
+            "delay_samples": 1,
+            "delay_minutes": 3.0,
+            "first_alarm_sample": 162,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 15,
+      "file": "idv15.json",
+      "source_file": "d15_te.dat",
+      "name_es": "Válvula de refrigeración del condensador",
+      "name_en": "Condenser cooling water valve",
+      "desc_es": "La válvula del agua de refrigeración del condensador se pega",
+      "desc_en": "Sticking condenser cooling water valve",
+      "type": "sticking",
+      "type_es": "Válvula que se pega",
+      "type_en": "Sticking",
+      "hard": true,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.07875,
+            "n_fdr": 800,
+            "delay_samples": 577,
+            "delay_minutes": 1731.0,
+            "first_alarm_sample": 738,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.08375,
+            "n_fdr": 800,
+            "delay_samples": 92,
+            "delay_minutes": 276.0,
+            "first_alarm_sample": 253,
+            "detected": true,
+            "detected_at_chance": true
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.095,
+            "n_fdr": 800,
+            "delay_samples": 575,
+            "delay_minutes": 1725.0,
+            "first_alarm_sample": 736,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.095,
+            "n_fdr": 800,
+            "delay_samples": 92,
+            "delay_minutes": 276.0,
+            "first_alarm_sample": 253,
+            "detected": true,
+            "detected_at_chance": true
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.10875,
+            "n_fdr": 800,
+            "delay_samples": 575,
+            "delay_minutes": 1725.0,
+            "first_alarm_sample": 736,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0625,
+            "n_far": 160,
+            "fdr": 0.12375,
+            "n_fdr": 800,
+            "delay_samples": 92,
+            "delay_minutes": 276.0,
+            "first_alarm_sample": 253,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 16,
+      "file": "idv16.json",
+      "source_file": "d16_te.dat",
+      "name_es": "Desconocida",
+      "name_en": "Unknown",
+      "desc_es": "Perturbación de tipo desconocido",
+      "desc_en": "Disturbance of unknown type",
+      "type": "unknown",
+      "type_es": "Desconocido",
+      "type_en": "Unknown",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.1375,
+            "n_far": 160,
+            "fdr": 0.28125,
+            "n_fdr": 800,
+            "delay_samples": 196,
+            "delay_minutes": 588.0,
+            "first_alarm_sample": 357,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.05625,
+            "n_far": 160,
+            "fdr": 0.40375,
+            "n_fdr": 800,
+            "delay_samples": 35,
+            "delay_minutes": 105.0,
+            "first_alarm_sample": 196,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.175,
+            "n_far": 160,
+            "fdr": 0.30125,
+            "n_fdr": 800,
+            "delay_samples": 196,
+            "delay_minutes": 588.0,
+            "first_alarm_sample": 357,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.0625,
+            "n_far": 160,
+            "fdr": 0.425,
+            "n_fdr": 800,
+            "delay_samples": 35,
+            "delay_minutes": 105.0,
+            "first_alarm_sample": 196,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.1875,
+            "n_far": 160,
+            "fdr": 0.31375,
+            "n_fdr": 800,
+            "delay_samples": 196,
+            "delay_minutes": 588.0,
+            "first_alarm_sample": 357,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.1,
+            "n_far": 160,
+            "fdr": 0.47375,
+            "n_fdr": 800,
+            "delay_samples": 34,
+            "delay_minutes": 102.0,
+            "first_alarm_sample": 195,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 17,
+      "file": "idv17.json",
+      "source_file": "d17_te.dat",
+      "name_es": "Desconocida",
+      "name_en": "Unknown",
+      "desc_es": "Perturbación de tipo desconocido",
+      "desc_en": "Disturbance of unknown type",
+      "type": "unknown",
+      "type_es": "Desconocido",
+      "type_en": "Unknown",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.8075,
+            "n_fdr": 800,
+            "delay_samples": 28,
+            "delay_minutes": 84.0,
+            "first_alarm_sample": 189,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 0.945,
+            "n_fdr": 800,
+            "delay_samples": 23,
+            "delay_minutes": 69.0,
+            "first_alarm_sample": 184,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 0.81,
+            "n_fdr": 800,
+            "delay_samples": 28,
+            "delay_minutes": 84.0,
+            "first_alarm_sample": 189,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.025,
+            "n_far": 160,
+            "fdr": 0.9475,
+            "n_fdr": 800,
+            "delay_samples": 23,
+            "delay_minutes": 69.0,
+            "first_alarm_sample": 184,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.025,
+            "n_far": 160,
+            "fdr": 0.81625,
+            "n_fdr": 800,
+            "delay_samples": 28,
+            "delay_minutes": 84.0,
+            "first_alarm_sample": 189,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.95375,
+            "n_fdr": 800,
+            "delay_samples": 23,
+            "delay_minutes": 69.0,
+            "first_alarm_sample": 184,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 18,
+      "file": "idv18.json",
+      "source_file": "d18_te.dat",
+      "name_es": "Desconocida",
+      "name_en": "Unknown",
+      "desc_es": "Perturbación de tipo desconocido",
+      "desc_en": "Disturbance of unknown type",
+      "type": "unknown",
+      "type_es": "Desconocido",
+      "type_en": "Unknown",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.8925,
+            "n_fdr": 800,
+            "delay_samples": 88,
+            "delay_minutes": 264.0,
+            "first_alarm_sample": 249,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.05625,
+            "n_far": 160,
+            "fdr": 0.905,
+            "n_fdr": 800,
+            "delay_samples": 78,
+            "delay_minutes": 234.0,
+            "first_alarm_sample": 239,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.895,
+            "n_fdr": 800,
+            "delay_samples": 88,
+            "delay_minutes": 264.0,
+            "first_alarm_sample": 249,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.05625,
+            "n_far": 160,
+            "fdr": 0.905,
+            "n_fdr": 800,
+            "delay_samples": 78,
+            "delay_minutes": 234.0,
+            "first_alarm_sample": 239,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.895,
+            "n_fdr": 800,
+            "delay_samples": 88,
+            "delay_minutes": 264.0,
+            "first_alarm_sample": 249,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.06875,
+            "n_far": 160,
+            "fdr": 0.90625,
+            "n_fdr": 800,
+            "delay_samples": 78,
+            "delay_minutes": 234.0,
+            "first_alarm_sample": 239,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 19,
+      "file": "idv19.json",
+      "source_file": "d19_te.dat",
+      "name_es": "Desconocida",
+      "name_en": "Unknown",
+      "desc_es": "Perturbación de tipo desconocido",
+      "desc_en": "Disturbance of unknown type",
+      "type": "unknown",
+      "type_es": "Desconocido",
+      "type_en": "Unknown",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.07125,
+            "n_fdr": 800,
+            "delay_samples": 76,
+            "delay_minutes": 228.0,
+            "first_alarm_sample": 237,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.17875,
+            "n_fdr": 800,
+            "delay_samples": 80,
+            "delay_minutes": 240.0,
+            "first_alarm_sample": 241,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.0975,
+            "n_fdr": 800,
+            "delay_samples": 76,
+            "delay_minutes": 228.0,
+            "first_alarm_sample": 237,
+            "detected": true,
+            "detected_at_chance": true
+          },
+          "spe": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.20125,
+            "n_fdr": 800,
+            "delay_samples": 60,
+            "delay_minutes": 180.0,
+            "first_alarm_sample": 221,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.10625,
+            "n_fdr": 800,
+            "delay_samples": 76,
+            "delay_minutes": 228.0,
+            "first_alarm_sample": 237,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 0.25125,
+            "n_fdr": 800,
+            "delay_samples": 60,
+            "delay_minutes": 180.0,
+            "first_alarm_sample": 221,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 20,
+      "file": "idv20.json",
+      "source_file": "d20_te.dat",
+      "name_es": "Desconocida",
+      "name_en": "Unknown",
+      "desc_es": "Perturbación de tipo desconocido",
+      "desc_en": "Disturbance of unknown type",
+      "type": "unknown",
+      "type_es": "Desconocido",
+      "type_en": "Unknown",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.44875,
+            "n_fdr": 800,
+            "delay_samples": 84,
+            "delay_minutes": 252.0,
+            "first_alarm_sample": 245,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.55375,
+            "n_fdr": 800,
+            "delay_samples": 80,
+            "delay_minutes": 240.0,
+            "first_alarm_sample": 241,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.4725,
+            "n_fdr": 800,
+            "delay_samples": 84,
+            "delay_minutes": 252.0,
+            "first_alarm_sample": 245,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.00625,
+            "n_far": 160,
+            "fdr": 0.55875,
+            "n_fdr": 800,
+            "delay_samples": 80,
+            "delay_minutes": 240.0,
+            "first_alarm_sample": 241,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.0,
+            "n_far": 160,
+            "fdr": 0.4875,
+            "n_fdr": 800,
+            "delay_samples": 84,
+            "delay_minutes": 252.0,
+            "first_alarm_sample": 245,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.01875,
+            "n_far": 160,
+            "fdr": 0.58875,
+            "n_fdr": 800,
+            "delay_samples": 78,
+            "delay_minutes": 234.0,
+            "first_alarm_sample": 239,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    },
+    {
+      "id": 21,
+      "file": "idv21.json",
+      "source_file": "d21_te.dat",
+      "name_es": "Válvula de la corriente 4",
+      "name_en": "Stream 4 valve",
+      "desc_es": "La válvula de la corriente 4 queda fija en su posición de estado estacionario",
+      "desc_en": "The stream 4 valve is fixed at its steady-state position",
+      "type": "fixed",
+      "type_es": "Posición fija",
+      "type_en": "Constant position",
+      "hard": false,
+      "metrics": {
+        "f": {
+          "t2": {
+            "far": 0.0125,
+            "n_far": 160,
+            "fdr": 0.39625,
+            "n_fdr": 800,
+            "delay_samples": 284,
+            "delay_minutes": 852.0,
+            "first_alarm_sample": 445,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.05625,
+            "n_far": 160,
+            "fdr": 0.5825,
+            "n_fdr": 800,
+            "delay_samples": 241,
+            "delay_minutes": 723.0,
+            "first_alarm_sample": 402,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "kde": {
+          "t2": {
+            "far": 0.025,
+            "n_far": 160,
+            "fdr": 0.405,
+            "n_fdr": 800,
+            "delay_samples": 284,
+            "delay_minutes": 852.0,
+            "first_alarm_sample": 445,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.075,
+            "n_far": 160,
+            "fdr": 0.5875,
+            "n_fdr": 800,
+            "delay_samples": 241,
+            "delay_minutes": 723.0,
+            "first_alarm_sample": 402,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        },
+        "empirico": {
+          "t2": {
+            "far": 0.03125,
+            "n_far": 160,
+            "fdr": 0.42375,
+            "n_fdr": 800,
+            "delay_samples": 284,
+            "delay_minutes": 852.0,
+            "first_alarm_sample": 445,
+            "detected": true,
+            "detected_at_chance": false
+          },
+          "spe": {
+            "far": 0.11875,
+            "n_far": 160,
+            "fdr": 0.615,
+            "n_fdr": 800,
+            "delay_samples": 241,
+            "delay_minutes": 723.0,
+            "first_alarm_sample": 402,
+            "detected": true,
+            "detected_at_chance": false
+          }
+        }
+      }
+    }
+  ],
+  "summary": {
+    "f": {
+      "t2": {
+        "far_d00": 0.014583333333333334,
+        "far_prefault_mean_1_21": 0.013988095238095239,
+        "fdr_mean_1_21": 0.6011309523809524,
+        "fdr_mean_without_3_9_15": 0.6927083333333335,
+        "fdr_mean_3_9_15": 0.051666666666666666,
+        "delay_median_samples_valid": 22.0,
+        "delay_median_samples_valid_n": 17,
+        "faults_below_min_fdr": [
+          3,
+          9,
+          15,
+          19
+        ]
+      },
+      "spe": {
+        "far_d00": 0.028125,
+        "far_prefault_mean_1_21": 0.03571428571428571,
+        "fdr_mean_1_21": 0.6661904761904761,
+        "fdr_mean_without_3_9_15": 0.7672916666666667,
+        "fdr_mean_3_9_15": 0.05958333333333334,
+        "delay_median_samples_valid": 15.5,
+        "delay_median_samples_valid_n": 18,
+        "faults_below_min_fdr": [
+          3,
+          9,
+          15
+        ]
+      }
+    },
+    "kde": {
+      "t2": {
+        "far_d00": 0.019791666666666666,
+        "far_prefault_mean_1_21": 0.019047619047619046,
+        "fdr_mean_1_21": 0.6120833333333332,
+        "fdr_mean_without_3_9_15": 0.7026388888888888,
+        "fdr_mean_3_9_15": 0.06874999999999999,
+        "delay_median_samples_valid": 22.0,
+        "delay_median_samples_valid_n": 17,
+        "faults_below_min_fdr": [
+          3,
+          9,
+          15,
+          19
+        ]
+      },
+      "spe": {
+        "far_d00": 0.034375,
+        "far_prefault_mean_1_21": 0.03898809523809524,
+        "fdr_mean_1_21": 0.67125,
+        "fdr_mean_without_3_9_15": 0.7720138888888889,
+        "fdr_mean_3_9_15": 0.06666666666666667,
+        "delay_median_samples_valid": 15.5,
+        "delay_median_samples_valid_n": 18,
+        "faults_below_min_fdr": [
+          3,
+          9,
+          15
+        ]
+      }
+    },
+    "empirico": {
+      "t2": {
+        "far_d00": 0.020833333333333332,
+        "far_prefault_mean_1_21": 0.022321428571428575,
+        "fdr_mean_1_21": 0.6200595238095238,
+        "fdr_mean_without_3_9_15": 0.7099305555555556,
+        "fdr_mean_3_9_15": 0.08083333333333333,
+        "delay_median_samples_valid": 22.0,
+        "delay_median_samples_valid_n": 19,
+        "faults_below_min_fdr": [
+          3,
+          9
+        ]
+      },
+      "spe": {
+        "far_d00": 0.04583333333333333,
+        "far_prefault_mean_1_21": 0.05416666666666666,
+        "fdr_mean_1_21": 0.6877380952380953,
+        "fdr_mean_without_3_9_15": 0.7877777777777778,
+        "fdr_mean_3_9_15": 0.08749999999999998,
+        "delay_median_samples_valid": 14.0,
+        "delay_median_samples_valid_n": 19,
+        "faults_below_min_fdr": [
+          3,
+          9
+        ]
+      }
+    }
+  },
+  "validation": {
+    "matches_A1_baseline": true,
+    "compared_with": "tfm-fdd-core/results/summary/A1_pca_baseline_runs.csv, A1_pca_baseline_T2.csv, A1_pca_baseline_SPE.csv (y el .provenance.json de A1 para los SHA-256 de los .dat)",
+    "A1_run": {
+      "created_utc": "2026-10-13T17:51:26+00:00",
+      "commit": "fe043173389aca092c80630fcb1e3203ea8362b3",
+      "baseline_yaml_sha256": "8a3e96ea66f11192ea154eafd586b5c7fb07e766012501bd9d30d1141a6f5b2f"
+    },
+    "max_abs_diff": {
+      "far": 3.2959746043559335e-17,
+      "fdr": 0.0,
+      "delay_samples": 0.0,
+      "t2_limit": 0.0,
+      "spe_limit": 0.0
+    },
+    "A1_summary": {
+      "t2": {
+        "far_d00": 0.0145833333333333,
+        "fdr_mean_1_21": 0.6011309523809524,
+        "fdr_mean_3_9_15": 0.051666666666666666,
+        "fdr_mean_without_3_9_15": 0.6927083333333335
+      },
+      "spe": {
+        "far_d00": 0.028125,
+        "fdr_mean_1_21": 0.6661904761904761,
+        "fdr_mean_3_9_15": 0.05958333333333334,
+        "fdr_mean_without_3_9_15": 0.7672916666666667
+      }
+    },
+    "problems": []
+  }
+}

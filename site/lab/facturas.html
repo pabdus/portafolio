@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es" data-lang="es" data-title-es="Facturas: mide tú mismo · Pablo Duque Marín" data-title-en="Invoices: measure it yourself · Pablo Duque Marín">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Facturas: mide tú mismo · Pablo Duque Marín</title>
+<meta name="description" content="Cuatro extractores, y Claude Haiku 4.5 aparte, leen las mismas 20 facturas sintéticas. Compara campo por campo qué leyó cada uno, qué mandó la validación a revisión y qué pasó sin aviso, y mira qué pasa al bajar la resolución del escaneo.">
+<meta name="author" content="Pablo Alberto Duque Marín">
+<link rel="canonical" href="https://pabloduque.dev/lab/facturas.html">
+<meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pabloduque.dev/lab/facturas.html">
+<meta property="og:title" content="Facturas: mide tú mismo · Pablo Duque Marín">
+<meta property="og:description" content="20 facturas × 12 campos × 4 extractores, y Claude Haiku 4.5 aparte, con la verdad de terreno al lado. Y una prueba de estrés: a 85 ppp, 6 facturas con errores de lectura pasaron sin aviso.">
+<meta property="og:image" content="https://pabloduque.dev/og.png">
+<meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/bricolage-grotesque-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/lab/lab.css">
+<link rel="stylesheet" href="/lab/facturas.css">
+<script src="/theme.js"></script>
+<script src="/lab/lab.js" defer></script>
+<script src="/lab/facturas.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main"><span data-l="es">Saltar al contenido</span><span data-l="en">Skip to content</span></a>
+<header class="lab-nav">
+  <div class="lab-nav-in">
+    <a class="lab-back" href="/#trabajo"><i aria-hidden="true">PD</i><span>← pabloduque.dev</span></a>
+    <div class="lab-act">
+      <a class="lab-btn fx-hide-s" href="https://github.com/pabdus/facturas-a-excel" target="_blank" rel="noopener">facturas-a-excel ↗</a>
+      <button id="lab-lang" class="lab-btn" type="button" lang="en" aria-label="Switch to English">EN</button>
+      <button id="lab-theme" class="lab-btn" type="button" aria-label="Tema claro">☀</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="lab">
+  <p class="kicker"><span data-l="es">Laboratorio · facturas a Excel</span><span data-l="en">Lab · invoices to Excel</span></p>
+  <h1><span data-l="es">Facturas: mide tú mismo</span><span data-l="en">Invoices: measure it yourself</span></h1>
+  <p class="lede">
+    <span data-l="es">Veinte facturas sintéticas, doce campos por factura y cuatro extractores que las leen, y Claude Haiku 4.5 aparte. Cada celda compara lo que leyó un extractor con la verdad de terreno: elige uno y mira qué acertó, qué leyó mal, qué mandó la validación a revisión y qué llegó al Excel sin aviso.</span>
+    <span data-l="en">Twenty synthetic invoices, twelve fields each and four extractors that read them, plus Claude Haiku 4.5, set apart. Each cell compares what an extractor read with the ground truth: pick one and see what it got right, what it misread, what the validation sent to review and what reached the spreadsheet with no warning.</span>
+  </p>
+  <div class="fx-links">
+    <a class="lab-btn primary" id="fx-demo" data-demo="facturas" href="https://rdd4yyol7clnebrcjjem4mdxmu0ubhqh.lambda-url.us-east-1.on.aws/" target="_blank" rel="noopener"><span data-l="es">Probar la demo en vivo ↗</span><span data-l="en">Try the live demo ↗</span></a>
+    <a class="lab-btn" href="https://github.com/pabdus/facturas-a-excel" target="_blank" rel="noopener"><span data-l="es">Código y método en GitHub ↗</span><span data-l="en">Code and method on GitHub ↗</span></a>
+    <a class="lab-btn" href="/data/facturas/eval.json"><span data-l="es">Datos de esta página (JSON)</span><span data-l="en">This page’s data (JSON)</span></a>
+  </div>
+  <p class="note fx-demo-note"><span data-l="es">La demo en vivo usa otro modelo de Claude; sus resultados en este conjunto no están medidos.</span><span data-l="en">The live demo uses a different Claude model; its results on this set have not been measured.</span></p>
+
+  <section class="card fx-notes" aria-labelledby="fx-notes-h">
+    <h2 id="fx-notes-h"><span data-l="es">Antes de mirar</span><span data-l="en">Before you look</span></h2>
+    <div class="fx-note">
+      <b><span data-l="es">Datos sintéticos</span><span data-l="en">Synthetic data</span></b>
+      <p><span data-l="es">20 facturas colombianas ficticias de 5 plantillas, 4 por plantilla: 5 están escaneadas y 2 traen un error del propio proveedor. Empresas, NIT y cifras son inventados.</span><span data-l="en">20 fictitious Colombian invoices from 5 templates, 4 per template: 5 are scanned and 2 carry an error made by the supplier itself. Companies, tax IDs and amounts are made up.</span></p>
+      <ul class="fx-tpls">
+        <li><b>A</b> <span data-l="es">clásica · factura electrónica de ferretería</span><span data-l="en">classic · hardware store e-invoice</span></li>
+        <li><b>B</b> <span data-l="es">moderna · tecnología, encabezado oscuro</span><span data-l="en">modern · tech, dark header</span></li>
+        <li><b>C</b> <span data-l="es">servicios · carta de servicios profesionales</span><span data-l="en">services · professional services letter</span></li>
+        <li><b>D</b> <span data-l="es">tiquete POS · supermercado, letra monoespaciada</span><span data-l="en">POS receipt · supermarket, monospaced type</span></li>
+        <li><b>E</b> <span data-l="es">proveedor nuevo · transporte y agroinsumos</span><span data-l="en">new supplier · transport and farm supplies</span></li>
+      </ul>
+    </div>
+    <div class="fx-note">
+      <b><span data-l="es">Congelado antes de medir</span><span data-l="en">Frozen before measuring</span></b>
+      <p><span data-l="es">Las reglas, el prompt y el lector de Claude se escribieron con un conjunto de desarrollo que solo tenía las plantillas A a D, y se congelaron en git antes de correrlos sobre el conjunto de prueba; las reglas, incluso antes de que existiera la plantilla nueva (E). Las cifras de esta página son de ese conjunto de prueba, que no se usó para ajustar nada.</span><span data-l="en">The rules, the prompt and the Claude reader were written on a development set with templates A to D only, and frozen in git before they were run on the test set; the rules, even before the new template (E) existed. The figures on this page come from that test set, which was not used to tune anything.</span></p>
+    </div>
+    <div class="fx-note">
+      <b><span data-l="es">Haiku va aparte</span><span data-l="en">Haiku is set apart</span></b>
+      <p><span data-l="es">Claude Haiku 4.5 no está en la tabla principal del README. En las facturas 01, 02, 04 y 08 entregó las líneas como texto mal formado y la validación no las marcó: con el criterio medido, una factura sin líneas no contaba como falla. Con el criterio actual (decisión 16), esas cuatro irían a revisión. Aquí se muestra el criterio medido; † marca dónde cambiaría.</span><span data-l="en">Claude Haiku 4.5 is not in the README’s main table. On invoices 01, 02, 04 and 08 it returned the line items as malformed text and the validation did not flag them: under the rule that was measured, an invoice with no lines did not count as a failure. Under the current rule (decision 16), those four would go to review. This page shows the measured rule; † marks where it would change.</span></p>
+    </div>
+    <div class="fx-note">
+      <b><span data-l="es">Qué cuenta como acierto</span><span data-l="en">What counts as correct</span></b>
+      <p><span data-l="es">Un monto vale si coincide al centavo; una fecha, si coincide el día; un nombre, si coincide sin tildes, mayúsculas ni puntuación. Una línea vale si sus cuatro campos coinciden. Con 20 facturas, cada porcentaje de campos lleva su intervalo de Wilson al 95 %.</span><span data-l="en">An amount counts if it matches to the cent; a date, to the day; a name, ignoring accents, case and punctuation. A line counts if all four of its fields match. With only 20 invoices, each field percentage comes with its 95% Wilson interval.</span></p>
+    </div>
+    <div class="fx-note">
+      <b><span data-l="es">La demo en vivo es otra medición</span><span data-l="en">The live demo is a separate matter</span></b>
+      <p><span data-l="es">El modelo de la demo se midió en otro conjunto, no en estas 20 facturas, así que no aparece abajo. Lo que ves son los extractores que sí se corrieron sobre ellas: cuatro, y Claude Haiku 4.5 aparte.</span><span data-l="en">The demo’s model was measured on a different set, not on these 20 invoices, so it does not appear below. What you see are the extractors that were actually run on them: four, plus Claude Haiku 4.5, set apart.</span></p>
+    </div>
+  </section>
+
+  <section class="fx-tool" aria-labelledby="fx-tool-h">
+    <h2 id="fx-tool-h"><span data-l="es">Campo por campo</span><span data-l="en">Field by field</span></h2>
+    <div class="fx-tabs" role="tablist" aria-labelledby="fx-tool-h">
+      <button type="button" role="tab" id="fx-tab-ext" aria-controls="fx-p-ext" aria-selected="true" data-tab="ext"><span data-l="es">Extractores</span><span data-l="en">Extractors</span></button>
+      <button type="button" role="tab" id="fx-tab-estres" aria-controls="fx-p-estres" aria-selected="false" tabindex="-1" data-tab="estres"><span data-l="es">Prueba de estrés por resolución</span><span data-l="en">Resolution stress test</span></button>
+    </div>
+    <div class="fx-panel" role="tabpanel" id="fx-p-ext" aria-labelledby="fx-tab-ext">
+      <div id="fx-ext"><p class="note" id="fx-status"><span data-l="es">Cargando los datos…</span><span data-l="en">Loading the data…</span></p></div>
+      <noscript><p class="note"><span data-l="es">Esta página necesita JavaScript para dibujar la matriz. Los datos están en /data/facturas/eval.json.</span><span data-l="en">This page needs JavaScript to draw the matrix. The data is at /data/facturas/eval.json.</span></p></noscript>
+    </div>
+    <div class="fx-panel" role="tabpanel" id="fx-p-estres" aria-labelledby="fx-tab-estres" hidden>
+      <div id="fx-estres"></div>
+    </div>
+    <p class="fx-sr" id="fx-live" aria-live="polite"></p>
+  </section>
+
+  <p class="note fx-src" id="fx-src"><span data-l="es">Datos: /data/facturas/eval.json, exportado del repositorio facturas-a-excel.</span><span data-l="en">Data: /data/facturas/eval.json, exported from the facturas-a-excel repository.</span></p>
+
+  <footer class="foot">
+    <span>© 2026 Pablo Alberto Duque Marín · <span data-l="es">Empresas, NIT y cifras son ficticios.</span><span data-l="en">Companies, tax IDs and amounts are fictitious.</span></span>
+    <span><a href="https://github.com/pabdus/facturas-a-excel" target="_blank" rel="noopener">github.com/pabdus/facturas-a-excel</a> · <a href="/#trabajo">pabloduque.dev</a></span>
+  </footer>
+</main>
+<div class="fx-tip" id="fx-tip" aria-hidden="true" hidden></div>
+</body>
+</html>

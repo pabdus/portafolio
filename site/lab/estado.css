@@ -1,0 +1,78 @@
+/* Página /estado.html. Se apoya en /lab/lab.css (tokens, .card, .lbl, .read, .note). */
+.est-skip{position:absolute;left:-999px;top:8px;z-index:99;background:var(--lime);color:var(--on-lime);padding:8px 12px;border-radius:6px;text-decoration:none;font-family:var(--mono);font-size:12px}
+.est-skip:focus{left:8px}
+
+#est-root{display:grid;gap:16px}
+.est-empty h2{margin:0 0 8px}
+.est-empty p{margin:0 0 16px}
+.est-empty .note{margin:0}
+
+/* resumen */
+.est-sum-row{display:flex;flex-wrap:wrap;gap:18px 48px;align-items:flex-start}
+.est-sum-v{margin-top:6px;font-size:clamp(18px,2vw,22px);font-weight:600;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.est-sum-n{margin-top:6px;font-size:clamp(18px,2vw,22px);letter-spacing:-.01em}
+.est-age{margin-top:4px;font-family:var(--mono);font-size:12px;color:var(--ink3)}
+.est-warn{display:flex;gap:10px;align-items:flex-start;margin:18px 0 0;padding:12px 14px;border:1px solid var(--red);border-radius:10px;background:var(--red-bg);color:var(--ink);font-size:15px;line-height:1.45}
+.est-warn strong{color:var(--ink)}
+.est-warn-i{flex:none;display:grid;place-items:center;width:20px;height:20px;margin-top:1px;border-radius:50%;background:var(--red);color:var(--bg);font-family:var(--mono);font-size:13px;font-weight:700;line-height:1}
+
+/* tarjetas */
+.est-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:16px}
+.est-card{min-width:0}
+.est-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:8px 14px}
+.lab .est-card h2{margin:0;font-size:clamp(19px,2vw,24px);line-height:1.2;letter-spacing:-.02em;min-width:0;overflow-wrap:anywhere}
+.est-badge{display:inline-flex;align-items:center;gap:7px;padding:4px 10px;border:1px solid;border-radius:999px;font-family:var(--mono);font-size:12px;font-weight:500;white-space:nowrap}
+.est-dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.est-badge.up{color:var(--lime-ink);background:var(--ok-bg);border-color:var(--lime-ink)}
+.est-badge.down{color:var(--red);background:var(--red-bg);border-color:var(--red)}
+.est-badge.down .est-dot{border-radius:1px;transform:rotate(45deg)}
+.est-badge.nodata{color:var(--ink3);background:var(--s2);border-color:var(--line2)}
+.est-badge.nodata .est-dot{background:none;border:1.5px solid currentColor}
+.lab .est-now,.lab .est-seg{margin:10px 0 0;font-family:var(--mono);font-size:12px;color:var(--ink2);max-width:none}
+.lab .est-seg{margin-top:6px;color:var(--red)}
+
+.est-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:18px 0 0;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+/* cada dato ocupa dos filas de la cuadrícula (etiqueta y cifra) y comparte sus pistas: si una etiqueta
+   se parte en dos líneas, las cifras de la misma fila siguen alineadas */
+.est-stats>div{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:6px;align-content:start;background:var(--s1);padding:12px 14px;min-width:0}
+.est-stats dt{align-self:end}
+.est-stats dd{margin:0}
+.est-stats .read{font-size:clamp(22px,2.6vw,30px)}
+.est-sub{margin-top:4px;font-family:var(--mono);font-size:12px;color:var(--ink3)}
+
+/* tira de los últimos chequeos: color y altura distinguen correcto / fallo / sin dato */
+.est-tira{margin-top:20px}
+.est-tira-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 14px}
+.est-ley{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--mono);font-size:11px;color:var(--ink3)}
+.est-ley>span{display:inline-flex;align-items:flex-end;gap:5px}
+.est-ley i{display:inline-block;width:5px;border-radius:1px}
+.est-strip{display:flex;align-items:flex-end;gap:1px;height:34px;margin-top:10px}
+.est-strip span{flex:1 1 0;min-width:0;border-radius:1px}
+.est-strip .ok,.est-ley .ok{height:60%;background:var(--lime-ink)}
+.est-strip .ko,.est-ley .ko{height:100%;background:var(--red)}
+.est-strip .na,.est-ley .na{height:22%;background:var(--ink3);opacity:.7}
+.est-ley .ok{height:7px}.est-ley .ko{height:12px}.est-ley .na{height:3px}
+@media (min-width:720px){.est-strip{gap:2px}}
+.est-axis{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--ink3)}
+.est-axis span{white-space:nowrap}.est-axis span+span{margin-left:auto}
+.lab .est-fallos{margin:10px 0 0;font-family:var(--mono);font-size:12px;color:var(--ink2);max-width:none}
+.lab .est-fallos.bad{color:var(--red)}
+
+/* cómo funciona */
+.est-how{margin-top:8px}
+.est-how ol{margin:0 0 16px;padding-left:1.4em;max-width:780px;color:var(--ink2)}
+.est-how li{margin:0 0 6px;padding-left:4px}
+.est-how li::marker{font-family:var(--mono);font-size:13px;color:var(--ink3)}
+.est-how .note{max-width:780px}
+.est-how a,.foot a{text-underline-offset:3px}
+@media (max-width:420px){.est-stats>div{padding:11px 10px}.est-stats .lbl{letter-spacing:.02em}}
+.lab-btn[aria-disabled="true"]{opacity:.7;cursor:progress}
+.est-sum:focus{outline:none}.est-sum:focus-visible{outline:2px solid var(--lime-ink);outline-offset:3px}
+
+/* ---- solo tema claro ---- */
+html[data-theme="light"] .est-skip{box-shadow:inset 0 0 0 1px var(--lime-edge)}
+/* «Operativa»: insignia rellena de lima con contorno, como los demás rellenos lima del claro */
+html[data-theme="light"] .est-badge.up{color:var(--on-lime);background:var(--lime);border-color:var(--lime-edge)}
+html[data-theme="light"] .est-badge.up .est-dot{background:var(--lime-ink)}
+/* mensajes de fallo en mono roja de 12 px: 500 en claro, como las demás etiquetas mono de color (rojo sobre --s1: 7,2:1 / Lc 83) */
+html[data-theme="light"] .lab .est-seg,html[data-theme="light"] .lab .est-fallos.bad{font-weight:500}

@@ -1,0 +1,112 @@
+/* Base común de las páginas de laboratorio (demos con datos reales) y de /estado.
+   Mismos tokens que la portada. Tema: html[data-theme="light"|"dark"], lo fija /theme.js. */
+:root{
+  --bg:#0b0d11;--s1:#10141a;--s2:#0e1116;--s3:#13181f;--ink:#eceef1;--ink2:#cbd1d7;--ink3:#8f99a3;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.15);
+  --lime:#c3e65f;--lime-ink:#c3e65f;--on-lime:#0b0d11;--blue:#86b8e8;--violet:#c9b0ef;--red:#ef7a62;--red-bg:rgba(239,122,98,.16);--ok-bg:rgba(195,230,95,.12);
+  --grid:rgba(255,255,255,.05);--axis:#76818c;--nav:rgba(11,13,17,.84);
+  --sans:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;--serif:'Newsreader',Georgia,'Times New Roman',serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --pad:clamp(16px,5vw,72px);color-scheme:dark
+}
+@supports (color:oklch(0.5 0.1 100)){:root{--lime:oklch(0.86 0.16 128);--lime-ink:oklch(0.86 0.16 128);--blue:oklch(0.78 0.11 230);--violet:oklch(0.8 0.1 300);--red:oklch(0.72 0.19 28)}}
+/* Claro: papel + resaltador lima + tinta. El lima no se usa como color de texto (sobre papel se vuelve oliva):
+   es relleno y resaltador (--marker); el texto de acento usa --lime-ink, un verde más limpio (6,6:1 / APCA Lc 79 sobre --bg).
+   Los grises de texto llevan el matiz oliva del papel (OKLCH C ~0,010, H ~125) en vez del azul-gris de antes;
+   --ink3 (mono de 12 px, ejes, th) queda en Lc 76-85 sobre --bg, --s1 y --s2. --prose: serif (Newsreader) de lectura.
+   Las sombras usan el matiz del papel (--shadow-rgb), no negro azulado. */
+html[data-theme="light"]{
+  --bg:#f6f7f3;--s1:#ffffff;--s2:#eef0ea;--s3:#e7eae2;--ink:#14171c;--ink2:#393b36;--ink3:#555852;--prose:#2d2f29;
+  --line:rgba(12,16,22,.10);--line2:rgba(12,16,22,.20);
+  --lime:#c3e65f;--lime-ink:#3c6200;--on-lime:#0b0d11;--blue:#1b5a93;--violet:#674098;--red:#a9221d;--red-bg:rgba(169,34,29,.08);--ok-bg:rgba(195,230,95,.30);
+  --grid:rgba(12,16,22,.09);--axis:#555852;--nav:rgba(246,247,243,.86);
+  --marker:rgba(195,230,95,.7);--lime-edge:rgba(60,98,0,.42);--lime-hover:#b9df4b;
+  --shadow-rgb:43 48 37;--shadow:rgb(43 48 37/.18);
+  --card-line:rgba(12,16,22,.09);
+  --card-shadow:0 1px 1px rgb(43 48 37/.05),0 2px 4px -2px rgb(43 48 37/.06),0 10px 24px -16px rgb(43 48 37/.20);
+  --card-shadow-hover:0 1px 2px rgb(43 48 37/.06),0 6px 12px -6px rgb(43 48 37/.10),0 18px 36px -20px rgb(43 48 37/.24);
+  color-scheme:light
+}
+*,*::before,*::after{box-sizing:border-box}
+/* la barra superior es fija (57 px): al enfocar o saltar a un ancla, lo enfocado queda debajo, con margen para el anillo */
+html{-webkit-text-size-adjust:100%;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--lime-ink);outline-offset:3px;border-radius:6px}
+::selection{background:var(--lime);color:var(--on-lime)}
+html:not([data-lang="en"]) [data-l="en"],html[data-lang="en"] [data-l="es"]{display:none!important}
+.mono{font-family:var(--mono)}
+
+/* barra superior */
+.lab-nav{position:sticky;top:0;z-index:20;background:var(--nav);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.lab-nav-in{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px var(--pad);font-family:var(--mono);font-size:12px}
+.lab-back{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap}
+.lab-back i{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--lime);color:var(--on-lime);font-style:normal;font-size:12px;font-weight:800}
+.lab-act{display:flex;gap:8px;align-items:center}
+.lab-btn{padding:7px 11px;border:1px solid var(--line2);border-radius:6px;background:none;color:var(--ink2);font-family:var(--mono);font-size:12px;white-space:nowrap;text-decoration:none}
+.lab-btn:hover{color:var(--ink);border-color:var(--ink3)}
+.lab-btn.primary{background:var(--lime);border-color:var(--lime);color:var(--on-lime);font-weight:600}
+
+/* cuerpo */
+.lab{max-width:1240px;margin:0 auto;padding:clamp(32px,6vw,72px) var(--pad) 64px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--lime-ink);margin:0 0 14px}
+.lab h1{margin:0 0 14px;font-size:clamp(34px,5vw,64px);line-height:1.02;letter-spacing:-.04em;font-weight:700;text-wrap:balance}
+.lab .lede{margin:0 0 28px;max-width:760px;font-family:var(--serif);font-size:clamp(18px,1.7vw,22px);line-height:1.45;color:var(--ink2)}
+.lab h2{margin:44px 0 12px;font-size:clamp(22px,2.4vw,30px);letter-spacing:-.03em;line-height:1.1}
+.lab p{color:var(--ink2);max-width:780px}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2.6vw,26px)}
+.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.read{font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums}
+.read.good{color:var(--lime-ink)}.read.bad{color:var(--red)}
+.note{font-family:var(--mono);font-size:12px;color:var(--ink3);line-height:1.6}
+
+/* control segmentado */
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line2);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:none;padding:8px 12px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.seg button+button{border-left:1px solid var(--line2)}
+.seg button[aria-checked="true"],.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+/* tablas */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px}
+/* envoltorios con tabindex=0 para desplazar la tabla con el teclado: el anillo sigue la esquina de 12 px */
+.tbl-wrap:focus-visible{border-radius:12px}
+table.tbl{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl th{font-weight:500;color:var(--ink3);background:var(--s2);position:sticky;top:0}
+.tbl tr:last-child td{border-bottom:0}
+
+.foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+
+/* ---- solo tema claro (el oscuro no pasa por aquí) ---- */
+/* antialiased adelgaza la tinta oscura sobre papel en macOS; el claro vuelve al suavizado del sistema (en Windows no cambia nada) */
+html[data-theme="light"] body{-webkit-font-smoothing:auto;-moz-osx-font-smoothing:auto}
+/* la serif de la entradilla (Newsreader) tiene la altura x pequeña (0,43 del cuerpo): necesita más contraste que la sans */
+html[data-theme="light"] .lab .lede{color:var(--prose)}
+/* antetítulo: en claro va en --lime-ink, como en la portada (.lab p lo dejaba en --ink2), y en 500 como las demás
+   etiquetas mono de color a 12 px (Plex Mono 500 ya se usa en los th; mismo ancho, sin reflujo). Lc 79,5 sobre --bg */
+html[data-theme="light"] .lab .kicker{color:var(--lime-ink);font-weight:500}
+/* rellenos lima: sobre papel el lima casi no se separa del fondo (1,3:1); un contorno verde tenue lo dibuja */
+html[data-theme="light"] .lab-back i{box-shadow:inset 0 0 0 1px var(--lime-edge)}
+html[data-theme="light"] .lab-btn{background:var(--s1)}
+/* barra superior: botones de contorno sobre el papel, como en la portada; el de tema, con el icono a 15 px y en tinta como allí */
+html[data-theme="light"] .lab-nav .lab-btn:not(.primary){background:none}
+html[data-theme="light"] #lab-theme{min-width:34px;padding:7px 9px;font-size:15px;line-height:18px;color:var(--ink)}
+/* el botón ya tiene borde de 1 px: el contorno va en ese borde (se pinta sobre el lima, igual que un inset de 1 px) */
+html[data-theme="light"] .lab-btn.primary{background:var(--lime);border-color:var(--lime-edge);color:var(--on-lime)}
+html[data-theme="light"] .lab-btn.primary:hover{background:var(--lime-hover);border-color:rgba(60,98,0,.58);color:var(--on-lime)}
+html[data-theme="light"] .seg{background:var(--s1)}
+/* superficies: papel blanco con borde fino y una sombra corta, en lugar de un plano sin profundidad */
+html[data-theme="light"] .card{border-color:var(--card-line);box-shadow:var(--card-shadow)}
+html[data-theme="light"] .tbl-wrap{background:var(--s1);border-color:var(--card-line);box-shadow:var(--card-shadow)}
+html[data-theme="light"] .card .tbl-wrap{box-shadow:none;border-color:var(--line)}
+/* cifras grandes "buenas": tinta con resaltador lima debajo (las rojas siguen rojas, sin resaltador).
+   Una franja por línea (1lh) por si la cifra se parte; em de respaldo para navegadores sin lh. */
+html[data-theme="light"] .read.good{
+  color:var(--ink);width:fit-content;max-width:100%;padding:0 .06em;
+  background-image:linear-gradient(transparent 62%,var(--marker) 62%,var(--marker) 90%,transparent 90%);
+  background-size:100% 1.05em;background-size:100% 1lh;background-repeat:repeat-y;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

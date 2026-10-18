@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es" data-lang="es" data-title-es="Estado de las demos · Pablo Duque Marín" data-title-en="Demo status · Pablo Duque Marín">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estado de las demos · Pablo Duque Marín</title>
+<meta name="description" content="Chequeo automático cada 15 minutos de las demos de pabloduque.dev: estado actual, disponibilidad en 24 horas y 7 días, y latencia.">
+<meta name="author" content="Pablo Alberto Duque Marín">
+<link rel="canonical" href="https://pabloduque.dev/estado.html">
+<meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pabloduque.dev/estado.html">
+<meta property="og:title" content="Estado de las demos · Pablo Duque Marín">
+<meta property="og:description" content="Chequeo cada 15 minutos: si cada demo responde, cuánto tarda y cuántas veces falló en 24 horas y 7 días.">
+<meta property="og:image" content="https://pabloduque.dev/og.png">
+<meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script src="/theme.js"></script>
+<link rel="preload" href="/fonts/bricolage-grotesque-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/lab/lab.css">
+<link rel="stylesheet" href="/lab/estado.css">
+<script src="/lab/lab.js" defer></script>
+<script src="/lab/estado.js" defer></script>
+</head>
+<body>
+<a class="est-skip" href="#main"><span data-l="es">Saltar al contenido</span><span data-l="en">Skip to content</span></a>
+<nav class="lab-nav" aria-label="Pablo Duque Marín">
+  <div class="lab-nav-in">
+    <a href="/" class="lab-back"><i aria-hidden="true">PD</i><span>← pabloduque.dev</span></a>
+    <div class="lab-act">
+      <button id="lab-lang" class="lab-btn" type="button" lang="en" aria-label="Switch to English">EN</button>
+      <button id="lab-theme" class="lab-btn" type="button" aria-label="Tema claro">☀</button>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="lab">
+  <p class="kicker"><span data-l="es">Estado · chequeo cada 15 min</span><span data-l="en">Status · checked every 15 min</span></p>
+  <h1><span data-l="es">Estado de las demos</span><span data-l="en">Demo status</span></h1>
+  <p class="lede">
+    <span data-l="es">Si cada demo del portafolio responde, cuánto tarda y cuántas veces falló en las últimas 24 horas y 7 días.</span>
+    <span data-l="en">Whether each portfolio demo responds, how long it takes, and how often it failed in the last 24 hours and 7 days.</span>
+  </p>
+
+  <div id="est-root" aria-busy="true">
+    <div class="card est-empty">
+      <p class="note" role="status"><span data-l="es">Leyendo el último chequeo…</span><span data-l="en">Reading the latest check…</span></p>
+    </div>
+  </div>
+  <noscript>
+    <div class="card est-empty">
+      <p><span data-l="es">Esta página necesita JavaScript para leer el archivo de chequeo. Los datos sin procesar están en</span><span data-l="en">This page needs JavaScript to read the check file. The raw data is at</span> <a href="/data/estado.json">/data/estado.json</a>.</p>
+    </div>
+  </noscript>
+
+  <section class="est-how" aria-labelledby="est-how-t">
+    <h2 id="est-how-t"><span data-l="es">Cómo funciona</span><span data-l="en">How it works</span></h2>
+    <ol>
+      <li><span data-l="es">Cada 15 minutos, una función AWS Lambda hace una petición GET a cada demo y anota el código HTTP y el tiempo de respuesta.</span><span data-l="en">Every 15 minutes, an AWS Lambda function sends a GET request to each demo and records the HTTP status code and the response time.</span></li>
+      <li><span data-l="es">Publica el resultado, con el historial de los últimos 7 días, en <a href="/data/estado.json">/data/estado.json</a>; esta página solo lee ese archivo.</span><span data-l="en">It publishes the result, with the last 7 days of history, to <a href="/data/estado.json">/data/estado.json</a>; this page only reads that file.</span></li>
+      <li><span data-l="es">Mientras la tienes abierta, esta página vuelve a leer el archivo cada 5 minutos. Si el último chequeo tiene más de 45 minutos, muestra un aviso.</span><span data-l="en">While you have it open, this page reads the file again every 5 minutes. If the latest check is more than 45 minutes old, it shows a warning.</span></li>
+      <li><span data-l="es">Si una demo falla dos chequeos seguidos, la portada, y el laboratorio de esa demo si lo tiene, cambian su botón por un enlace a esta página. Si el archivo está desactualizado, no se oculta nada.</span><span data-l="en">If a demo fails two checks in a row, the home page, and that demo’s lab if it has one, swap its button for a link to this page. If the file is stale, nothing is hidden.</span></li>
+    </ol>
+    <p class="note">
+      <span data-l="es">Un chequeo es correcto cuando la demo responde con el código esperado (200) antes de 20 s. La latencia es el tiempo hasta recibir los primeros 2 KB; la mediana y el p95 usan solo los chequeos correctos (percentil por rango más cercano). Las ventanas de 24 h y 7 días se cuentan hacia atrás desde el último chequeo.</span>
+      <span data-l="en">A check passes when the demo answers with the expected status code (200) within 20 s. Latency is the time to receive the first 2 KB; the median and p95 use passing checks only (nearest-rank percentile). The 24 h and 7-day windows count back from the latest check.</span>
+    </p>
+  </section>
+
+  <footer class="foot">
+    <span>Pablo Duque Marín · <a href="/">pabloduque.dev</a></span>
+    <span><span data-l="es">Datos:</span><span data-l="en">Data:</span> <a href="/data/estado.json">/data/estado.json</a></span>
+  </footer>
+</main>
+</body>
+</html>
