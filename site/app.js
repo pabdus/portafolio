@@ -23,7 +23,16 @@
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
   function caseIndex(id) { for (var i = 0; i < D.cases.length; i++) if (D.cases[i].id === id) return i; return -1; }
   function dec(x, d) { var s = x.toFixed(d); return S.lang === 'es' ? s.replace('.', ',') : s; }
-  function vt(fn) { if (!document.startViewTransition || RM) { fn(); return null; } return document.startViewTransition(fn); }
+  // Transición de vista con salvaguarda: si el navegador no pinta (pestaña oculta o en segundo plano),
+  // la transición espera un cuadro que no llega; tras 250 ms se aplica el cambio directo.
+  function vt(fn) {
+    if (!document.startViewTransition || RM || document.hidden) { fn(); return null; }
+    var done = false;
+    function run() { if (!done) { done = true; fn(); } }
+    var tr = document.startViewTransition(run);
+    setTimeout(function () { if (!done) { try { tr.skipTransition(); } catch (e) {} run(); } }, 250);
+    return tr;
+  }
   function toast(msg) { var el = $('#toast'); el.textContent = msg; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { el.hidden = true; }, 1800); }
 
   /* ---------- textos estáticos ---------- */
@@ -359,7 +368,8 @@
   function renderCase() {
     var t = T(), c = D.cases[S.open], v = VIZ[c.id];
     var status = c.status ? '<span class="badge">' + esc(c.status === 'building' ? t.building : t.ongoing) + '</span>' : '';
-    var foot = (c.repo ? '<a class="btn-lime sm" href="' + c.repo + '" target="_blank" rel="noopener">' + esc(t.repo) + ' ↗</a>' : '') +
+    var foot = (c.demo ? '<a class="btn-lime sm" href="' + c.demo + '" target="_blank" rel="noopener">' + esc(t.demo) + ' ↗</a>' : '') +
+      (c.repo ? '<a class="' + (c.demo ? 'ghost' : 'btn-lime sm') + '" href="' + c.repo + '" target="_blank" rel="noopener">' + esc(t.repo) + ' ↗</a>' : '') +
       (c.priv ? '<span class="tagbox">' + esc(t.private) + '</span>' : '') + (c.local ? '<span class="tagbox">' + esc(t.local) + '</span>' : '');
     $('#case-body').innerHTML =
       '<div class="dlg-bar"><span>' + String(S.open + 1).padStart(2, '0') + ' · ' + esc(L(c.kicker)) + '</span><button class="ghost" data-close>' + esc(t.close) + ' · Esc</button></div>' +

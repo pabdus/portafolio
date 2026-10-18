@@ -21,9 +21,10 @@ variable "github_repo" {
   default     = "pabdus/portafolio"
 }
 
-variable "github_branch" {
-  type    = string
-  default = "main"
+variable "github_environment" {
+  description = "Entorno de GitHub Actions autorizado a desplegar (restringido a la rama main en GitHub)."
+  type        = string
+  default     = "produccion"
 }
 
 variable "budget_email" {

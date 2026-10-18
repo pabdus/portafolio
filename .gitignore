@@ -13,3 +13,6 @@ __pycache__/
 
 # Versiones anteriores: solo locales (contienen cifras ya corregidas)
 archivo/
+
+# Planes y documentación de proyectos: privados, no van al repo público
+proyectos/
