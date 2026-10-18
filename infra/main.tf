@@ -241,3 +241,12 @@ resource "aws_route53_record" "alias" {
     evaluate_target_health = false
   }
 }
+
+# ---------------------------------------------------------------- verificación de buscadores
+resource "aws_route53_record" "site_verification" {
+  zone_id = data.aws_route53_zone.site.zone_id
+  name    = local.apex
+  type    = "TXT"
+  ttl     = 300
+  records = var.google_site_verification
+}

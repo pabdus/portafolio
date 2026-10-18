@@ -43,3 +43,9 @@ variable "content_security_policy" {
   type        = string
   default     = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
 }
+
+variable "google_site_verification" {
+  description = "Registros TXT de verificación de Google Search Console (propiedad de dominio)."
+  type        = list(string)
+  default     = ["google-site-verification=MC8GAzHwnQVQ_z8Qc-xvgSKxe2ynLIbUAm2cUSufWqg"]
+}
