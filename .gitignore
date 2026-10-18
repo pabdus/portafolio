@@ -16,3 +16,4 @@ archivo/
 
 # Planes y documentación de proyectos: privados, no van al repo público
 proyectos/
+infra/.build/

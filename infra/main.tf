@@ -118,7 +118,8 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_protocol                  = "sigv4"
 }
 
-# www → dominio raíz, en el borde y sin costo de Lambda
+# En el borde y sin costo de Lambda: www → dominio raíz, /carpeta → /carpeta/ y /carpeta/ → /carpeta/index.html.
+# Sin la barra final, S3 no encuentra la clave (/notas no existe, /notas/index.html sí) y se sirve el 404.
 resource "aws_cloudfront_function" "canonical_host" {
   name    = "portafolio-canonical-host"
   runtime = "cloudfront-js-2.0"
@@ -126,15 +127,17 @@ resource "aws_cloudfront_function" "canonical_host" {
   code    = <<-JS
     function handler(event) {
       var req = event.request;
+      var uri = req.uri;
       var host = req.headers.host && req.headers.host.value;
-      if (host === "${local.www}") {
+      var carpeta = !uri.endsWith("/") && !/\.[a-zA-Z0-9]+$/.test(uri);
+      if (host === "${local.www}" || carpeta) {
         return {
           statusCode: 301,
           statusDescription: "Moved Permanently",
-          headers: { location: { value: "https://${local.apex}" + req.uri } }
+          headers: { location: { value: "https://${local.apex}" + uri + (carpeta ? "/" : "") } }
         };
       }
-      if (req.uri.endsWith("/")) { req.uri += "index.html"; }
+      if (uri.endsWith("/")) { req.uri += "index.html"; }
       return req;
     }
   JS
@@ -168,8 +171,32 @@ resource "aws_cloudfront_response_headers_policy" "security" {
   }
 }
 
-data "aws_cloudfront_cache_policy" "optimized" {
-  name = "Managed-CachingOptimized"
+# Igual que Managed-CachingOptimized (mismos TTL, gzip y brotli), pero con la query string «v» en la clave:
+# el despliegue sirve app.js?v=<commit>, y sin esto /app.js?v=NUEVO y /app.js serían el mismo objeto en el CDN.
+resource "aws_cloudfront_cache_policy" "site" {
+  name        = "portafolio-cache-v"
+  comment     = "CachingOptimized + query string v en la clave"
+  min_ttl     = 1
+  default_ttl = 86400
+  max_ttl     = 31536000
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    enable_accept_encoding_gzip   = true
+    enable_accept_encoding_brotli = true
+
+    cookies_config {
+      cookie_behavior = "none"
+    }
+    headers_config {
+      header_behavior = "none"
+    }
+    query_strings_config {
+      query_string_behavior = "whitelist"
+      query_strings {
+        items = ["v"]
+      }
+    }
+  }
 }
 
 resource "aws_cloudfront_distribution" "site" {
@@ -193,7 +220,7 @@ resource "aws_cloudfront_distribution" "site" {
     allowed_methods            = ["GET", "HEAD"]
     cached_methods             = ["GET", "HEAD"]
     compress                   = true
-    cache_policy_id            = data.aws_cloudfront_cache_policy.optimized.id
+    cache_policy_id            = aws_cloudfront_cache_policy.site.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
 
     function_association {

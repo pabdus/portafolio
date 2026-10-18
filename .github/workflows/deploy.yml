@@ -26,24 +26,48 @@ jobs:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: us-east-1
 
-      # content.js y app.js se cachean una semana en el navegador. Sin versión en la URL, quien ya
-      # visitó el sitio mezcla el HTML nuevo con el JS viejo. El hash del commit cambia la URL en cada despliegue.
-      - name: Versionar los scripts
+      # Los .js y .css se cachean una semana en el navegador y en CloudFront. Sin versión en la URL, quien ya
+      # visitó el sitio mezcla el HTML nuevo con el JS viejo. El hash del commit cambia la URL en cada despliegue
+      # (la política de caché de infra/main.tf mete «v» en la clave del CDN).
+      # Aplica a toda referencia local (sin http) en cualquier página del sitio, sea cual sea el orden de los atributos.
+      - name: Versionar scripts y hojas de estilo
         run: |
           v="${GITHUB_SHA::8}"
-          sed -i -E "s#<script src=\"(content|app)\.js\"#<script src=\"\1.js?v=$v\"#g" site/index.html
-          test "$(grep -c "\.js?v=$v\"" site/index.html)" -eq 2
+          find site -name "*.html" -print0 | xargs -0 sed -i -E \
+            -e "s#(<script[^>]*[[:space:]]src=\")([^\":?]+\.js)\"#\1\2?v=$v\"#g" \
+            -e "s#(<link[^>]*rel=\"stylesheet\"[^>]*[[:space:]]href=\")([^\":?]+\.css)\"#\1\2?v=$v\"#g" \
+            -e "s#(<link[^>]*[[:space:]]href=\")([^\":?]+\.css)(\"[^>]*rel=\"stylesheet\")#\1\2?v=$v\3#g"
+          test "$(grep -c "\.js?v=$v\"" site/index.html)" -ge 2
+          test "$(grep -c "\.css?v=$v\"" site/index.html)" -ge 1
+          # Red de seguridad: si queda un script u hoja local sin ?v= en cualquier página, falla antes de subir nada.
+          # (Con `if` y no con `! grep`: bash -e no se detiene en un comando negado con `!`.)
+          sin_version='<script[^>]*[[:space:]]src="[^":?]+\.js"|<link[^>]*rel="stylesheet"[^>]*href="[^":?]+\.css"|<link[^>]*href="[^":?]+\.css"[^>]*rel="stylesheet"'
+          if grep -rnE "$sin_version" site --include='*.html'; then
+            echo "::error::Scripts u hojas de estilo locales sin ?v= (arriba): el versionado no los reconoce."
+            exit 1
+          fi
 
-      - name: Subir HTML y CV (sin caché larga)
+      # Orden: primero los recursos nuevos sin borrar nada, después el HTML que los referencia y al final el borrado
+      # de los recursos que ya no se usan. Así ninguna página publicada apunta a un archivo que todavía no está o que ya se borró.
+      - name: Subir JS, CSS, fuentes e imágenes (caché de una semana, sin borrar)
+        run: |
+          aws s3 sync site/ "s3://${{ secrets.SITE_BUCKET }}" \
+            --exclude "*.html" --exclude "*.pdf" --exclude "*.json" --exclude "*.xml" --exclude "*.txt" \
+            --cache-control "public, max-age=604800"
+
+      # data/estado.json lo escribe la Lambda de chequeo de salud (infra/estado.tf): excluido para que --delete no lo borre.
+      - name: Subir HTML, CV y datos (sin caché larga)
         run: |
           aws s3 sync site/ "s3://${{ secrets.SITE_BUCKET }}" --delete \
-            --exclude "*" --include "*.html" --include "*.pdf" \
+            --exclude "*" --include "*.html" --include "*.pdf" --include "*.json" --include "*.xml" --include "*.txt" \
+            --exclude "data/estado.json" \
             --cache-control "public, max-age=0, must-revalidate"
 
-      - name: Subir el resto (caché de una semana)
+      # Mismos filtros que la primera subida: los archivos ya están, así que solo borra los que no existen en site/.
+      - name: Borrar los recursos que ya no se usan
         run: |
           aws s3 sync site/ "s3://${{ secrets.SITE_BUCKET }}" --delete \
-            --exclude "*.html" --exclude "*.pdf" \
+            --exclude "*.html" --exclude "*.pdf" --exclude "*.json" --exclude "*.xml" --exclude "*.txt" \
             --cache-control "public, max-age=604800"
 
       - name: Invalidar CloudFront
