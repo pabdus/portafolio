@@ -182,9 +182,12 @@ def deny_hits(text: str) -> set[str]:
     return hits
 
 
-def guard(text: str, where: str) -> list[str]:
+PHONE_RULES = 3  # las tres primeras reglas son de teléfono: la versión privada (--privado) las omite
+
+
+def guard(text: str, where: str, allow_phone: bool = False) -> list[str]:
     errs = [f"{where}: término confidencial o retirado: «{h}»" for h in sorted(deny_hits(text))]
-    for pat, why in RULES:
+    for pat, why in RULES[PHONE_RULES if allow_phone else 0:]:
         m = re.search(pat, text)
         if m:
             errs.append(f"{where}: {why} → «{m.group(0)}»")
@@ -192,7 +195,7 @@ def guard(text: str, where: str) -> list[str]:
 
 
 # ---------------------------------------------------------------------------------------------
-def build_context(pd: dict, extra: dict, lang: str) -> tuple[dict, list[str], list[str]]:
+def build_context(pd: dict, extra: dict, lang: str, phone: str = "") -> tuple[dict, list[str], list[str]]:
     errs: list[str] = []
     warns: list[str] = []
     ui = pd["ui"][lang]
@@ -212,6 +215,7 @@ def build_context(pd: dict, extra: dict, lang: str) -> tuple[dict, list[str], li
         "github": pd["links"]["github"], "github_label": short_url(pd["links"]["github"]),
         "linkedin": pd["links"]["linkedin"], "linkedin_label": short_url(pd["links"]["linkedin"]),
         "avail": ui["pill"],
+        "phone": phone,
     }
 
     profile = " ".join([ui["h1b"]] + list(ui["lead"]))
@@ -264,12 +268,14 @@ def build_context(pd: dict, extra: dict, lang: str) -> tuple[dict, list[str], li
     # Proyectos: EXACTAMENTE PD.cases, en el mismo orden.
     projects = []
     for c in pd["cases"]:
-        links = []
+        links = [{"href": f"{hx['web'].rstrip('/')}/#caso-{c['id']}", "text": labels["case"]}]
         if c.get("repo"):
             links.append({"href": c["repo"], "text": short_url(c["repo"])})
         if c.get("demo"):
             links.append({"href": c["demo"], "text": labels["demo"]})
-        if not links:
+        if c.get("lab"):
+            links.append({"href": hx["web"].rstrip("/") + c["lab"]["href"], "text": labels["lab"]})
+        if not (c.get("repo") or c.get("demo")):
             text = ui["private"] if c.get("priv") else ui["local"] if c.get("local") else ""
             if text:
                 links.append({"href": "", "text": text})
@@ -359,7 +365,7 @@ def set_metadata(src: Path, dst: Path, ctx: dict, keywords: str) -> None:
     doc.close()
 
 
-def verify_pdf(pdf: Path, pd: dict, lang: str, html: str | None = None) -> tuple[list[str], dict]:
+def verify_pdf(pdf: Path, pd: dict, lang: str, html: str | None = None, allow_phone: bool = False) -> tuple[list[str], dict]:
     import pymupdf
     errs: list[str] = []
     tag = f"[{lang}] {pdf.name}"
@@ -388,7 +394,8 @@ def verify_pdf(pdf: Path, pd: dict, lang: str, html: str | None = None) -> tuple
     for m in must:
         if norm_space(m) not in text:
             errs.append(f"{tag}: falta «{m}»")
-    for u in ("mailto:" + pd["email"], pd["links"]["github"], pd["links"]["linkedin"]):
+    case_urls = tuple(f"https://pabloduque.dev/#caso-{c['id']}" for c in pd["cases"])
+    for u in ("mailto:" + pd["email"], "https://pabloduque.dev", pd["links"]["github"], pd["links"]["linkedin"], *case_urls):
         if not any(x.rstrip("/") == u.rstrip("/") for x in uris):
             errs.append(f"{tag}: falta el enlace {u}")
 
@@ -409,9 +416,9 @@ def verify_pdf(pdf: Path, pd: dict, lang: str, html: str | None = None) -> tuple
         if e[1] == "w" and norm_space(L(e[2], lang)) not in text:
             errs.append(f"{tag}: falta la experiencia «{L(e[2], lang)}»")
 
-    errs += guard(raw, tag)
+    errs += guard(raw, tag, allow_phone)
     if html is not None:
-        errs += guard(html, f"[{lang}] HTML")
+        errs += guard(html, f"[{lang}] HTML", allow_phone)
     info = {"pages": pages, "fonts": fonts, "chars": len(text), "cases_found": f"{found}/{len(pd['cases'])}",
             "bytes": pdf.stat().st_size}
     return errs, info
@@ -427,6 +434,11 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Genera el CV ES/EN desde site/content.js")
     ap.add_argument("--check", action="store_true", help="solo verificar los PDF publicados en site/")
     ap.add_argument("--chrome", help="ruta a chrome.exe")
+    ap.add_argument("--privado", action="store_true",
+                    help="versión personal con teléfono (leído de proyectos/cv_privado.json, fuera del repo); "
+                         "se guarda en --salida y nunca en site/")
+    ap.add_argument("--salida", type=Path, default=Path.home() / "Documents" / "Generación Ingresos",
+                    help="carpeta de la versión privada")
     args = ap.parse_args()
 
     try:
@@ -438,6 +450,14 @@ def main() -> int:
     pd = load_pd(CONTENT_JS)
     extra = json.loads(EXTRA_JSON.read_text(encoding="utf-8"))
     all_errs: list[str] = []
+    phone = ""
+    if args.privado:
+        priv = ROOT / "proyectos" / "cv_privado.json"  # proyectos/ está en .gitignore
+        phone = json.loads(priv.read_text(encoding="utf-8")).get("telefono", "").strip()
+        if not phone:
+            sys.exit(f"Falta «telefono» en {priv}")
+        if SITE in args.salida.resolve().parents or args.salida.resolve() == SITE:
+            sys.exit("La versión privada no puede guardarse dentro de site/")
 
     if args.check:
         for lang in LANGS:
@@ -451,12 +471,13 @@ def main() -> int:
         DIST.mkdir(exist_ok=True)
         built = {}
         for lang in LANGS:
-            ctx, errs, warns = build_context(pd, extra, lang)
+            ctx, errs, warns = build_context(pd, extra, lang, phone)
             for w in warns:
                 print("aviso:", w)
-            html_path = DIST / f"cv_{lang}.html"
-            raw_pdf = DIST / f"cv_{lang}.chrome.pdf"
-            final_pdf = DIST / OUT_PDF[lang].name
+            sfx = "_privado" if args.privado else ""
+            html_path = DIST / f"cv_{lang}{sfx}.html"
+            raw_pdf = DIST / f"cv_{lang}{sfx}.chrome.pdf"
+            final_pdf = DIST / (OUT_PDF[lang].stem + sfx + ".pdf")
             # Si content.js crece y no cabe en MAX_PAGES, se reduce un poco la letra antes de fallar.
             for fs in FONT_STEPS:
                 ctx["fs"] = fs
@@ -468,12 +489,24 @@ def main() -> int:
                 print(f"aviso: [{lang}] no cabe en {MAX_PAGES} páginas con {fs} pt; pruebo más pequeño")
             set_metadata(raw_pdf, final_pdf, ctx, ", ".join(pd.get("summaryStack", [])))
             raw_pdf.unlink()
-            verrs, info = verify_pdf(final_pdf, pd, lang, html)
+            verrs, info = verify_pdf(final_pdf, pd, lang, html, allow_phone=args.privado)
             info["font_pt"] = ctx["fs"]
             all_errs += errs + verrs
             built[lang] = final_pdf
             print(f"[{lang}] {rel(html_path)} → {rel(final_pdf)}: {info}")
-        if not all_errs:
+        if not all_errs and args.privado:
+            args.salida.mkdir(parents=True, exist_ok=True)
+            stamp = pd["updated"]["es"].replace(".", "").replace(" ", "-")
+            outs = []
+            for lang, f in built.items():
+                dst = args.salida / f"Pablo_Duque_CV_{lang.upper()}_{stamp}.pdf"
+                shutil.copyfile(f, dst)
+                f.unlink()  # dist/ no guarda la copia con teléfono
+                outs.append(str(dst))
+            for lang in LANGS:
+                (DIST / f"cv_{lang}_privado.html").unlink(missing_ok=True)
+            print("versión privada:", ", ".join(outs))
+        elif not all_errs:
             for lang, f in built.items():
                 shutil.copyfile(f, OUT_PDF[lang])
             shutil.copyfile(built["en"], LEGACY_PDF)

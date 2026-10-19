@@ -52,6 +52,9 @@ h1 {
 .contact { margin: 0; font-size: 8.9pt; color: var(--soft); line-height: 1.4; }
 .contact a { color: var(--ink); }
 .avail { margin: 1pt 0 0; font-size: 8.9pt; color: var(--soft); }
+.portfolio { margin: 2pt 0 0; font-size: 9.4pt; color: var(--soft); }
+.portfolio b { color: var(--ink); }
+.portfolio a { color: var(--ink); font-weight: 600; }
 
 /* ---------- secciones ---------- */
 h2 {

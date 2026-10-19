@@ -23,8 +23,9 @@ body { font-size: {{ fs }}pt; }
 <header>
   <h1>{{ h.name }}</h1>
   <p class="role">{{ h.title }}</p>
-  <p class="contact">{{ h.location }} · <a href="mailto:{{ h.email }}">{{ h.email }}</a> · <a href="{{ h.web }}">{{ h.web_label }}</a><br>
+  <p class="contact">{{ h.location }} · <a href="mailto:{{ h.email }}">{{ h.email }}</a>{% if h.phone %} · {{ h.phone }}{% endif %}<br>
     <a href="{{ h.github }}">{{ h.github_label }}</a> · <a href="{{ h.linkedin }}">{{ h.linkedin_label }}</a></p>
+  <p class="portfolio"><b>{{ labels.portfolio }}:</b> <a href="{{ h.web }}">{{ h.web_label }}</a> — {{ labels.portfolio_note }}</p>
   <p class="avail">{{ h.avail }}</p>
 </header>
 

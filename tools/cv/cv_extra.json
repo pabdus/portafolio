@@ -1,122 +1,259 @@
 {
-  "_nota": "Datos SOLO del CV. Todo lo demás (casos, trayectoria, stack, idiomas, perfil, enlaces) sale de site/content.js. Cada viñeta declara su fuente en 'src': 'cases.<id>', 'skills', 'stack', 'timeline' o 'ui' se verifican solas (cada cifra de la viñeta debe aparecer en esa parte de content.js); cualquier otra fuente es externa y entonces la viñeta no puede llevar cifras. 'match' es un texto que debe aparecer en la entrada de PD.timeline (cargo u organización, en español).",
-
-  "header": {
-    "name": "Pablo Alberto Duque Marín",
-    "title": { "es": "Ingeniero de IA", "en": "AI Engineer" },
-    "location": { "es": "Caldas, Colombia · remoto UTC−5", "en": "Caldas, Colombia · remote UTC−5" },
-    "web": "https://pabloduque.dev"
+ "_nota": "Datos SOLO del CV. Todo lo demás (casos, trayectoria, stack, idiomas, perfil, enlaces) sale de site/content.js. Cada viñeta declara su fuente en 'src': 'cases.<id>', 'skills', 'stack', 'timeline' o 'ui' se verifican solas (cada cifra de la viñeta debe aparecer en esa parte de content.js); cualquier otra fuente es externa y entonces la viñeta no puede llevar cifras. 'match' es un texto que debe aparecer en la entrada de PD.timeline (cargo u organización, en español).",
+ "header": {
+  "name": "Pablo Alberto Duque Marín",
+  "title": {
+   "es": "Ingeniero de IA",
+   "en": "AI Engineer"
   },
-
-  "labels": {
-    "es": {
-      "doc_title": "Pablo Alberto Duque Marín · CV (español)",
-      "subject": "Ingeniero de IA",
-      "profile": "Perfil", "experience": "Experiencia", "projects": "Proyectos", "education": "Formación", "skills": "Competencias", "languages": "Idiomas",
-      "present": "actualidad",
-      "projects_intro": "Los mismos {n} casos que en pabloduque.dev, en el mismo orden; los de clientes van sin nombres.",
-      "demo": "demo en vivo",
-      "footer": "Pablo Alberto Duque Marín · CV · actualizado {updated}"
-    },
-    "en": {
-      "doc_title": "Pablo Alberto Duque Marín · CV (English)",
-      "subject": "AI Engineer",
-      "profile": "Profile", "experience": "Experience", "projects": "Projects", "education": "Education", "skills": "Skills", "languages": "Languages",
-      "present": "present",
-      "projects_intro": "The same {n} case studies as on pabloduque.dev, in the same order; client work is anonymised.",
-      "demo": "live demo",
-      "footer": "Pablo Alberto Duque Marín · CV · updated {updated}"
-    }
+  "location": {
+   "es": "Caldas, Colombia · remoto UTC−5",
+   "en": "Caldas, Colombia · remote UTC−5"
   },
-
-  "experience": [
+  "web": "https://pabloduque.dev"
+ },
+ "labels": {
+  "es": {
+   "doc_title": "Pablo Alberto Duque Marín · CV (español)",
+   "subject": "Ingeniero de IA",
+   "profile": "Perfil",
+   "experience": "Experiencia",
+   "projects": "Proyectos",
+   "education": "Formación",
+   "skills": "Competencias",
+   "languages": "Idiomas",
+   "present": "actualidad",
+   "projects_intro": "Los mismos {n} casos que en pabloduque.dev, en el mismo orden; los de clientes van sin nombres.",
+   "demo": "demo en vivo",
+   "footer": "Pablo Alberto Duque Marín · CV · actualizado {updated}",
+   "portfolio": "Portafolio",
+   "portfolio_note": "casos de estudio, demos y laboratorios con datos reales",
+   "case": "ver caso",
+   "lab": "laboratorio"
+  },
+  "en": {
+   "doc_title": "Pablo Alberto Duque Marín · CV (English)",
+   "subject": "AI Engineer",
+   "profile": "Profile",
+   "experience": "Experience",
+   "projects": "Projects",
+   "education": "Education",
+   "skills": "Skills",
+   "languages": "Languages",
+   "present": "present",
+   "projects_intro": "The same {n} case studies as on pabloduque.dev, in the same order; client work is anonymised.",
+   "demo": "live demo",
+   "footer": "Pablo Alberto Duque Marín · CV · updated {updated}",
+   "portfolio": "Portfolio",
+   "portfolio_note": "case studies, demos and labs on real data",
+   "case": "case study",
+   "lab": "lab"
+  }
+ },
+ "experience": [
+  {
+   "match": "Softart",
+   "location": {
+    "es": "Remoto, Colombia",
+    "en": "Remote, Colombia"
+   },
+   "location_src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)",
+   "cases": [
+    "soat",
+    "contable"
+   ],
+   "bullets": [
     {
-      "match": "Softart",
-      "location": { "es": "Remoto, Colombia", "en": "Remote, Colombia" },
-      "location_src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)",
-      "cases": ["soat", "contable"],
-      "bullets": [
-        { "src": ["cases.soat"],
-          "es": "Responsable del backend y del pipeline de IA que lleva una reclamación del SOAT a un análisis listo para el abogado en una mediana de 28 s desde la asignación del caso (18 corridas de prueba), para un cliente del sector legal (Colombia).",
-          "en": "Responsible for the backend and the AI pipeline that takes a traffic-insurance (SOAT) claim to an analysis ready for the lawyer a median of 28 s after the case is assigned (18 test runs), for a legal-sector client (Colombia)." },
-        { "src": ["cases.soat"],
-          "es": "Orquestación por eventos con EventBridge, DynamoDB y SQS, con unos 57 recursos AWS en Terraform; numeración de casos sin huecos con 20 registros simultáneos (transacciones en DynamoDB); captcha, secretos de solo escritura y ningún dato personal en los logs.",
-          "en": "Event-driven orchestration with EventBridge, DynamoDB and SQS, about 57 AWS resources in Terraform; gapless case numbering under 20 simultaneous registrations (DynamoDB transactions); captcha, write-only secrets and no personal data in logs." },
-        { "src": ["cases.soat"],
-          "es": "Rama de póliza con Amazon Textract y reglas deterministas, sin LLM a propósito: extraer no es interpretar. Rama médica con Claude por la API Converse de Bedrock y criterios versionados en Prompt Management; cada caso se resume en 10 hechos con su cita textual.",
-          "en": "Policy branch with Amazon Textract and deterministic rules, with no LLM on purpose: extraction is not interpretation. Medical branch with Claude through Bedrock’s Converse API and criteria versioned in Prompt Management; each case is summarised in 10 facts, each with its verbatim citation." },
-        { "src": ["cases.soat"],
-          "es": "Regla determinista que manda a revisión humana los casos cuya historia clínica no muestra un nexo claro con el accidente, conservando la respuesta original del modelo. Recomendé no mostrar la «confianza» del modelo: se agrupaba en 95, 85 y 0 sin escala definida.",
-          "en": "A deterministic rule sends to human review any case whose medical record shows no clear link to the accident, keeping the model’s original answer. Advised against displaying the model’s “confidence”: it clustered at 95, 85 and 0 with no defined scale." },
-        { "src": ["cases.soat", "skills"],
-          "es": "Pruebas de backend de 642 a 845 en 2 semanas y cobertura en código nuevo de 38 a 84 %, con historias clínicas sintéticas y veredicto esperado contra la función desplegada; arranque en frío de 867 a 545 ms.",
-          "en": "Backend tests from 642 to 845 in 2 weeks and coverage on new code from 38 to 84%, including synthetic medical records with an expected verdict against the deployed function; cold start from 867 to 545 ms." },
-        { "src": ["cases.contable"],
-          "es": "Agente contable (en construcción): arquitectura de un MVP de declaración de renta (F-110 y formato 2516) en el que el LLM nunca calcula cifras declarables: motor determinista en Python con aritmética Decimal, RAG solo para explicar y aprobación humana obligatoria. Diseño cerrado (27 historias, 20 decisiones, 11 diagramas) e incremento 0 terminado, con 79 pruebas y CI en verde.",
-          "en": "Accounting agent (under construction): architecture of an income-tax return MVP (Colombian forms F-110 and 2516) in which the LLM never calculates declarable figures: a deterministic Python engine with Decimal arithmetic, RAG only to explain, and mandatory human approval. Design complete (27 stories, 20 decisions, 11 diagrams) and increment 0 done, with 79 tests and green CI." }
-      ]
+     "src": [
+      "cases.soat"
+     ],
+     "es": "Responsable del backend y del pipeline de IA que lleva una reclamación del SOAT a un análisis listo para el abogado en una mediana de 28 s desde la asignación del caso (18 corridas de prueba), para un cliente del sector legal (Colombia).",
+     "en": "Responsible for the backend and the AI pipeline that takes a traffic-insurance (SOAT) claim to an analysis ready for the lawyer a median of 28 s after the case is assigned (18 test runs), for a legal-sector client (Colombia)."
     },
     {
-      "match": "Contrato independiente",
-      "org": { "es": "Contrato independiente · SaaS fiscal (España)", "en": "Freelance contract · tax SaaS (Spain)" },
-      "org_src": "cases.rgpd (kicker)",
-      "location": { "es": "Remoto", "en": "Remote" },
-      "location_src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)",
-      "cases": ["rgpd"],
-      "bullets": [
-        { "src": ["cases.rgpd"],
-          "es": "Migré a Frankfurt, por el RGPD, un asistente fiscal con RAG montado a mano en us-east-1: migración completa y verificada en Fráncfort en 9 días desde el diagnóstico (21–29 jul.); los defectos ligados a la región tras el corte se corrigieron el mismo día.",
-          "en": "Moved a hand-built RAG tax assistant from us-east-1 to Frankfurt for GDPR: migration complete and verified in Frankfurt within 9 days of the diagnosis (21–29 Jul); region-related defects after the cutover were fixed the same day." },
-        { "src": ["cases.rgpd"],
-          "es": "Reorganicé la infraestructura en Terraform modular y multirregión (9 módulos, estado remoto aislado por región y entorno): 131 recursos y un plan sin diferencias frente a lo desplegado.",
-          "en": "Reorganised the infrastructure as modular, multi-region Terraform (9 modules, remote state isolated per region and environment): 131 resources and a zero-diff plan against what is deployed." },
-        { "src": ["cases.rgpd"],
-          "es": "Sustituí los dos modelos generativos al final de su vida por Claude Sonnet 4.5 y Haiku 4.5 en perfiles de inferencia europeos y migré el almacén vectorial de Aurora pgvector a S3 Vectors: datos y modelos dentro de la UE.",
-          "en": "Replaced both end-of-life generative models with Claude Sonnet 4.5 and Haiku 4.5 on EU inference profiles, and moved the vector store from Aurora pgvector to S3 Vectors: data and models inside the EU." }
-      ]
+     "src": [
+      "cases.soat"
+     ],
+     "es": "Orquestación por eventos con EventBridge, DynamoDB y SQS, con unos 57 recursos AWS en Terraform; numeración de casos sin huecos con 20 registros simultáneos (transacciones en DynamoDB); captcha, secretos de solo escritura y ningún dato personal en los logs.",
+     "en": "Event-driven orchestration with EventBridge, DynamoDB and SQS, about 57 AWS resources in Terraform; gapless case numbering under 20 simultaneous registrations (DynamoDB transactions); captcha, write-only secrets and no personal data in logs."
     },
     {
-      "match": "Tubos y Perfiles",
-      "org": { "es": "Tubos y Perfiles de Occidente S.A.S.", "en": "Tubos y Perfiles de Occidente S.A.S." },
-      "location": { "es": "Dosquebradas, Colombia", "en": "Dosquebradas, Colombia" },
-      "location_src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)",
-      "bullets": [
-        { "src": ["Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)"],
-          "es": "Construí procesos ETL en Python que integran datos operativos y comerciales de varias fuentes internas y externas.",
-          "en": "Built Python ETL processes joining operational and commercial data from several internal and external sources." },
-        { "src": ["Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)"],
-          "es": "Reemplacé reportes manuales por scripts de Python programados y escribí el SQL de los análisis recurrentes que sustentan decisiones.",
-          "en": "Replaced manual reporting with scheduled Python scripts and wrote the SQL behind recurring analyses used for decision-making." }
-      ]
+     "src": [
+      "cases.soat"
+     ],
+     "es": "Rama de póliza con Amazon Textract y reglas deterministas, sin LLM a propósito: extraer no es interpretar. Rama médica con Claude por la API Converse de Bedrock y criterios versionados en Prompt Management; cada caso se resume en 10 hechos con su cita textual.",
+     "en": "Policy branch with Amazon Textract and deterministic rules, with no LLM on purpose: extraction is not interpretation. Medical branch with Claude through Bedrock’s Converse API and criteria versioned in Prompt Management; each case is summarised in 10 facts, each with its verbatim citation."
     },
     {
-      "match": "Narnia",
-      "org": { "es": "Narnia Producciones", "en": "Narnia Producciones" },
-      "location": { "es": "Chile", "en": "Chile" },
-      "location_src": "timeline (Narnia Producciones (Chile))",
-      "bullets": [
-        { "src": ["Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)"],
-          "es": "Dirigí una productora de eventos: presupuestos, análisis de rentabilidad y negociación con proveedores.",
-          "en": "Ran an event production company: budgeting, profitability analysis and supplier negotiation." }
-      ]
+     "src": [
+      "cases.soat"
+     ],
+     "es": "Regla determinista que manda a revisión humana los casos cuya historia clínica no muestra un nexo claro con el accidente, conservando la respuesta original del modelo. Recomendé no mostrar la «confianza» del modelo: se agrupaba en 95, 85 y 0 sin escala definida.",
+     "en": "A deterministic rule sends to human review any case whose medical record shows no clear link to the accident, keeping the model’s original answer. Advised against displaying the model’s “confidence”: it clustered at 95, 85 and 0 with no defined scale."
     },
     {
-      "match": "Policía Nacional de Colombia",
-      "location": { "es": "Colombia", "en": "Colombia" },
-      "location_src": "timeline",
-      "bullets": [
-        { "src": ["Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)"],
-          "es": "Comandé unidades policiales operativas en distintas regiones de Colombia.",
-          "en": "Commanded operational police units across Colombia." }
-      ]
+     "src": [
+      "cases.soat",
+      "skills"
+     ],
+     "es": "Pruebas de backend de 642 a 845 en 2 semanas y cobertura en código nuevo de 38 a 84 %, con historias clínicas sintéticas y veredicto esperado contra la función desplegada; arranque en frío de 867 a 545 ms.",
+     "en": "Backend tests from 642 to 845 in 2 weeks and coverage on new code from 38 to 84%, including synthetic medical records with an expected verdict against the deployed function; cold start from 867 to 545 ms."
+    },
+    {
+     "src": [
+      "cases.contable"
+     ],
+     "es": "Agente contable (en construcción): arquitectura de un MVP de declaración de renta (F-110 y formato 2516) en el que el LLM nunca calcula cifras declarables: motor determinista en Python con aritmética Decimal, RAG solo para explicar y aprobación humana obligatoria. Diseño de 27 historias, 20 decisiones y 11 diagramas, e incremento 0 terminado, con 79 pruebas y CI en verde.",
+     "en": "Accounting agent (under construction): architecture of an income-tax return MVP (Colombian forms F-110 and 2516) in which the LLM never calculates declarable figures: a deterministic Python engine with Decimal arithmetic, RAG only to explain, and mandatory human approval. Design of 27 stories, 20 decisions and 11 diagrams, and increment 0 done, with 79 tests and green CI."
     }
-  ],
-
-  "education": [
-    { "match": "UNIR", "status": { "es": "En curso · finaliza feb. 2027", "en": "In progress · ends Feb 2027" }, "src": "ui.edu" },
-    { "match": "Cuauhtémoc", "status": { "es": "En curso", "en": "In progress" }, "src": "timeline" },
-    { "match": "Compensar", "status": { "es": "En curso", "en": "In progress" }, "src": "timeline" },
-    { "match": "Henry", "status": { "es": "Finalizado", "en": "Completed" }, "src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior: listado como formación cursada, 2022–2023)" },
-    { "match": "IES-CINOC", "status": { "es": "Finalizado", "en": "Completed" }, "src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior: BA in Police Administration · Systems Technician)" }
-  ]
+   ]
+  },
+  {
+   "match": "Contrato independiente",
+   "org": {
+    "es": "Contrato independiente · SaaS fiscal (España)",
+    "en": "Freelance contract · tax SaaS (Spain)"
+   },
+   "org_src": "cases.rgpd (kicker)",
+   "location": {
+    "es": "Remoto",
+    "en": "Remote"
+   },
+   "location_src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)",
+   "cases": [
+    "rgpd"
+   ],
+   "bullets": [
+    {
+     "src": [
+      "cases.rgpd"
+     ],
+     "es": "Migré a Frankfurt, por el RGPD, un asistente fiscal con RAG montado a mano en us-east-1: migración completa y verificada en Fráncfort en 9 días desde el diagnóstico (21–29 jul.); los defectos ligados a la región tras el corte se corrigieron el mismo día.",
+     "en": "Moved a hand-built RAG tax assistant from us-east-1 to Frankfurt for GDPR: migration complete and verified in Frankfurt within 9 days of the diagnosis (21–29 Jul); region-related defects after the cutover were fixed the same day."
+    },
+    {
+     "src": [
+      "cases.rgpd"
+     ],
+     "es": "Reorganicé la infraestructura en Terraform modular y multirregión (9 módulos, estado remoto aislado por región y entorno): 131 recursos y un plan sin diferencias frente a lo desplegado.",
+     "en": "Reorganised the infrastructure as modular, multi-region Terraform (9 modules, remote state isolated per region and environment): 131 resources and a zero-diff plan against what is deployed."
+    },
+    {
+     "src": [
+      "cases.rgpd"
+     ],
+     "es": "Sustituí los dos modelos generativos al final de su vida por Claude Sonnet 4.5 y Haiku 4.5 en perfiles de inferencia europeos y migré el almacén vectorial de Aurora pgvector a S3 Vectors: datos y modelos dentro de la UE.",
+     "en": "Replaced both end-of-life generative models with Claude Sonnet 4.5 and Haiku 4.5 on EU inference profiles, and moved the vector store from Aurora pgvector to S3 Vectors: data and models inside the EU."
+    }
+   ]
+  },
+  {
+   "match": "Tubos y Perfiles",
+   "org": {
+    "es": "Tubos y Perfiles de Occidente S.A.S.",
+    "en": "Tubos y Perfiles de Occidente S.A.S."
+   },
+   "location": {
+    "es": "Dosquebradas, Colombia",
+    "en": "Dosquebradas, Colombia"
+   },
+   "location_src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)",
+   "bullets": [
+    {
+     "src": [
+      "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)"
+     ],
+     "es": "Construí procesos ETL en Python que integran datos operativos y comerciales de varias fuentes internas y externas.",
+     "en": "Built Python ETL processes joining operational and commercial data from several internal and external sources."
+    },
+    {
+     "src": [
+      "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)"
+     ],
+     "es": "Reemplacé reportes manuales por scripts de Python programados y escribí el SQL de los análisis recurrentes que sustentan decisiones.",
+     "en": "Replaced manual reporting with scheduled Python scripts and wrote the SQL behind recurring analyses used for decision-making."
+    }
+   ]
+  },
+  {
+   "match": "Narnia",
+   "org": {
+    "es": "Narnia Producciones",
+    "en": "Narnia Producciones"
+   },
+   "location": {
+    "es": "Chile",
+    "en": "Chile"
+   },
+   "location_src": "timeline (Narnia Producciones (Chile))",
+   "bullets": [
+    {
+     "src": [
+      "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)"
+     ],
+     "es": "Dirigí una productora de eventos: presupuestos, análisis de rentabilidad y negociación con proveedores.",
+     "en": "Ran an event production company: budgeting, profitability analysis and supplier negotiation."
+    }
+   ]
+  },
+  {
+   "match": "Policía Nacional de Colombia",
+   "location": {
+    "es": "Colombia",
+    "en": "Colombia"
+   },
+   "location_src": "timeline",
+   "bullets": [
+    {
+     "src": [
+      "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior)"
+     ],
+     "es": "Comandé unidades policiales operativas en distintas regiones de Colombia.",
+     "en": "Commanded operational police units across Colombia."
+    }
+   ]
+  }
+ ],
+ "education": [
+  {
+   "match": "UNIR",
+   "status": {
+    "es": "En curso · finaliza feb. 2027",
+    "en": "In progress · ends Feb 2027"
+   },
+   "src": "ui.edu"
+  },
+  {
+   "match": "Cuauhtémoc",
+   "status": {
+    "es": "En curso",
+    "en": "In progress"
+   },
+   "src": "timeline"
+  },
+  {
+   "match": "Compensar",
+   "status": {
+    "es": "En curso",
+    "en": "In progress"
+   },
+   "src": "timeline"
+  },
+  {
+   "match": "Henry",
+   "status": {
+    "es": "Finalizado",
+    "en": "Completed"
+   },
+   "src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior: listado como formación cursada, 2022–2023)"
+  },
+  {
+   "match": "IES-CINOC",
+   "status": {
+    "es": "Finalizado",
+    "en": "Completed"
+   },
+   "src": "Pablo_Duque_Resume_EN_corregido.pdf (CV anterior: BA in Police Administration · Systems Technician)"
+  }
+ ]
 }
