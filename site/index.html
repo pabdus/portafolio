@@ -114,7 +114,10 @@ img,svg,canvas{max-width:100%}
 .mnav button{font-family:var(--mono);font-size:14px;font-weight:400;color:var(--ink2);border-bottom:0}
 .theme-btn{min-width:34px;padding:7px 9px;font-size:15px;line-height:18px;color:var(--ink)}
 .mnav .mnav-theme{display:flex;gap:10px;align-items:center}
-@media (max-width:399px){.nav-act .theme-btn{display:none}}
+/* móvil: «Menú» queda solo con ☰ (aria-label intacto) para que quepa el botón de tema; en pantallas muy angostas,
+   el resumen sale de la barra y sigue en la búsqueda del menú */
+@media (max-width:420px){.nav-act{gap:6px}.menu-btn [data-k="menu"]{display:none}.menu-btn{padding:7px 10px}}
+@media (max-width:359px){.nav-act #summary-btn{display:none}}
 @media (min-width:1100px){.mnav{display:none!important}}
 @media (max-width:520px){.brand span{display:none}.nav-act .sum-long{display:none}}
 @media (min-width:521px){.nav-act .sum-short{display:none}}
