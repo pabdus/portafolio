@@ -732,9 +732,9 @@
     dane: {
       html: function () {
         var es = S.lang === 'es', tab = VIZ.dane.tab || 0;
-        var bars = tab === 0 ? [['Bogotá', 99.5, dec(99.5, 1) + ' %', 'var(--blue)'], ['Chocó', 28.5, dec(28.5, 1) + ' %', 'var(--red)']] : [[es ? 'Urbano' : 'Urban', 100 / 5.39, '1×', 'var(--blue)'], ['Rural', 100, dec(5.39, 2) + '×', 'var(--red)']];
+        var bars = tab === 0 ? [['Bogotá', 99.5, dec(99.5, 1) + ' %', 'var(--blue)'], ['Chocó', 28.5, dec(28.5, 1) + ' %', 'var(--red)']] : [[es ? 'Urbano' : 'Urban', 100 * 2.3 / 14.9, dec(2.3, 1) + ' %', 'var(--blue)'], ['Rural', 100, dec(14.9, 1) + ' %', 'var(--red)']];
         var body = bars.map(function (b) { return '<div class="hbar"><span>' + b[0] + '</span><div class="hbar-t"><div style="width:' + b[1] + '%;background:' + b[3] + '"></div></div><b>' + b[2] + '</b></div>'; }).join('') +
-          '<div class="viz-note">' + (tab === 0 ? (es ? 'Cobertura de acueducto · censo DANE 2018' : 'Piped-water coverage · DANE 2018 census') : (es ? 'Odds de analfabetismo, regresión logística (urbano = 1)' : 'Odds of illiteracy, logistic regression (urban = 1)')) + '</div>';
+          '<div class="viz-note">' + (tab === 0 ? (es ? 'Cobertura de acueducto · censo DANE 2018' : 'Piped-water coverage · DANE 2018 census') : (es ? 'No saben leer ni escribir · 15 años o más · 6,6 veces más en zona rural' : 'Cannot read or write · aged 15+ · 6.6 times as many in rural areas')) + '</div>';
         return '<div class="viz-pad">' + vizTabs('dane', [es ? 'Acueducto' : 'Piped water', es ? 'Analfabetismo' : 'Illiteracy'], tab, body) + '</div>';
       },
       init: function () {}
