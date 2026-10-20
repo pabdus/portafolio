@@ -187,6 +187,8 @@ table.fx-mx{border-collapse:separate;border-spacing:0;font-family:var(--mono);fo
 .lab .fx-src{margin:48px 0 0;max-width:none}
 .fx-src a{color:var(--ink2)}
 @media (min-width:700px){.fx-kpi .lbl{min-height:2.9em}}
+/* resaltador solo en la primera cifra (campos exactos); las demás buenas quedan en verde */
+html[data-theme="light"] .fx-kpi:not(:first-child) .read.good{background-image:none;color:var(--lime-ink)}
 
 /* ---- solo tema claro ---- */
 html[data-theme="light"] .skip{box-shadow:inset 0 0 0 1px var(--lime-edge)}

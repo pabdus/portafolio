@@ -493,6 +493,9 @@ html[data-theme="light"] .big:not([style*="--red"]){
   padding:0 .06em;margin-left:-.06em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 html[data-theme="light"] .card-mv,html[data-theme="light"] .labc-v,html[data-theme="light"] .read.lime{width:fit-content}
 html[data-theme="light"] .big[style*="--lime-ink"]{color:var(--ink)!important}
+/* con muchas cifras seguidas, el resaltador fijo solo en la principal; en las tarjetas aparece con el puntero o el foco */
+html[data-theme="light"] :is(.hstat:not(:first-child) .hstat-v,.card-mv,.labc-v){background-size:0 100%;transition:background-size .25s}
+html[data-theme="light"] :is(.card,.labc):is(:hover,:focus-visible) :is(.card-mv,.labc-v){background-size:100% 100%}
 /* subtítulos en serif itálica: tinta suave en lugar de verde */
 html[data-theme="light"] .title-b,html[data-theme="light"] .mon-title em{color:var(--ink2)}
 /* superficies: borde tenue y sombra suave en capas; al pasar el puntero, la tarjeta sube (la luz viene de arriba) */

@@ -16,6 +16,8 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-aria-es][data-aria-en]'), function (el) { el.setAttribute('aria-label', el.getAttribute('data-aria-' + lang)); });
     var th = document.getElementById('lab-theme'); if (th) { var light = root.getAttribute('data-theme') === 'light'; th.textContent = light ? '☾' : '☀'; th.setAttribute('aria-label', lang === 'es' ? (light ? 'Tema oscuro' : 'Tema claro') : (light ? 'Dark theme' : 'Light theme')); }
     var tt = root.getAttribute('data-title-' + lang); if (tt) document.title = tt;
+    var lt = root.getAttribute('data-theme') === 'light';
+    Array.prototype.forEach.call(document.querySelectorAll('meta[name="theme-color"]'), function (m) { m.setAttribute('content', lt ? '#f6f7f3' : '#0b0d11'); });
     subs.forEach(function (fn) { try { fn(lang); } catch (e) { if (window.console) console.error(e); } });
   }
   /* Estado de las demos. /data/estado.json lo escribe cada 15 min una Lambda (infra/estado). Misma regla que la

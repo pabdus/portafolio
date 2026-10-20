@@ -37,6 +37,8 @@
 .est-stats>div{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:6px;align-content:start;background:var(--s1);padding:12px 14px;min-width:0}
 .est-stats dt{align-self:end}
 .est-stats dd{margin:0}
+/* resaltador solo en la primera cifra de cada bloque */
+html[data-theme="light"] .est-stats>div:not(:first-child) .read.good{background-image:none;color:var(--lime-ink)}
 .est-stats .read{font-size:clamp(22px,2.6vw,30px)}
 .est-sub{margin-top:4px;font-family:var(--mono);font-size:12px;color:var(--ink3)}
 

@@ -48,7 +48,8 @@ html:not([data-lang="en"]) [data-l="en"],html[data-lang="en"] [data-l="es"]{disp
 .lab-btn:hover{color:var(--ink);border-color:var(--ink3)}
 /* Selector ES|EN, el mismo de la portada, las notas y TOST */
 .lab-lang{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden;background:none;padding:0;font-family:var(--mono);font-size:12px}
-.lab-lang span{padding:7px 9px;color:var(--ink3)}
+.lab-lang span{padding:7px 9px;color:#a9b1ba}
+html[data-theme="light"] .lab-lang span:not(.on){color:#4a4d47}
 .lab-lang span.on{background:var(--ink);color:var(--bg)}
 .lab-btn.primary{background:var(--lime);border-color:var(--lime);color:var(--on-lime);font-weight:600}
 
