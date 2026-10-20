@@ -339,11 +339,12 @@
       var fdrNote = tr(dc + ' de ' + m.n_fdr + ' muestras con falla (' + fw[0] + '–' + fw[1] + ')',
         dc + ' of ' + m.n_fdr + ' faulty samples (' + fw[0] + '–' + fw[1] + ')');
       if (m.fdr < c.min_fdr_at_chance) fdrNote += tr('; bajo el ' + pct(c.min_fdr_at_chance) + ': nivel del azar', '; below ' + pct(c.min_fdr_at_chance) + ': chance level');
-      box.appendChild(met(tr('Detección (FDR)', 'Detection (FDR)'), pctCount(dc, m.n_fdr), '', fdrNote));
+      // Resaltador en la detección, como en el monitor de la portada: solo si es una detección real (no al nivel del azar)
+      box.appendChild(met(tr('Detección (FDR)', 'Detection (FDR)'), pctCount(dc, m.n_fdr), m.detected && !m.detected_at_chance ? 'good' : m.detected_at_chance ? 'muted' : '', fdrNote));
 
       var k = c.k_alarms;
       if (m.detected && !m.detected_at_chance) {
-        box.appendChild(met(tr('Retardo', 'Delay'), samplesTxt(m.delay_samples), 'good', minutes(m.delay_minutes) + ' · ' + (m.delay_samples === 0
+        box.appendChild(met(tr('Retardo', 'Delay'), samplesTxt(m.delay_samples), '', minutes(m.delay_minutes) + ' · ' + (m.delay_samples === 0
           ? tr('la racha de ' + k + ' alarmas empieza en la ' + c.fault_first_sample, 'the run of ' + k + ' alarms starts at ' + c.fault_first_sample)
           : tr('racha de ' + k + ' alarmas desde la muestra ' + m.first_alarm_sample, 'run of ' + k + ' alarms from sample ' + m.first_alarm_sample))));
       } else if (m.detected) {
@@ -521,10 +522,10 @@
     ctx.setLineDash([]);
     // fuera de límite
     var r = narrow ? 1.7 : 2.2;
-    if (C.light) {                                 // claro: punto de 2,5 px con halo suave; si ya forman una masa, más chicos y sin halo
+    if (C.light) {                                 // claro: punto de 3 px con halo suave; si ya forman una masa, del tamaño del oscuro y sin halo
       var nOut = 0;
       for (i = 0; i < end; i++) if (s[i] > lim) nOut++;
-      r = nOut > 200 ? (narrow ? 1.3 : 1.5) : (narrow ? 2 : 2.5);   // 1,5 px, como el monitor de la portada
+      if (nOut <= 200) r = narrow ? 2.4 : 3;
       if (C.halo && nOut && nOut <= 200) {
         ctx.fillStyle = C.halo; ctx.beginPath();
         for (i = 0; i < end; i++) if (s[i] > lim) { var hx = X(i), hy = Y(s[i]); ctx.moveTo(hx + r + 2.5, hy); ctx.arc(hx, hy, r + 2.5, 0, 2 * Math.PI); }

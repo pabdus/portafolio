@@ -431,7 +431,7 @@
     $('#m-far').textContent = far;
     $('#m-far-sub').textContent = (fault ? t.monFarSub : t.monFarSub0).replace('{k}', cnt(m.far, m.n_far)).replace('{n}', m.n_far);
     if (fault) {
-      det = monPct(m.fdr); detCls = m.detected_at_chance ? 'read muted' : 'read lime';
+      det = monPct(m.fdr); detCls = m.detected_at_chance ? 'read muted' : m.detected ? 'read lime' : 'read';
       detSub = t.monDetSub.replace('{k}', cnt(m.fdr, m.n_fdr)).replace('{n}', m.n_fdr) + (m.detected_at_chance ? ' · ' + t.monChance : '');
       if (!m.detected) { delay = t.monNotDet; delaySub = t.monNoRun; delCls = 'read txt'; }
       else if (m.detected_at_chance) { delay = t.monNotDet; delaySub = t.monChanceSub; delCls = 'read txt'; }
@@ -1027,8 +1027,8 @@
 
   /* sección activa en la navegación */
   if ('IntersectionObserver' in window) {
-    // Servicios no tiene enlace propio en la barra: cuenta como Contacto, como cuando estaba dentro de esa sección
-    var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { var id = en.target.id === 'servicios' ? 'contacto' : en.target.id; $$('.nav-links a, .mnav a').forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + id); }); } }); }, { rootMargin: '-40% 0px -55% 0px' });
+    // Servicios no tiene enlace propio en la barra: mientras se ve, no se marca ninguno
+    var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { var id = en.target.id; $$('.nav-links a, .mnav a').forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + id); }); } }); }, { rootMargin: '-40% 0px -55% 0px' });
     ['trabajo', 'competencias', 'metodo', 'laboratorio', 'trayectoria', 'servicios', 'contacto'].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
   }
 

@@ -12,7 +12,7 @@
   function apply() {
     root.setAttribute('data-lang', lang); root.lang = lang;
     // El nombre del botón está en el idioma de destino: lang hace que el lector lo pronuncie con esa voz.
-    var b = document.getElementById('lab-lang'); if (b) { b.textContent = lang === 'es' ? 'EN' : 'ES'; b.setAttribute('aria-label', lang === 'es' ? 'Switch to English' : 'Cambiar a español'); b.setAttribute('lang', lang === 'es' ? 'en' : 'es'); }
+    var b = document.getElementById('lab-lang'); if (b) { Array.prototype.forEach.call(b.querySelectorAll('[data-lang-opt]'), function (o) { o.classList.toggle('on', o.getAttribute('data-lang-opt') === lang); }); b.setAttribute('aria-label', lang === 'es' ? 'Switch to English' : 'Cambiar a español'); b.setAttribute('lang', lang === 'es' ? 'en' : 'es'); }
     Array.prototype.forEach.call(document.querySelectorAll('[data-aria-es][data-aria-en]'), function (el) { el.setAttribute('aria-label', el.getAttribute('data-aria-' + lang)); });
     var th = document.getElementById('lab-theme'); if (th) { var light = root.getAttribute('data-theme') === 'light'; th.textContent = light ? '☾' : '☀'; th.setAttribute('aria-label', lang === 'es' ? (light ? 'Tema oscuro' : 'Tema claro') : (light ? 'Dark theme' : 'Light theme')); }
     var tt = root.getAttribute('data-title-' + lang); if (tt) document.title = tt;
