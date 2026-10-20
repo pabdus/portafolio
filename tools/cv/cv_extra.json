@@ -67,15 +67,15 @@
      "src": [
       "cases.soat"
      ],
-     "es": "Responsable del backend y del pipeline de IA que lleva una reclamación del SOAT a un análisis listo para el abogado en una mediana de 28 s desde la asignación del caso (18 corridas de prueba), para un cliente del sector legal (Colombia).",
-     "en": "Responsible for the backend and the AI pipeline that takes a traffic-insurance (SOAT) claim to an analysis ready for the lawyer a median of 28 s after the case is assigned (18 test runs), for a legal-sector client (Colombia)."
+     "es": "Responsable del backend y del pipeline de IA que lleva una reclamación del SOAT a un análisis listo para el abogado en una mediana de 28 s desde la asignación del caso (18 corridas de prueba), para un cliente del sector legal (Colombia). También desarrollé el frontend en React.",
+     "en": "Responsible for the backend and the AI pipeline that takes a traffic-insurance (SOAT) claim to an analysis ready for the lawyer a median of 28 s after the case is assigned (18 test runs), for a legal-sector client (Colombia). I also developed the React front end."
     },
     {
      "src": [
       "cases.soat"
      ],
-     "es": "Orquestación por eventos con EventBridge, DynamoDB y SQS, con unos 57 recursos AWS en Terraform; numeración de casos sin huecos con 20 registros simultáneos (transacciones en DynamoDB); captcha, secretos de solo escritura y ningún dato personal en los logs.",
-     "en": "Event-driven orchestration with EventBridge, DynamoDB and SQS, about 57 AWS resources in Terraform; gapless case numbering under 20 simultaneous registrations (DynamoDB transactions); captcha, write-only secrets and no personal data in logs."
+     "es": "Orquestación por eventos con EventBridge, DynamoDB y SQS, con unos 60 recursos AWS en Terraform; numeración de casos sin huecos con 20 registros simultáneos (transacciones en DynamoDB); captcha, secretos de solo escritura y ningún dato personal en los logs.",
+     "en": "Event-driven orchestration with EventBridge, DynamoDB and SQS, about 60 AWS resources in Terraform; gapless case numbering under 20 simultaneous registrations (DynamoDB transactions); captcha, write-only secrets and no personal data in logs."
     },
     {
      "src": [
